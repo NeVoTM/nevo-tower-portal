@@ -2,10 +2,11 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
+import OpenAI from 'openai';
 import xai from '@/lib/xai';
 
 type Doc = { id: string; title: string; text: string };
-type RankedDoc = { doc: Doc; score: number };
+type RankedDoc = { doc: Doc; score: number | number[] };
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -22,6 +23,38 @@ async function loadCorpus(): Promise<Doc[]> {
   }
 }
 
+async function rankByEmbeddings(query: string, corpus: Doc[]): Promise<RankedDoc[]> {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  if (!openai || !process.env.OPENAI_API_KEY) {
+    console.warn('OPENAI_API_KEY not set, falling back to keyword ranking');
+    return rankByKeywords(query, corpus);
+  }
+
+  const queryEmbedding = await openai.embeddings.create({
+    model: 'text-embedding-3-small',
+    input: query,
+  });
+  const queryVector = queryEmbedding.data[0].embedding;
+
+  const corpusVectors = await Promise.all(
+    corpus.map(async (doc) => {
+      const embedding = await openai.embeddings.create({
+        model: 'text-embedding-3-small',
+        input: doc.text,
+      });
+      return { doc, vector: embedding.data[0].embedding };
+    })
+  );
+
+  return corpusVectors
+    .map(({ doc, vector }) => {
+      const score = cosineSimilarity(queryVector, vector);
+      return { doc, score };
+    })
+    .filter((r) => r.score > 0.1) // Threshold for relevance
+    .sort((a, b) => b.score - a.score);
+}
+
 async function rankByKeywords(query: string, corpus: Doc[]): Promise<RankedDoc[]> {
   const queryWords = query.toLowerCase().split(/\s+/);
   return corpus
@@ -34,6 +67,14 @@ async function rankByKeywords(query: string, corpus: Doc[]): Promise<RankedDoc[]
     .sort((a, b) => b.score - a.score);
 }
 
+// Cosine similarity function
+function cosineSimilarity(vecA: number[], vecB: number[]): number {
+  const dotProduct = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
+  const magnitudeA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
+  const magnitudeB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
+  return magnitudeA && magnitudeB ? dotProduct / (magnitudeA * magnitudeB) : 0;
+}
+
 export async function POST(req: Request) {
   try {
     const { query, topK = 3 } = await req.json();
@@ -44,10 +85,16 @@ export async function POST(req: Request) {
     // Load corpus
     const corpus = await loadCorpus();
 
-    // Rank documents using keyword-based retrieval
-    const ranked = await rankByKeywords(query, corpus);
+    // Rank documents
+    let ranked: RankedDoc[];
+    if (process.env.OPENAI_API_KEY) {
+      ranked = await rankByEmbeddings(query, corpus);
+    } else {
+      console.log('Using keyword-based ranking due to missing OPENAI_API_KEY');
+      ranked = await rankByKeywords(query, corpus);
+    }
 
-    // Prepare context for Grok
+    // Prepare context
     const context = ranked
       .slice(0, topK)
       .map((r) => `Title: ${r.doc.title}\n${r.doc.text.slice(0, 500)}`)
@@ -72,7 +119,6 @@ export async function POST(req: Request) {
           max_tokens: 150,
           temperature: 0.7,
         });
-        // Type guard to ensure completion is not null and has the expected structure
         if (completion && completion.choices && completion.choices[0] && completion.choices[0].message && completion.choices[0].message.content) {
           answer = completion.choices[0].message.content.trim();
         } else {
@@ -88,7 +134,7 @@ export async function POST(req: Request) {
       matches: ranked.slice(0, topK).map((m) => ({
         id: m.doc.id,
         title: m.doc.title,
-        score: Number(m.score.toFixed(3)),
+        score: Number((typeof m.score === 'number' ? m.score : m.score[0]).toFixed(3)),
       })),
     });
   } catch (error) {
