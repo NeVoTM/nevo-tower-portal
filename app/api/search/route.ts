@@ -2,7 +2,8 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
-import OpenAI from 'openai';
+// OpenAI import delayed to runtime to avoid build-time evaluation
+// import OpenAI from 'openai'; // Moved inside function
 import xai from '@/lib/xai';
 
 type Doc = { id: string; title: string; text: string };
@@ -24,12 +25,11 @@ async function loadCorpus(): Promise<Doc[]> {
 }
 
 async function rankByEmbeddings(query: string, corpus: Doc[]): Promise<RankedDoc[]> {
-  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-  if (!openai || !process.env.OPENAI_API_KEY) {
+  if (!process.env.OPENAI_API_KEY) {
     console.warn('OPENAI_API_KEY not set, falling back to keyword ranking');
     return rankByKeywords(query, corpus);
   }
-
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const queryEmbedding = await openai.embeddings.create({
     model: 'text-embedding-3-small',
     input: query,
