@@ -2,7 +2,6 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
-import OpenAI from 'openai'; // Reintroduced with correct casing
 import xai from '@/lib/xai';
 
 type Doc = { id: string; title: string; text: string };
@@ -28,6 +27,8 @@ async function rankByEmbeddings(query: string, corpus: Doc[]): Promise<RankedDoc
     console.warn('OPENAI_API_KEY not set, falling back to keyword ranking');
     return rankByKeywords(query, corpus);
   }
+  // Dynamic import to avoid build-time evaluation
+  const { OpenAI } = await import('openai');
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const queryEmbedding = await openai.embeddings.create({
     model: 'text-embedding-3-small',
