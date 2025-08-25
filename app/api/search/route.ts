@@ -2,8 +2,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
-// OpenAI import delayed to runtime to avoid build-time evaluation
-// import OpenAI from 'openai'; // Moved inside function
+import OpenAI from 'openai'; // Reintroduced with correct casing
 import xai from '@/lib/xai';
 
 type Doc = { id: string; title: string; text: string };
