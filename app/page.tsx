@@ -493,15 +493,15 @@ const testBusinessVoice = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900">
+    <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)'}}>
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         
         {/* Compact Header */}
         <div className="text-center mb-6">
           <div className="flex items-center justify-center gap-2 mb-2">
-            <Sparkles className="h-6 w-6 text-purple-400" />
+            <Sparkles className="h-6 w-6" style={{color: '#FFD700'}} />
             <h1 className="text-2xl font-bold text-white">DMM AI Agent</h1>
-            <span className="text-purple-200 text-sm">Intelligence System</span>
+            <span className="text-sm" style={{color: '#87CEEB'}}>Intelligence System</span>
           </div>
         </div>
 
@@ -510,7 +510,17 @@ const testBusinessVoice = () => {
           <div className="text-center mb-6">
             <button
               onClick={() => setShowCharts(!showCharts)}
-              className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              className="inline-flex items-center gap-3 px-6 py-3 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              style={{
+                background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                border: '2px solid rgba(255, 215, 0, 0.5)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 215, 0, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+              }}
             >
               <BarChart3 className="h-5 w-5" />
               {showCharts ? 'Hide DMM Model Analysis' : 'Show DMM vs Conventional Analysis'}
@@ -541,16 +551,32 @@ const testBusinessVoice = () => {
             <div
               key={key}
               onClick={() => setSelectedCity(key)}
-              className={`p-3 rounded-xl border-2 cursor-pointer transition-all duration-300 text-center ${
-                selectedCity === key
-                  ? 'border-purple-400 bg-purple-500/20 shadow-lg shadow-purple-500/25'
-                  : 'border-gray-600 bg-white/5 hover:border-gray-500 hover:bg-white/10'
-              }`}
+              className="p-3 rounded-xl border-2 cursor-pointer transition-all duration-300 text-center"
+              style={{
+                borderColor: selectedCity === key ? '#FFD700' : 'rgba(255, 255, 255, 0.2)',
+                backgroundColor: selectedCity === key ? 'rgba(255, 215, 0, 0.2)' : 'rgba(255, 255, 255, 0.1)',
+                boxShadow: selectedCity === key ? '0 8px 25px rgba(255, 215, 0, 0.25)' : 'none'
+              }}
+              onMouseEnter={(e) => {
+                if (selectedCity !== key) {
+                  e.currentTarget.style.borderColor = 'rgba(255, 215, 0, 0.5)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (selectedCity !== key) {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                }
+              }}
             >
               <div className="flex items-center justify-center mb-1">
                 <h3 className="text-sm font-bold text-white">{city.name}</h3>
                 <ExternalLink 
-                  className="h-3 w-3 text-purple-400 cursor-pointer hover:text-purple-300 ml-1"
+                  className="h-3 w-3 cursor-pointer ml-1 transition-colors duration-200"
+                  style={{color: '#87CEEB'}}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#FFD700'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#87CEEB'}
                   onClick={(e) => {
                     e.stopPropagation();
                     window.open(city.driveUrl, '_blank');
@@ -564,11 +590,23 @@ const testBusinessVoice = () => {
           {/* Action Buttons */}
           <button
             onClick={() => window.open(cityData[selectedCity as keyof typeof cityData].driveUrl, '_blank')}
-            className="p-3 rounded-xl border-2 border-green-600 bg-green-500/20 hover:border-green-400 hover:bg-green-500/30 transition-all duration-300 cursor-pointer text-center"
+            className="p-3 rounded-xl border-2 transition-all duration-300 cursor-pointer text-center"
+            style={{
+              borderColor: 'rgba(135, 206, 235, 0.5)',
+              backgroundColor: 'rgba(135, 206, 235, 0.1)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#87CEEB';
+              e.currentTarget.style.backgroundColor = 'rgba(135, 206, 235, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(135, 206, 235, 0.5)';
+              e.currentTarget.style.backgroundColor = 'rgba(135, 206, 235, 0.1)';
+            }}
           >
             <div className="flex items-center justify-center mb-1">
               <h3 className="text-sm font-bold text-white">View Media</h3>
-              <Image className="h-3 w-3 text-green-400 ml-1" />
+              <Image className="h-3 w-3 ml-1" style={{color: '#87CEEB'}} />
             </div>
             <p className="text-gray-300 text-xs">Files & images</p>
           </button>
@@ -576,11 +614,27 @@ const testBusinessVoice = () => {
           <button
             onClick={() => handleQuery(`Give me a comprehensive overview of the ${cityData[selectedCity as keyof typeof cityData].name} project`)}
             disabled={isLoading}
-            className="p-3 rounded-xl border-2 border-blue-600 bg-blue-500/20 hover:border-blue-400 hover:bg-blue-500/30 transition-all duration-300 cursor-pointer disabled:opacity-50 text-center"
+            className="p-3 rounded-xl border-2 transition-all duration-300 cursor-pointer disabled:opacity-50 text-center"
+            style={{
+              borderColor: 'rgba(255, 215, 0, 0.5)',
+              backgroundColor: 'rgba(255, 215, 0, 0.1)'
+            }}
+            onMouseEnter={(e) => {
+              if (!isLoading) {
+                e.currentTarget.style.borderColor = '#FFD700';
+                e.currentTarget.style.backgroundColor = 'rgba(255, 215, 0, 0.2)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isLoading) {
+                e.currentTarget.style.borderColor = 'rgba(255, 215, 0, 0.5)';
+                e.currentTarget.style.backgroundColor = 'rgba(255, 215, 0, 0.1)';
+              }
+            }}
           >
             <div className="flex items-center justify-center mb-1">
               <h3 className="text-sm font-bold text-white">Get Overview</h3>
-              <TrendingUp className="h-3 w-3 text-blue-400 ml-1" />
+              <TrendingUp className="h-3 w-3 ml-1" style={{color: '#FFD700'}} />
             </div>
             <p className="text-gray-300 text-xs">Complete analysis</p>
           </button>
@@ -595,13 +649,40 @@ const testBusinessVoice = () => {
               onChange={(e) => setQuery(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder={`Ask about the ${cityData[selectedCity as keyof typeof cityData].name} project...`}
-              className="w-full px-4 py-4 pr-16 bg-white/10 backdrop-blur-sm border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-sm"
+              className="w-full px-4 py-4 pr-16 backdrop-blur-sm rounded-xl text-white placeholder-gray-400 focus:outline-none transition-all duration-300 text-sm"
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 215, 0, 0.3)',
+                focusRingColor: '#FFD700'
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = '#FFD700';
+                e.currentTarget.style.boxShadow = '0 0 0 2px rgba(255, 215, 0, 0.2)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(255, 215, 0, 0.3)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
               disabled={isLoading}
             />
             <button
               onClick={() => handleQuery(query)}
               disabled={isLoading || !query.trim()}
-              className="absolute right-1 top-1/2 transform -translate-y-1/2 px-3 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-xs"
+              className="absolute right-1 top-1/2 transform -translate-y-1/2 px-3 py-2 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-xs"
+              style={{
+                background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                border: '1px solid #FFD700'
+              }}
+              onMouseEnter={(e) => {
+                if (!isLoading && query.trim()) {
+                  e.currentTarget.style.background = 'rgba(255, 215, 0, 0.3)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isLoading && query.trim()) {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+                }
+              }}
             >
               {isLoading ? 'Ask' : 'AI'}
             </button>
@@ -617,7 +698,19 @@ const testBusinessVoice = () => {
                 <button
                   key={index}
                   onClick={() => handleQuery(suggestion)}
-                  className="text-sm px-3 py-2 bg-white/5 hover:bg-white/10 border border-gray-600 hover:border-purple-400 rounded-lg text-gray-300 hover:text-white transition-all duration-200 text-center leading-tight h-10 flex items-center justify-center"
+                  className="text-sm px-3 py-2 rounded-lg text-gray-300 hover:text-white transition-all duration-200 text-center leading-tight h-10 flex items-center justify-center"
+                  style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 215, 0, 0.2)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 215, 0, 0.1)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 215, 0, 0.5)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 215, 0, 0.2)';
+                  }}
                 >
                   <span className="line-clamp-2 text-xs">{suggestion}</span>
                 </button>
@@ -629,11 +722,14 @@ const testBusinessVoice = () => {
         {/* AI Response Display with Pagination */}
         {response && !isLoading && (
           <div className="mb-6">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-600 p-6">
+            <div className="backdrop-blur-sm rounded-xl p-6" style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 215, 0, 0.3)'
+            }}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-purple-400" />
+                    <Sparkles className="h-5 w-5" style={{color: '#FFD700'}} />
                     AI Response
                   </h3>
                   {paginatedResponse.length > 1 && (
@@ -645,13 +741,37 @@ const testBusinessVoice = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => speakResponse(response)}
-                    className="flex items-center gap-2 px-3 py-1 bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 hover:border-green-400 rounded-lg text-green-200 hover:text-white transition-all duration-200"
+                    className="flex items-center gap-2 px-3 py-1 rounded-lg text-white transition-all duration-200"
+                    style={{
+                      backgroundColor: 'rgba(135, 206, 235, 0.2)',
+                      border: '1px solid rgba(135, 206, 235, 0.5)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(135, 206, 235, 0.3)';
+                      e.currentTarget.style.borderColor = '#87CEEB';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(135, 206, 235, 0.2)';
+                      e.currentTarget.style.borderColor = 'rgba(135, 206, 235, 0.5)';
+                    }}
                   >
                     <span className="text-sm">🔊 Speak</span>
                   </button>
                   <button
                     onClick={() => copyToClipboard(response)}
-                    className="flex items-center gap-2 px-3 py-1 bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 hover:border-purple-400 rounded-lg text-purple-200 hover:text-white transition-all duration-200"
+                    className="flex items-center gap-2 px-3 py-1 rounded-lg text-white transition-all duration-200"
+                    style={{
+                      backgroundColor: 'rgba(255, 215, 0, 0.2)',
+                      border: '1px solid rgba(255, 215, 0, 0.5)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 215, 0, 0.3)';
+                      e.currentTarget.style.borderColor = '#FFD700';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 215, 0, 0.2)';
+                      e.currentTarget.style.borderColor = 'rgba(255, 215, 0, 0.5)';
+                    }}
                   >
                     <Copy className="h-4 w-4" />
                     <span className="text-sm">Copy</span>
@@ -678,7 +798,23 @@ const testBusinessVoice = () => {
                   <button
                     onClick={prevPage}
                     disabled={currentPage === 1}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-600/20 hover:bg-gray-600/30 border border-gray-500 rounded-lg text-gray-300 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-300 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                    style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      border: '1px solid rgba(255, 215, 0, 0.3)'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (currentPage !== 1) {
+                        e.currentTarget.style.backgroundColor = 'rgba(255, 215, 0, 0.2)';
+                        e.currentTarget.style.borderColor = 'rgba(255, 215, 0, 0.5)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (currentPage !== 1) {
+                        e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                        e.currentTarget.style.borderColor = 'rgba(255, 215, 0, 0.3)';
+                      }
+                    }}
                   >
                     ← Previous
                   </button>
@@ -703,11 +839,23 @@ const testBusinessVoice = () => {
                         <button
                           key={pageNum}
                           onClick={() => goToPage(pageNum)}
-                          className={`w-8 h-8 rounded-lg transition-all duration-200 ${
-                            currentPage === pageNum
-                              ? 'bg-purple-600 text-white'
-                              : 'bg-gray-600/20 text-gray-300 hover:bg-gray-600/30 hover:text-white'
-                          }`}
+                          className="w-8 h-8 rounded-lg transition-all duration-200 text-white"
+                          style={{
+                            backgroundColor: currentPage === pageNum 
+                              ? '#FFD700' 
+                              : 'rgba(255, 255, 255, 0.1)',
+                            color: currentPage === pageNum ? '#1e3c72' : '#fff'
+                          }}
+                          onMouseEnter={(e) => {
+                            if (currentPage !== pageNum) {
+                              e.currentTarget.style.backgroundColor = 'rgba(255, 215, 0, 0.3)';
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (currentPage !== pageNum) {
+                              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                            }
+                          }}
                         >
                           {pageNum}
                         </button>
@@ -730,7 +878,23 @@ const testBusinessVoice = () => {
                   <button
                     onClick={nextPage}
                     disabled={currentPage === paginatedResponse.length}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-600/20 hover:bg-gray-600/30 border border-gray-500 rounded-lg text-gray-300 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-300 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                    style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      border: '1px solid rgba(255, 215, 0, 0.3)'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (currentPage !== paginatedResponse.length) {
+                        e.currentTarget.style.backgroundColor = 'rgba(255, 215, 0, 0.2)';
+                        e.currentTarget.style.borderColor = 'rgba(255, 215, 0, 0.5)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (currentPage !== paginatedResponse.length) {
+                        e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                        e.currentTarget.style.borderColor = 'rgba(255, 215, 0, 0.3)';
+                      }
+                    }}
                   >
                     Next →
                   </button>
@@ -770,7 +934,23 @@ const testBusinessVoice = () => {
                   key={index}
                   onClick={() => handleQuery(suggestion)}
                   disabled={isLoading}
-                  className="text-sm px-4 py-3 bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 hover:border-purple-400 rounded-lg text-purple-200 hover:text-white hover:bg-gradient-to-r hover:from-purple-600/30 hover:to-blue-600/30 transition-all duration-200 disabled:opacity-50 text-left leading-tight min-h-[50px] flex items-center"
+                  className="text-sm px-4 py-3 rounded-lg text-white hover:text-white transition-all duration-200 disabled:opacity-50 text-left leading-tight min-h-[50px] flex items-center"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(135, 206, 235, 0.2), rgba(255, 215, 0, 0.1))',
+                    border: '1px solid rgba(135, 206, 235, 0.3)'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isLoading) {
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(135, 206, 235, 0.3), rgba(255, 215, 0, 0.2))';
+                      e.currentTarget.style.borderColor = '#87CEEB';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isLoading) {
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(135, 206, 235, 0.2), rgba(255, 215, 0, 0.1))';
+                      e.currentTarget.style.borderColor = 'rgba(135, 206, 235, 0.3)';
+                    }
+                  }}
                 >
                   <span className="line-clamp-2">{suggestion}</span>
                 </button>
@@ -781,9 +961,12 @@ const testBusinessVoice = () => {
 
         {/* Loading Indicator with Progress */}
         {isLoading && (
-          <div className="mb-6 p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-gray-600">
+          <div className="mb-6 p-4 backdrop-blur-sm rounded-xl" style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 215, 0, 0.3)'
+          }}>
             <div className="flex items-center gap-3">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-400"></div>
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2" style={{borderColor: '#FFD700'}}></div>
               <div className="text-white">
                 <p className="font-medium">AI is analyzing {cityData[selectedCity as keyof typeof cityData].name} documents...</p>
                 <p className="text-sm text-gray-400">Processing files and generating insights</p>
