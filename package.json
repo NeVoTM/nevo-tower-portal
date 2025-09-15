@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.61.0",
     "@google/generative-ai": "^0.24.1",
     "jspdf": "^3.0.2",
     "lucide-react": "^0.542.0",

@@ -1,4 +1,4 @@
-// app/api/query/route.ts - Speed Optimized Version
+// app/api/query/route.ts - TypeScript error fixed
 
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -13,7 +13,7 @@ const model = genAI.getGenerativeModel({
     temperature: 0.7,
     topK: 40,
     topP: 0.8,
-    maxOutputTokens: 1500, // Reduced for faster responses
+    maxOutputTokens: 1500,
   }
 });
 
@@ -50,7 +50,7 @@ async function preloadCityData(city: string) {
     ...allFiles.filter(f => f.endsWith('.docx') || f.endsWith('.xlsx')),
   ];
 
-  const filePaths = filePriority.slice(0, 8).map(file => path.join(cityPath, file)); // Limit to 8 most important files
+  const filePaths = filePriority.slice(0, 8).map(file => path.join(cityPath, file));
   const fileData = await parseFiles(filePaths);
 
   // Create a summary for faster AI processing
@@ -59,16 +59,22 @@ async function preloadCityData(city: string) {
   for (const [filename, content] of Object.entries(fileData)) {
     summary += `=== ${filename} ===\n`;
     
-    if (content && typeof content === 'object' && content.content) {
-      // Word document - take first 300 chars
-      summary += content.content.substring(0, 300) + '...\n';
+    // Type-safe content handling
+    if (content && typeof content === 'object') {
+      const contentObj = content as any;
+      if (contentObj.content) {
+        // Word document - take first 300 chars
+        summary += contentObj.content.substring(0, 300) + '...\n';
+      } else {
+        // Excel/JSON - stringify but limit
+        const jsonStr = JSON.stringify(content, null, 1);
+        summary += jsonStr.substring(0, 400) + '...\n';
+      }
     } else if (typeof content === 'string') {
       // CSV/text - take first 500 chars
       summary += content.substring(0, 500) + '...\n';
     } else {
-      // Excel/JSON - stringify but limit
-      const jsonStr = JSON.stringify(content, null, 1);
-      summary += jsonStr.substring(0, 400) + '...\n';
+      summary += JSON.stringify(content, null, 1).substring(0, 400) + '...\n';
     }
     summary += '\n';
   }
@@ -108,10 +114,15 @@ export async function POST(request: NextRequest) {
 
     let promptData;
     if (isDetailedQuery) {
-      // Full data for detailed queries
+      // Full data for detailed queries - with proper type handling
       promptData = Object.entries(cityData.data).map(([filename, content]) => {
-        if (content && typeof content === 'object' && content.content) {
-          return `${filename}: ${content.content}`;
+        if (content && typeof content === 'object') {
+          const contentObj = content as any;
+          if (contentObj.content) {
+            return `${filename}: ${contentObj.content}`;
+          } else {
+            return `${filename}: ${JSON.stringify(content, null, 1)}`;
+          }
         } else if (typeof content === 'string') {
           return `${filename}: ${content}`;
         } else {
@@ -132,9 +143,11 @@ DATA:
 ${promptData}
 
 INSTRUCTIONS:
-- Provide a direct, focused answer
-- Cite specific files when referencing data
-- Keep response concise but informative
+- Provide a direct, focused answer based on the available data
+- Do NOT include file citations or source references in your response
+- Present information naturally without citing specific documents
+- Keep response concise but informative and professional
+- Focus on the actual project details and insights
 - If you need more detail, ask for a "detailed" or "comprehensive" query
 
 Answer:`;
