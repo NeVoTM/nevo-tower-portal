@@ -652,8 +652,7 @@ const testBusinessVoice = () => {
               className="w-full px-4 py-4 pr-16 backdrop-blur-sm rounded-xl text-white placeholder-gray-400 focus:outline-none transition-all duration-300 text-sm"
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                border: '1px solid rgba(255, 215, 0, 0.3)',
-                focusRingColor: '#FFD700'
+                border: '1px solid rgba(255, 215, 0, 0.3)'
               }}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = '#FFD700';
