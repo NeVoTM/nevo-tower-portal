@@ -1,5 +1,7 @@
 {
+  "name": "mmm-ai-agent-portal",
+  "framework": "nextjs",
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "framework": "nextjs"
+  "installCommand": "npm install"
 }
