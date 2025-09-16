@@ -22,24 +22,40 @@ console.log('📊 Fetching data from Google Sheets...');
 
 function fetchGoogleSheetsData() {
     return new Promise((resolve, reject) => {
-        https.get(SHEETS_URL, (response) => {
-            let data = '';
+        function makeRequest(url, redirectCount = 0) {
+            if (redirectCount > 3) {
+                reject(new Error('Too many redirects'));
+                return;
+            }
             
-            response.on('data', (chunk) => {
-                data += chunk;
-            });
-            
-            response.on('end', () => {
-                if (response.statusCode === 200) {
-                    console.log('✅ Successfully fetched data from Google Sheets');
-                    resolve(data);
-                } else {
-                    reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
+            https.get(url, (response) => {
+                let data = '';
+                
+                // Handle redirects
+                if (response.statusCode === 301 || response.statusCode === 302 || response.statusCode === 307) {
+                    console.log(`🔄 Following redirect (${response.statusCode}) to: ${response.headers.location}`);
+                    makeRequest(response.headers.location, redirectCount + 1);
+                    return;
                 }
+                
+                response.on('data', (chunk) => {
+                    data += chunk;
+                });
+                
+                response.on('end', () => {
+                    if (response.statusCode === 200) {
+                        console.log('✅ Successfully fetched data from Google Sheets');
+                        resolve(data);
+                    } else {
+                        reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
+                    }
+                });
+            }).on('error', (err) => {
+                reject(err);
             });
-        }).on('error', (err) => {
-            reject(err);
-        });
+        }
+        
+        makeRequest(SHEETS_URL);
     });
 }
 
