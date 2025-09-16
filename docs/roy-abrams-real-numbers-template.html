@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMM vs Traditional - Roy's Actual 1580 Kennedy Causeway Numbers</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255,215,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .project-info {
+            background: rgba(76,205,196,0.1);
+            border: 2px solid rgba(76,205,196,0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 30px 0;
+            backdrop-filter: blur(10px);
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .comparison-table th {
+            background: rgba(255,215,0,0.3);
+            color: #FFD700;
+            font-weight: bold;
+        }
+        .traditional { color: #FF6B6B; font-weight: bold; }
+        .mmm { color: #4ECDC4; font-weight: bold; }
+        .savings { color: #90EE90; font-weight: bold; }
+        .category { color: #FFD700; font-weight: bold; }
+        .totals-row { background: rgba(255,215,0,0.2) !important; font-weight: bold; }
+        .blank-field { 
+            background: rgba(255,255,0,0.2); 
+            color: #FFD700;
+            font-style: italic;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .summary-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid rgba(255,215,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+        .summary-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #4ECDC4;
+            margin: 10px 0;
+        }
+        .summary-label {
+            color: #FFD700;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        .notes {
+            background: rgba(255,107,107,0.1);
+            border: 2px solid rgba(255,107,107,0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏗️ MMM vs Traditional Development Model</h1>
+            <h2>Roy's Actual Project: 1580 Kennedy Causeway</h2>
+            <p>Real Numbers Analysis - Traditional vs Miami Makers Model</p>
+        </div>
+        
+        <div class="project-info">
+            <h3 style="color: #FFD700; margin-bottom: 15px;">📋 Project Details (From Roy's Files)</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
+                <div>
+                    <strong>Project:</strong> 1580 Kennedy Causeway, North Bay Village<br>
+                    <strong>Total Units:</strong> 147 units (48 condos + 99 condo/hotel)<br>
+                    <strong>Building:</strong> 24 stories, 240 ft height<br>
+                    <strong>Average Unit Size:</strong> 1,520 sq ft (condos)
+                </div>
+                <div>
+                    <strong>Total Revenue Projection:</strong> $193,035,163<br>
+                    <strong>Total Development Cost:</strong> $158,856,137<br>
+                    <strong>Project Profit:</strong> $34,179,026 (Traditional Model)<br>
+                    <strong>ROI:</strong> 21.5% (Traditional Model)
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-label">💰 Traditional Total Cost</div>
+                <div class="summary-value">$158.9M</div>
+                <div>Roy's actual project budget</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">🏗️ MMM Cash Required</div>
+                <div class="summary-value blank-field">$___M</div>
+                <div>To be calculated with MMM model</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">💵 Cash Savings</div>
+                <div class="summary-value blank-field">$___M</div>
+                <div>Preservation through partnerships</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">🚀 Total MMM Benefit</div>
+                <div class="summary-value blank-field">$___M</div>
+                <div>Cash savings + equity value</div>
+            </div>
+        </div>
+        
+        <div style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; border: 2px solid rgba(255,215,0,0.3);">
+            <h3 style="color: #FFD700; margin-bottom: 20px;">📊 Detailed Cost Breakdown - Traditional vs MMM</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Traditional Cost (Roy's Actual)</th>
+                        <th>MMM Cash Cost</th>
+                        <th>MMM Equity %</th>
+                        <th>Cash Savings</th>
+                        <th>Equity Value</th>
+                        <th>Net Benefit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- HARD COSTS -->
+                    <tr style="background: rgba(255,215,0,0.1);">
+                        <td class="category">HARD COSTS</td>
+                        <td class="traditional">$91,854,000</td>
+                        <td class="mmm blank-field">$___</td>
+                        <td class="blank-field">___%</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                    </tr>
+                    <tr>
+                        <td>Construction Management</td>
+                        <td class="traditional">$1,837,080</td>
+                        <td class="mmm blank-field">$___</td>
+                        <td class="blank-field">___%</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                    </tr>
+                    
+                    <!-- SOFT COSTS -->
+                    <tr style="background: rgba(255,215,0,0.1);">
+                        <td class="category">SOFT COSTS</td>
+                        <td class="traditional">$38,878,121</td>
+                        <td class="mmm blank-field">$___</td>
+                        <td class="blank-field">___%</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                    </tr>
+                    <tr>
+                        <td>Architecture & Design</td>
+                        <td class="traditional">$1,515,591</td>
+                        <td class="mmm blank-field">$___</td>
+                        <td class="blank-field">___%</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                    </tr>
+                    <tr>
+                        <td>Engineering (Civil, MEP, Structural)</td>
+                        <td class="traditional">$642,978</td>
+                        <td class="mmm blank-field">$___</td>
+                        <td class="blank-field">___%</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                    </tr>
+                    <tr>
+                        <td>Legal Services</td>
+                        <td class="traditional">$593,043</td>
+                        <td class="mmm blank-field">$___</td>
+                        <td class="blank-field">___%</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                    </tr>
+                    <tr>
+                        <td>Marketing & Sales</td>
+                        <td class="traditional">$2,068,735</td>
+                        <td class="mmm blank-field">$___</td>
+                        <td class="blank-field">___%</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                    </tr>
+                    <tr>
+                        <td>Municipal Impacts & Fees</td>
+                        <td class="traditional">$5,108,620</td>
+                        <td class="mmm blank-field">$___</td>
+                        <td class="blank-field">___%</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                    </tr>
+                    <tr>
+                        <td>Development Fee</td>
+                        <td class="traditional">$4,539,316</td>
+                        <td class="mmm blank-field">$___</td>
+                        <td class="blank-field">___%</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                    </tr>
+                    <tr>
+                        <td>Commissions (In-House & Outside)</td>
+                        <td class="traditional">$17,373,165</td>
+                        <td class="mmm blank-field">$___</td>
+                        <td class="blank-field">___%</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                    </tr>
+                    
+                    <!-- ACQUISITION & FINANCING -->
+                    <tr style="background: rgba(255,215,0,0.1);">
+                        <td class="category">ACQUISITION & FINANCING</td>
+                        <td class="traditional">$28,124,016</td>
+                        <td class="mmm blank-field">$___</td>
+                        <td class="blank-field">___%</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                    </tr>
+                    <tr>
+                        <td>Land & Acquisition</td>
+                        <td class="traditional">$11,248,000</td>
+                        <td class="mmm">$11,248,000</td>
+                        <td>0%</td>
+                        <td>$0</td>
+                        <td>$0</td>
+                        <td>$0</td>
+                    </tr>
+                    <tr>
+                        <td>Financial Costs & Interest</td>
+                        <td class="traditional">$16,876,016</td>
+                        <td class="mmm blank-field">$___</td>
+                        <td class="blank-field">___%</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                        <td class="blank-field">$___</td>
+                    </tr>
+                    
+                    <!-- TOTALS -->
+                    <tr class="totals-row">
+                        <td class="category"><strong>TOTAL PROJECT COSTS</strong></td>
+                        <td class="traditional"><strong>$158,856,137</strong></td>
+                        <td class="mmm blank-field"><strong>$___</strong></td>
+                        <td class="blank-field"><strong>___%</strong></td>
+                        <td class="savings blank-field"><strong>$___</strong></td>
+                        <td class="blank-field"><strong>$___</strong></td>
+                        <td class="savings blank-field"><strong>$___</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="notes">
+            <h3 style="color: #FFD700; margin-bottom: 15px;">📝 Instructions for Completion</h3>
+            <p><strong>Yellow highlighted fields</strong> need to be filled in with MMM model calculations:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>MMM Cash Cost:</strong> Reduced cash requirements per category</li>
+                <li><strong>MMM Equity %:</strong> Equity percentage offered to service partners</li>
+                <li><strong>Cash Savings:</strong> Traditional cost minus MMM cash cost</li>
+                <li><strong>Equity Value:</strong> Calculated equity value based on project value</li>
+                <li><strong>Net Benefit:</strong> Cash savings plus equity value</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>Key Project Metrics to Calculate:</strong></p>
+            <ul style="margin-left: 20px; margin-top: 5px;">
+                <li>Total cash reduction percentage</li>
+                <li>Timeline acceleration (months faster)</li>
+                <li>IRR improvement (traditional vs MMM)</li>
+                <li>Risk reduction percentage</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px; background: rgba(76,205,196,0.1); padding: 20px; border-radius: 15px;">
+            <h3 style="color: #4ECDC4; margin-bottom: 10px;">🎯 Expected MMM Results</h3>
+            <p>Based on proven MMM model, this $158.9M project should achieve:</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                <div><strong>Cash Reduction:</strong> <span class="blank-field">65-70%</span></div>
+                <div><strong>Timeline:</strong> <span class="blank-field">18+ months faster</span></div>
+                <div><strong>IRR Improvement:</strong> <span class="blank-field">+8-10 points</span></div>
+                <div><strong>Risk Reduction:</strong> <span class="blank-field">60%+</span></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
