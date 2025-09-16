@@ -396,6 +396,40 @@
             border: 2px solid rgba(76,205,196,0.3);
         }
         
+        /* Launch AI Agent Button */
+        .launch-ai-button {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px;
+            transition: all 0.3s ease;
+            border: 3px solid rgba(255,107,107,0.3);
+            box-shadow: 0 8px 20px rgba(255,107,107,0.3);
+            text-align: center;
+        }
+        
+        .launch-ai-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(255,107,107,0.4);
+            background: linear-gradient(45deg, #FF8E8E, #FF6B6B);
+        }
+        
+        .ai-button-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255,107,107,0.1);
+            border-radius: 20px;
+            border: 2px solid rgba(255,107,107,0.2);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .nav-tabs {
@@ -443,6 +477,7 @@
         <button class="tab-btn" onclick="showTab('cash-partners')">Cash Partners</button>
         <button class="tab-btn" onclick="showTab('service-partners')">Service Partners</button>
         <button class="tab-btn" onclick="showTab('roy-abrams')">Roy Abrams Focus</button>
+        <a href="https://partnersnotinvestors.com" target="_blank" class="tab-btn" style="background: linear-gradient(45deg, #FF6B6B, #FF8E8E); text-decoration: none;">🤖 AI Agent</a>
     </div>
 
     <div class="container">
@@ -454,6 +489,14 @@
                 
                 <div class="live-data-badge">
                     🔴 LIVE DATA: Connected to real-time Google Sheets financial model
+                </div>
+                
+                <div class="ai-button-container">
+                    <h3 style="color: #FFD700; margin-bottom: 15px;">🤖 Interactive AI Assistant</h3>
+                    <p style="margin-bottom: 20px; opacity: 0.9;">Ask questions about the project, get real-time analysis, and explore the MMM model</p>
+                    <a href="https://partnersnotinvestors.com" target="_blank" class="launch-ai-button">
+                        🚀 Launch AI Agent
+                    </a>
                 </div>
                 
                 <div class="stats-grid">
