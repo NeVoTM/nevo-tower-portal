@@ -14,7 +14,7 @@
     
     <script>
         // AUTO-REFRESH SYSTEM - Forces fresh content every time
-        const VERSION = '20250916_224200'; // Update this timestamp when you make changes
+        const VERSION = '20250916_225400'; // Update this timestamp when you make changes
         
         // Check if this is the latest version
         if (localStorage.getItem('mmm_version') !== VERSION) {
@@ -205,6 +205,21 @@
             font-size: 1.3em;
         }
         
+        .highlight-box {
+            background: rgba(255,215,0,0.1);
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .highlight-title {
+            font-size: 1.4em;
+            color: #FFD700;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .nav-tabs {
@@ -234,7 +249,7 @@
 </head>
 <body>
     <!-- Version Indicator for Debugging -->
-    <div class="version-indicator">v2.8 - 20250916_224200</div>
+    <div class="version-indicator">v2.9 - 20250916_225400</div>
     
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
@@ -347,51 +362,69 @@
                 <p class="section-subtitle">"Partners Not Paychecks, Partners Not Investors" - Revolutionary Real Estate Development</p>
                 
                 <div class="narrative-section">
-                    <div class="narrative-title">🎯 Key MMM Advantages</div>
+                    <div class="narrative-title">🤝 Partners Not Investors – Partners Not Paychecks</div>
                     <div class="narrative-content">
-                        <strong>Financial Advantages:</strong>
+                        <strong>This model transforms the way people engage in projects.</strong>
+                        <br><br>
                         <ul class="feature-list" style="margin: 20px 0;">
-                            <li><strong>20% Cash Savings:</strong> Significant capital preservation for portfolio expansion vs traditional model</li>
-                            <li><strong>28%+ IRR Target:</strong> Enhanced returns vs traditional 18-22% development returns</li>
-                            <li><strong>18 Months Faster:</strong> Accelerated timeline reduces market exposure risk</li>
-                            <li><strong>Multiple Revenue Streams:</strong> Project returns + equity appreciation + licensing opportunities</li>
-                            <li><strong>Portfolio Multiplication:</strong> Saved capital enables simultaneous multiple projects</li>
+                            <li><strong>Core Idea:</strong> People contribute skills, services, capital, or time in return for a direct stake in success</li>
+                            <li><strong>Partners Not Investors:</strong> Instead of acting like outside investors waiting for returns, contributors are active partners who shape the outcome</li>
+                            <li><strong>Partners Not Paychecks:</strong> Instead of wages or fixed salaries, participants earn through ownership, profit-sharing, or co-ownership</li>
+                            <li><strong>"Skin in the Game" Multiplier:</strong> Partners with equity stakes work 2x harder and smarter. MEP professionals shift from "just doing a job" to protecting their investment—delivering higher quality, faster timelines, and proactive solutions</li>
                         </ul>
                         
-                        <strong>Legal & Regulatory Advantages:</strong>
+                        <strong>Benefits:</strong>
                         <ul class="feature-list" style="margin: 20px 0;">
-                            <li><strong>Zero SEC Requirements:</strong> Completely eliminates federal securities regulations</li>
-                            <li><strong>Howey Test Compliance:</strong> Active partners, not passive investors</li>
-                            <li><strong>$200K+ Legal Savings:</strong> Avoids SEC compliance and registration costs</li>
-                            <li><strong>Simplified Structure:</strong> No complex investment regulations or reporting</li>
-                        </ul>
-                        
-                        <strong>Operational Advantages:</strong>
-                        <ul class="feature-list" style="margin: 20px 0;">
-                            <li><strong>2x+ Efficiency Gains:</strong> "Skin in the game" motivation from equity ownership</li>
-                            <li><strong>Superior Quality Control:</strong> Partners protect their investment through excellence</li>
-                            <li><strong>Risk Distribution:</strong> Shared across 8-12 equity partners vs single developer</li>
-                            <li><strong>Expert Due Diligence:</strong> Multiple professional opinions validate decisions</li>
-                            <li><strong>Proactive Problem Solving:</strong> Partners prevent issues that hurt their equity</li>
-                        </ul>
-                        
-                        <strong>Strategic Advantages:</strong>
-                        <ul class="feature-list" style="margin: 20px 0;">
-                            <li><strong>Network Effects:</strong> Partner relationships create continuous opportunities</li>
-                            <li><strong>Industry Innovation:</strong> First-mover advantage in partnership development</li>
-                            <li><strong>Competitive Barriers:</strong> Complex relationships difficult for competitors to replicate</li>
-                            <li><strong>Scalability:</strong> Model replicates across multiple markets and projects</li>
-                        </ul>
-                        
-                        <strong>Partner-Specific Advantages:</strong>
-                        <ul class="feature-list" style="margin: 20px 0;">
-                            <li><strong>Career Transformation:</strong> MEP professionals move from repairs to $180M projects</li>
-                            <li><strong>Wealth Building:</strong> Equity stakes create long-term asset accumulation</li>
-                            <li><strong>Professional Status:</strong> Industry recognition and prestigious portfolio credentials</li>
-                            <li><strong>Priority Access:</strong> Partners get first opportunities on future projects</li>
-                            <li><strong>Active Governance:</strong> Decision-making rights through digital voting system</li>
+                            <li>Aligns everyone's interests with project success</li>
+                            <li>Encourages innovation, motivation, and accountability</li>
+                            <li>Attracts top talent while lowering fixed costs</li>
+                            <li>Works through profit-sharing, partnerships, joint ventures, or cooperative ownership</li>
                         </ul>
                     </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🏗️ Miami Makers Model Benefits</div>
+                    <div class="narrative-content">
+                        <strong>A collaborative development framework where Partners Not Investors – Partners Not Paychecks is at the core:</strong>
+                        <br><br>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>Reduced Cash Needs:</strong> Partners contribute expertise, services, or materials instead of heavy cash</li>
+                            <li><strong>Profit Sharing:</strong> All partners share profits proportionally</li>
+                            <li><strong>Preferred Return:</strong> Early partners receive an 8% annualized preferred return</li>
+                            <li><strong>Faster Timelines:</strong> Without lenders, projects move 6–12 months quicker</li>
+                            <li><strong>Lower Construction Costs:</strong> Up to 20% savings per square foot</li>
+                            <li><strong>Flexible Profit Distribution:</strong> Quarterly payouts can begin at Month 18</li>
+                            <li><strong>Partner Perks:</strong> Discounts on units, depreciation transfers, and STR (short-term rental) opportunities</li>
+                            <li><strong>Self-Financing Options:</strong> Partners can fund mortgages, extend returns, and use collateralized loans</li>
+                            <li><strong>Market Timing:</strong> Freedom to sell only when conditions are best</li>
+                            <li><strong>Bridge Financing Advantage:</strong> Strong equity means favorable terms if short-term financing is needed</li>
+                            <li><strong>Residual Income:</strong> Partners may hold hospitality suites for long-term STR income</li>
+                            <li><strong>Tax Benefits:</strong> 1031 exchanges allow profits to roll into future projects tax-deferred</li>
+                            <li><strong>Scalability:</strong> Builds a repeatable partner ecosystem for future developments</li>
+                            <li><strong>Resilience:</strong> Idle cash can earn returns in safe investments while waiting for market timing</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🔋 Integration Strategy</div>
+                    <div class="narrative-content">
+                        <strong>The two models reinforce one another:</strong>
+                        <br><br>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>NeVo Tower MMM</strong> provides automation, efficiency, and growth capacity</li>
+                            <li><strong>Partners Not Investors – Partners Not Paychecks</strong> supplies motivated, invested human capital</li>
+                            <li><strong>Together they create synergy</strong>—strong systems paired with highly committed partners</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <div class="highlight-title">✅ Bottom Line</div>
+                    The integration of <strong>NeVo Tower</strong> with <strong>Partners Not Investors – Partners Not Paychecks</strong> builds a 
+                    <strong>debt-free, collaborative, and scalable development model</strong> that reduces costs, accelerates delivery, 
+                    and rewards all contributors directly.
                 </div>
                 
             </div>
