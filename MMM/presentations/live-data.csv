@@ -1,0 +1,15 @@
+Section,Category,Traditional Cost,MMM Cash Cost,Equity %,Cash Savings Formula,Equity Value Formula,Net Benefit Formula,Project Phase,Notes
+Core Services,Construction,4500000,1800000,10%,2700000,2025000,4725000,Development,General contracting and specialty construction
+Core Services,Architecture,350000,0,4%,350000,63000,413000,Pre-Development,Architectural design and planning services
+Core Services,Legal Services,180000,0,2%,180000,16200,196200,Pre-Development,Real estate law and regulatory compliance
+Core Services,Engineering,280000,100000,3%,180000,37800,217800,Development,Structural and MEP engineering services
+Development,Project Management,400000,150000,5%,250000,90000,340000,Development,Development oversight and coordination
+Development,Site Preparation,300000,120000,3%,180000,40500,220500,Development,Excavation and site development work
+Development,Permits & Approvals,120000,40000,2%,80000,10800,90800,Pre-Development,Municipal permits and regulatory approvals
+Marketing,Pre-Sales Marketing,220000,75000,3%,145000,29700,174700,Sales,Marketing campaigns and lead generation
+Marketing,Digital Marketing,80000,25000,2%,55000,7200,62200,Sales,Online marketing and social media
+Technology,Smart Home Systems,150000,0,2%,150000,13500,163500,Development,Home automation and IoT integration
+Technology,Security Systems,75000,0,2%,75000,6750,81750,Development,Security and monitoring systems
+Financial,Buyer Financing,200000,75000,3%,125000,27000,152000,Sales,Lending coordination and buyer support
+Financial,Development Financing,300000,100000,4%,200000,54000,254000,Pre-Development,Construction and development loans
+TOTALS,SUMMARY CALCULATIONS,7155000,2485000,3%,4670000,2421450,7091450,All Phases,Automatically calculated totals
