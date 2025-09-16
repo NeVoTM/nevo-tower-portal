@@ -2,9 +2,5 @@
   "framework": "nextjs",
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "installCommand": "npm install",
-  "domains": [
-    "partnersnotpaychecks.com",
-    "www.partnersnotpaychecks.com"
-  ]
+  "installCommand": "npm install"
 }

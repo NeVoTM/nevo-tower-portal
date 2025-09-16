@@ -1,20 +1,13 @@
 // app/api/query/route.ts - TypeScript error fixed
 
 import { NextRequest, NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import Anthropic from '@anthropic-ai/sdk';
 import { parseFiles } from '@/lib/parsers';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-const model = genAI.getGenerativeModel({ 
-  model: "gemini-1.5-flash",
-  generationConfig: {
-    temperature: 0.7,
-    topK: 40,
-    topP: 0.8,
-    maxOutputTokens: 1500,
-  }
+const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY!,
 });
 
 // Enhanced caching with pre-parsed data
@@ -154,8 +147,16 @@ Answer:`;
 
     console.log(`Processing ${city} query with ${isDetailedQuery ? 'full' : 'summary'} data`);
 
-    const result = await model.generateContent(prompt);
-    const aiResponse = result.response.text();
+    const result = await anthropic.messages.create({
+      model: 'claude-3-haiku-20240307',
+      max_tokens: 1500,
+      temperature: 0.7,
+      messages: [{
+        role: 'user',
+        content: prompt
+      }]
+    });
+    const aiResponse = result.content[0].type === 'text' ? result.content[0].text : 'No response generated';
 
     const processingTime = Date.now() - startTime;
     console.log(`Response time: ${processingTime}ms`);

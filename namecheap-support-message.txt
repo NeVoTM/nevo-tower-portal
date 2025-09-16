@@ -1,0 +1,101 @@
+Subject: URGENT: Domain partnernotinvestors.com Not Resolving - Registry/DNS Zone Issue
+
+Dear Namecheap Support Team,
+
+I am experiencing a critical DNS resolution issue with my domain partnernotinvestors.com that appears to be a registry-level or DNS zone creation problem. The domain is completely unresolvable on all public DNS servers despite being registered over 21 hours ago.
+
+DOMAIN DETAILS:
+- Domain: partnernotinvestors.com
+- Registration Status: Active (registered ~21 hours ago)
+- Hosting Provider: Vercel
+- Issue: Domain not resolving at DNS level
+
+TECHNICAL EVIDENCE:
+
+1. DNS RESOLUTION FAILURE:
+   All public DNS servers return "Non-existent domain":
+   
+   • Google DNS (8.8.8.8): "dns.google can't find partnernotinvestors.com: Non-existent domain"
+   • Local ISP DNS: "dns1.fl.atlanticbb.net can't find partnernotinvestors.com: Non-existent domain"
+   • Cloudflare DNS would show same result
+
+2. COMPARISON WITH WORKING DOMAIN:
+   My other domain partnersnotpaychecks.com resolves correctly:
+   
+   • partnersnotpaychecks.com → 76.76.21.21 ✅ (WORKS)
+   • partnernotinvestors.com → Non-existent domain ❌ (FAILS)
+
+3. VERCEL HOSTING REQUIREMENTS:
+   According to Vercel CLI domain inspection, the domain requires one of:
+   
+   Option A (Recommended): A record pointing to 76.76.21.21
+   Option B: Nameservers set to ns1.vercel-dns.com & ns2.vercel-dns.com
+   
+   Current Status: No nameservers are active/visible for this domain
+
+4. TIMELINE:
+   • Domain registered: September 15, 2025 at 15:43:38
+   • Current time: September 16, 2025 at 16:49:40
+   • Time elapsed: 25+ hours (well beyond normal propagation time)
+
+WHAT I'VE VERIFIED:
+✅ Domain shows as active in my Namecheap account
+✅ My other domain (partnersnotpaychecks.com) works perfectly with identical setup
+✅ Vercel hosting configuration is correct
+✅ DNS settings appear correct in Namecheap control panel (according to previous support)
+
+SUSPECTED ISSUE:
+This appears to be a registry-level problem where:
+• The domain zone may not be properly created/published at the registry
+• The domain's DNS records are not being propagated to root nameservers
+• There may be a registration or zone delegation issue
+
+URGENCY:
+This is blocking our production website deployment. The domain needs to resolve for SSL certificate issuance and site accessibility.
+
+REQUESTED ACTION:
+1. Please escalate this to your DNS/Registry technical team immediately
+2. Verify the domain zone is properly created and delegated at the registry level  
+3. Check that the domain's nameservers are properly configured and published
+4. Confirm the domain registration completed successfully in all registry systems
+
+I can provide additional technical logs or run specific diagnostic commands if needed.
+
+Thank you for your immediate attention to this critical issue.
+
+Best regards,
+[Your Name]
+Account: [Your Namecheap Username]
+Domain: partnernotinvestors.com
+
+TECHNICAL LOGS ATTACHMENT:
+=========================
+
+Windows PowerShell DNS Tests (September 16, 2025):
+
+PS> nslookup partnernotinvestors.com
+Server:  dns1.fl.atlanticbb.net
+Address:  173.44.120.36
+*** dns1.fl.atlanticbb.net can't find partnernotinvestors.com: Non-existent domain
+
+PS> nslookup partnernotinvestors.com 8.8.8.8
+Server:  dns.google  
+Address:  8.8.8.8
+*** dns.google can't find partnernotinvestors.com: Non-existent domain
+
+PS> nslookup partnersnotpaychecks.com (WORKING COMPARISON)
+Server:  dns1.fl.atlanticbb.net
+Address:  173.44.120.36
+Non-authoritative answer:
+Name:    partnersnotpaychecks.com
+Address:  76.76.21.21
+
+Vercel CLI Domain Inspection:
+PS> vercel domains inspect partnernotinvestors.com
+Domain partnernotinvestors.com found under elichalfinny-1080s-projects
+  Intended Nameservers: ns1.vercel-dns.com, ns2.vercel-dns.com
+  Current Nameservers: - (EMPTY) ☓
+  
+WARN! This Domain is not configured properly. To configure it you should either:
+  a) Set the following record on your DNS provider: `A partnernotinvestors.com 76.76.21.21`
+  b) Change your Domain's nameservers to the intended set detailed above.

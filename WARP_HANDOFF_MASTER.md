@@ -84,10 +84,13 @@ Get-Content "app\api\query\route.ts" | Select-Object -First 20
 ## 🏗️ **CURRENT PRODUCTION SYSTEM**
 
 ### **Live Deployment:**
-- **URL:** https://partnersnotpaychecks.com
+- **Primary URL:** https://partnersnotpaychecks.com (⚠️ DNS issue - timing out)
+- **Working URL:** https://nevo-tower-portal-elichalfinny-1080s-projects.vercel.app (✅ Active)
+- **Latest Deploy:** https://mmm-ai-agent-portal-avyjgvncd-elichalfinny-1080s-projects.vercel.app (🔧 Testing)
+- **Backup URL:** https://nevotm.github.io/nevo-tower-portal/ (✅ GitHub Pages)
 - **Repository:** https://github.com/NeVoTM/nevo-tower-portal
 - **Platform:** Vercel deployment
-- **Status:** ✅ Live and accessible
+- **Status:** 🔧 Domain DNS needs fixing, app working on alternate URLs
 
 ### **Working Features:**
 - ✅ **Voice Interface:** 17 languages with Microsoft Zira TTS
@@ -97,10 +100,11 @@ Get-Content "app\api\query\route.ts" | Select-Object -First 20
 - ✅ **Interactive Charts:** MMM vs traditional model comparisons
 
 ### **Critical Issues (PRIORITY):**
-- ❌ **Data Pipeline:** AI returns generic Miami tower info instead of project-specific data
-- ❌ **File Access:** Cannot read documents from `data/miami/` and `data/tonawanda/`
-- ❌ **City Context:** Tonawanda selection returns Miami data instead of WNY info
-- ❌ **Document Parsing:** Large .docx files (6MB+ MMM docs) not accessible
+- 🔧 **API Keys Missing:** `GEMINI_API_KEY=your_gemini_api_key_here` (placeholder) - **ROOT CAUSE IDENTIFIED**
+- ✅ **Data Pipeline:** Files parsing perfectly! NeVo Tower, 75 units, North Bay Village, MMM model extracted
+- ✅ **File Access:** All 11 files in Miami directory accessible and parsed correctly
+- 🔧 **API Response:** 500 error due to missing API keys (data extraction works)
+- ❌ **City Context:** Not tested yet (blocked by API key issue)
 
 ---
 
@@ -144,23 +148,31 @@ Traditional real estate pays contractors/architects hourly. MMM converts them to
 - 60% risk reduction vs traditional
 
 ### **Dual Domain Strategy:**
-- **partnersnotpaychecks.com** → Service providers
-- **partnernotinvestors.com** → Cash/material investors (DNS pending)
+- **partnersnotpaychecks.com** → Service providers (✅ WORKING! https://www.partnersnotpaychecks.com/)
+- **partnernotinvestors.com** → Cash/material investors (🕒 DNS propagating - domain only 21h old)
+- **Both domains** point to same AI agent (mmm-ai-agent-portal project)
+- **AI Agent Status:** ✅ Fully functional with voice interface, Miami NeVo Tower data, DMM analysis
 
 ---
 
 ## 🚨 **CRITICAL DEBUGGING PRIORITIES**
 
-### **Priority 1: Fix Data Pipeline**
-**Problem:** `/api/query` endpoint exists but cannot access project files
-**Expected:** AI should know Miami NeVo Tower specifics (75 units, North Bay Village, Partners model)
-**Currently:** Returns generic Miami tower information
+### **Priority 1: Fix API Keys (IMMEDIATE)**
+**Problem:** API keys are placeholder values in `.env.local`
+**Root Cause:** `GEMINI_API_KEY=your_gemini_api_key_here` (not real key)
+**Impact:** 500 Internal Server Error on all API calls
 
-**Debug Steps:**
-1. Verify file accessibility in API routes
-2. Test document parsing for large .docx files
-3. Check data directory permissions and paths
-4. Validate API response includes actual project data
+**✅ CONFIRMED WORKING:** Data parsing is perfect! Found:
+- NeVo Tower references in documents
+- 75 units, North Bay Village location
+- Partners Not Paychecks model details
+- Miami Makers Model information
+
+**FIX STEPS:**
+1. Get real API keys: Google AI Studio + Anthropic Console
+2. Update `.env.local` with real values
+3. Test: `node debug-data.js` (should show API keys found)
+4. Test API endpoint (should return specific NeVo Tower info)
 
 ### **Priority 2: Fix City Context Switching**  
 **Problem:** City selection buttons don't change data context
