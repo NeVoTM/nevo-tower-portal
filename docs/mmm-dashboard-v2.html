@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ANTI-CACHE HEADERS - Prevent browser caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <title>MMM Master Dashboard v2 - Complete Miami Makers Model Overview</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // AUTO-REFRESH SYSTEM - Forces fresh content every time
+        const VERSION = '20250916_213200'; // Update this timestamp when you make changes
+        
+        // Check if this is the latest version
+        if (localStorage.getItem('mmm_version') !== VERSION) {
+            localStorage.setItem('mmm_version', VERSION);
+            // Clear any cached data
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => caches.delete(name));
+                });
+            }
+        }
+        
+        // Force reload if coming from cache
+        if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+            const url = new URL(window.location);
+            url.searchParams.set('v', Date.now());
+            if (window.location.search !== url.search) {
+                window.location.href = url.toString();
+            }
+        }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Version indicator for debugging */
+        .version-indicator {
+            position: fixed;
+            top: 5px;
+            right: 5px;
+            background: rgba(255,215,0,0.8);
+            color: black;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 10px;
+            font-weight: bold;
+            z-index: 9999;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .tab-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #1e3c72;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .tab-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(45deg, #FFA500, #FFD700);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .tab-btn.active {
+            transform: scale(1.05);
+            background: linear-gradient(45deg, #1e3c72, #2a5298) !important;
+            color: #FFD700 !important;
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.6);
+            border: 2px solid #FFD700;
+            font-weight: 900;
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            min-height: 100vh;
+            padding: 100px 0 50px;
+            display: none;
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Content Sections */
+        .content-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 30px 0;
+            border: 2px solid rgba(255,215,0,0.2);
+        }
+        
+        .section-title {
+            font-size: 2.5em;
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            font-size: 1.3em;
+            color: #87CEEB;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        /* Narrative Content */
+        .narrative-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            border-left: 5px solid #FFD700;
+        }
+        
+        .narrative-title {
+            font-size: 1.8em;
+            color: #FFD700;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .narrative-content {
+            font-size: 1.1em;
+            line-height: 1.8;
+            text-align: justify;
+        }
+        
+        /* Lists */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+        
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4ECDC4;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                position: relative;
+                top: 0;
+                left: 0;
+                transform: none;
+                margin-bottom: 30px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .tab-content {
+                padding-top: 20px;
+            }
+            
+            .section-title {
+                font-size: 2em;
+            }
+            
+            .tab-btn {
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Version Indicator for Debugging -->
+    <div class="version-indicator">v2.0 - 20250916_213200</div>
+    
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="showTab('model')">MMM Model</button>
+        <button class="tab-btn" onclick="showTab('overview')">Overview</button>
+        <button class="tab-btn" onclick="showTab('financials')">Financials</button>
+        <button class="tab-btn" onclick="showTab('renderings')">Project Renderings</button>
+        <button class="tab-btn" onclick="showTab('roy-abrams')">Roy Abrams Focus</button>
+        <button class="tab-btn" onclick="showTab('cash-partners')">Cash Partners</button>
+        <button class="tab-btn" onclick="showTab('service-partners')">Service Partners</button>
+        <a href="https://partnersnotinvestors.com" target="_blank" class="tab-btn" style="background: linear-gradient(45deg, #FF6B6B, #FF8E8E); text-decoration: none;">🤖 AI Agent</a>
+    </div>
+
+    <div class="container">
+        <!-- MMM Model Tab - FIRST AND ACTIVE BY DEFAULT -->
+        <div id="model" class="tab-content active">
+            <div class="content-section">
+                <h2 class="section-title">🏗️ Miami Makers Model (MMM)</h2>
+                <p class="section-subtitle">Revolutionary "Partners Not Paychecks, Partners Not Investors" Development Approach</p>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🎯 Model Introduction - UPDATED VERSION</div>
+                    <div class="narrative-content">
+                        The Miami Makers Model (MMM) revolutionizes real estate development by transforming the entire ecosystem of development partners into equity stakeholders. 
+                        The "Partners Not Paychecks, Partners Not Investors" approach converts key development participants—including service providers (contractors, architects, 
+                        engineers, legal, marketing), cash partners (private investors, family offices), and material supply partners (steel, concrete, fixtures, technology suppliers)—into 
+                        equity owners with direct stakes in the developments they help create.
+                        <br><br>
+                        This comprehensive partnership structure creates a powerful alignment where every participant's success is directly tied to project success. 
+                        Cash partners provide capital in exchange for equity rather than traditional debt structures, while material suppliers contribute products 
+                        and services for ownership stakes rather than just payment terms. The result is unprecedented collaboration, enhanced quality control, 
+                        accelerated timelines, and dramatically reduced cash requirements across the entire development process.
+                        <br><br>
+                        <strong>The MMM Ecosystem includes:</strong>
+                        <ul class="feature-list" style="margin: 15px 0;">
+                            <li><strong>Service Partners:</strong> Contractors, architects, engineers, legal, marketing teams</li>
+                            <li><strong>Cash Partners:</strong> Private investors, family offices, strategic capital providers</li>
+                            <li><strong>Material Supply Partners:</strong> Steel suppliers, concrete providers, fixture manufacturers, technology vendors</li>
+                            <li><strong>Development Leadership:</strong> Project managers, construction oversight, sales coordination</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">✨ This is the NEW VERSION - Cache Problem SOLVED!</div>
+                    <div class="narrative-content">
+                        <strong>If you can see this message, the cache-busting is working!</strong>
+                        <br><br>
+                        This new version includes:
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Automatic version checking and cache clearing</li>
+                            <li>Version indicator in top-right corner</li>
+                            <li>Force-refresh on reload to bypass cache</li>
+                            <li>Updated content with cash partners and material supply partners</li>
+                            <li>MMM Model tab opens by default (not Overview)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content">
+            <div class="content-section">
+                <h1 class="section-title">🏗️ MMM Master Dashboard</h1>
+                <p class="section-subtitle">"Partners Not Paychecks, Partners Not Investors" - Revolutionary Real Estate Development</p>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">📋 This is the Overview Tab</div>
+                    <div class="narrative-content">
+                        This should only show when you click the "Overview" tab button.
+                        The MMM Model tab should be the default active tab.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Placeholder tabs -->
+        <div id="financials" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">📊 Financials Tab</h2>
+            </div>
+        </div>
+        
+        <div id="renderings" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">🏢 Renderings Tab</h2>
+            </div>
+        </div>
+        
+        <div id="roy-abrams" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">👋 Roy Abrams Tab</h2>
+            </div>
+        </div>
+        
+        <div id="cash-partners" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">💰 Cash Partners Tab</h2>
+            </div>
+        </div>
+        
+        <div id="service-partners" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">🤝 Service Partners Tab</h2>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Navigation
+        function showTab(tabName) {
+            console.log('Switching to tab:', tabName);
+            
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            const selectedTab = document.getElementById(tabName);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Add active class to clicked button
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+        }
+        
+        // Initialize - Make sure MMM Model is active on load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded - ensuring MMM Model tab is active');
+            
+            // Force MMM Model tab to be active
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Activate MMM Model tab
+            document.getElementById('model').classList.add('active');
+            document.querySelector('button[onclick="showTab(\'model\')"]').classList.add('active');
+        });
+    </script>
+</body>
+</html>
