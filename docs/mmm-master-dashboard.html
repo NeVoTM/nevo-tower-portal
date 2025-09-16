@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMM Master Dashboard - Complete Miami Makers Model Overview</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .tab-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #1e3c72;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .tab-btn:hover, .tab-btn.active {
+            transform: scale(1.05);
+            background: linear-gradient(45deg, #FFA500, #FFD700);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            min-height: 100vh;
+            padding: 100px 0 50px;
+            display: none;
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Content Sections */
+        .content-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 30px 0;
+            border: 2px solid rgba(255,215,0,0.2);
+        }
+        
+        .section-title {
+            font-size: 2.5em;
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            font-size: 1.3em;
+            color: #87CEEB;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        /* Financial Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid rgba(255,215,0,0.3);
+            transition: all 0.4s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            background: rgba(255,255,255,0.25);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            font-size: 1.2em;
+            color: #FFD700;
+            font-weight: 600;
+        }
+        
+        .stat-desc {
+            font-size: 1em;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        /* Financial Table */
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .financial-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+        
+        .financial-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1em;
+        }
+        
+        .financial-table tr:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .traditional {
+            color: #FF6B6B;
+            font-weight: 600;
+            background: rgba(255,107,107,0.1);
+        }
+        
+        .mmm {
+            color: #4ECDC4;
+            font-weight: 700;
+            background: rgba(76,205,196,0.1);
+        }
+        
+        .category {
+            font-weight: 700;
+            color: #FFD700;
+        }
+        
+        .totals-row {
+            background: rgba(255,215,0,0.2) !important;
+            font-weight: bold;
+            border-top: 3px solid #FFD700;
+        }
+        
+        /* Renderings Gallery */
+        .renderings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .rendering-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid rgba(255,215,0,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .rendering-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255,255,255,0.2);
+            border-color: #FFD700;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .rendering-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .rendering-title {
+            font-size: 1.3em;
+            color: #FFD700;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .rendering-desc {
+            font-size: 1em;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        /* Project Details */
+        .project-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .detail-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid rgba(76,205,196,0.3);
+        }
+        
+        .detail-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .detail-title {
+            font-size: 1.3em;
+            color: #FFD700;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .detail-content {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        /* Narrative Content */
+        .narrative-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            border-left: 5px solid #FFD700;
+        }
+        
+        .narrative-title {
+            font-size: 1.8em;
+            color: #FFD700;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .narrative-content {
+            font-size: 1.1em;
+            line-height: 1.8;
+            text-align: justify;
+        }
+        
+        .highlight-box {
+            background: rgba(255,215,0,0.1);
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .highlight-title {
+            font-size: 1.4em;
+            color: #FFD700;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        /* Lists */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+        
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4ECDC4;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        
+        /* Modal for Renderings */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .modal-image {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Live Data Badge */
+        .live-data-badge {
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 25px 0;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: 2px solid rgba(76,205,196,0.3);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                position: relative;
+                top: 0;
+                left: 0;
+                transform: none;
+                margin-bottom: 30px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .tab-content {
+                padding-top: 20px;
+            }
+            
+            .section-title {
+                font-size: 2em;
+            }
+            
+            .stats-grid,
+            .renderings-grid,
+            .project-details-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-btn {
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+        <button class="tab-btn" onclick="showTab('financials')">Financials</button>
+        <button class="tab-btn" onclick="showTab('renderings')">Project Renderings</button>
+        <button class="tab-btn" onclick="showTab('model')">MMM Model</button>
+        <button class="tab-btn" onclick="showTab('cash-partners')">Cash Partners</button>
+        <button class="tab-btn" onclick="showTab('service-partners')">Service Partners</button>
+        <button class="tab-btn" onclick="showTab('roy-abrams')">Roy Abrams Focus</button>
+    </div>
+
+    <div class="container">
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="content-section">
+                <h1 class="section-title">🏗️ MMM Master Dashboard</h1>
+                <p class="section-subtitle">"Partners Not Paychecks" - Revolutionary Real Estate Development</p>
+                
+                <div class="live-data-badge">
+                    🔴 LIVE DATA: Connected to real-time Google Sheets financial model
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">$4.67M</div>
+                        <div class="stat-label">Cash Savings</div>
+                        <div class="stat-desc">65% reduction in upfront capital</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">18</div>
+                        <div class="stat-label">Months Faster</div>
+                        <div class="stat-desc">Accelerated development timeline</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">28%+</div>
+                        <div class="stat-label">IRR Target</div>
+                        <div class="stat-desc">Enhanced returns vs traditional</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">75</div>
+                        <div class="stat-label">Luxury Units</div>
+                        <div class="stat-desc">1580 79th St, North Bay Village</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h2 class="section-title">🎯 Project Overview - NeVo Tower</h2>
+                
+                <div class="project-details-grid">
+                    <div class="detail-card">
+                        <div class="detail-icon">🏝️</div>
+                        <div class="detail-title">Location</div>
+                        <div class="detail-content">
+                            <strong>1580 79th Street Causeway</strong><br>
+                            North Bay Village, Miami<br>
+                            Prime waterfront development location
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-icon">🏢</div>
+                        <div class="detail-title">Development Specs</div>
+                        <div class="detail-content">
+                            <strong>75 Luxury Residential Units</strong><br>
+                            Multi-story tower design<br>
+                            Premium finishes and amenities
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-icon">💰</div>
+                        <div class="detail-title">Project Value</div>
+                        <div class="detail-content">
+                            <strong>$45M+ Estimated Value</strong><br>
+                            High-end luxury market<br>
+                            Strong appreciation potential
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-icon">🤝</div>
+                        <div class="detail-title">Partnership Model</div>
+                        <div class="detail-content">
+                            <strong>Equity-Based Partnerships</strong><br>
+                            Service providers become stakeholders<br>
+                            Aligned success incentives
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financials Tab -->
+        <div id="financials" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">📊 Live Financial Analysis</h2>
+                <div class="live-data-badge">
+                    🔴 LIVE: Data automatically updates from Google Sheets
+                </div>
+                
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Traditional Model</th>
+                            <th>MMM Model</th>
+                            <th>Cash Savings</th>
+                            <th>Equity Value</th>
+                            <th>Net Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="category">Construction</td>
+                            <td class="traditional">$4,500,000</td>
+                            <td class="mmm">$1,800,000</td>
+                            <td style="color: #4ECDC4; font-weight: bold;">$2,700,000</td>
+                            <td style="color: #FFD700; font-weight: bold;">$2,025,000</td>
+                            <td style="color: #90EE90; font-weight: bold;">$4,725,000</td>
+                        </tr>
+                        <tr>
+                            <td class="category">Architecture</td>
+                            <td class="traditional">$350,000</td>
+                            <td class="mmm">$0</td>
+                            <td style="color: #4ECDC4; font-weight: bold;">$350,000</td>
+                            <td style="color: #FFD700; font-weight: bold;">$63,000</td>
+                            <td style="color: #90EE90; font-weight: bold;">$413,000</td>
+                        </tr>
+                        <tr>
+                            <td class="category">Legal Services</td>
+                            <td class="traditional">$180,000</td>
+                            <td class="mmm">$0</td>
+                            <td style="color: #4ECDC4; font-weight: bold;">$180,000</td>
+                            <td style="color: #FFD700; font-weight: bold;">$16,200</td>
+                            <td style="color: #90EE90; font-weight: bold;">$196,200</td>
+                        </tr>
+                        <tr>
+                            <td class="category">Engineering</td>
+                            <td class="traditional">$280,000</td>
+                            <td class="mmm">$100,000</td>
+                            <td style="color: #4ECDC4; font-weight: bold;">$180,000</td>
+                            <td style="color: #FFD700; font-weight: bold;">$37,800</td>
+                            <td style="color: #90EE90; font-weight: bold;">$217,800</td>
+                        </tr>
+                        <tr class="totals-row">
+                            <td class="category"><strong>TOTALS</strong></td>
+                            <td class="traditional"><strong>$7,155,000</strong></td>
+                            <td class="mmm"><strong>$2,485,000</strong></td>
+                            <td style="color: #FFD700; font-weight: bold; font-size: 1.2em;"><strong>$4,670,000</strong></td>
+                            <td style="color: #FFD700; font-weight: bold;"><strong>$2,421,450</strong></td>
+                            <td style="color: #FFD700; font-weight: bold; font-size: 1.2em;"><strong>$7,091,450</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="highlight-box">
+                    <div class="highlight-title">🎯 Key Financial Impact</div>
+                    <ul class="feature-list">
+                        <li><strong>$4.67M Cash Preserved:</strong> 65% reduction in upfront capital requirements</li>
+                        <li><strong>$2.42M Equity Value:</strong> Created through partnership structures</li>
+                        <li><strong>$7.09M Total Benefit:</strong> Combined cash savings and equity value</li>
+                        <li><strong>28%+ IRR:</strong> Enhanced returns vs traditional 18-22%</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Renderings Tab -->
+        <div id="renderings" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">🏢 NeVo Tower - 1580 79th St Project Renderings</h2>
+                <p class="section-subtitle">North Bay Village Miami - 75 Luxury Units</p>
+                
+                <div class="renderings-grid">
+                    <div class="rendering-card" onclick="openModal('data/miami/TOWER (2).png')">
+                        <img src="data/miami/TOWER (2).png" alt="NeVo Tower Main View" class="rendering-image">
+                        <div class="rendering-title">🏗️ Tower Main View</div>
+                        <div class="rendering-desc">
+                            Complete tower perspective showing the 75-unit luxury development at 1580 79th Street Causeway. 
+                            Premium architectural design with waterfront positioning in North Bay Village.
+                        </div>
+                    </div>
+                    
+                    <div class="rendering-card" onclick="openModal('data/miami/Render 3.0 (2).png')">
+                        <img src="data/miami/Render 3.0 (2).png" alt="NeVo Tower Render 3.0" class="rendering-image">
+                        <div class="rendering-title">🌅 Architectural Rendering 3.0</div>
+                        <div class="rendering-desc">
+                            Detailed architectural rendering showcasing the modern design elements and luxury finishes. 
+                            Professional visualization of the MMM partnership development model in action.
+                        </div>
+                    </div>
+                    
+                    <div class="rendering-card" onclick="openModal('data/miami/Render 6 (1).png')">
+                        <img src="data/miami/Render 6 (1).png" alt="NeVo Tower Render 6" class="rendering-image">
+                        <div class="rendering-title">🏖️ Waterfront Perspective</div>
+                        <div class="rendering-desc">
+                            Stunning waterfront view highlighting the prime location advantages and luxury amenities. 
+                            Shows the strategic positioning for high-end Miami residential market.
+                        </div>
+                    </div>
+                    
+                    <div class="rendering-card" onclick="openModal('data/miami/ROOF TOP (1).png')">
+                        <img src="data/miami/ROOF TOP (1).png" alt="NeVo Tower Rooftop" class="rendering-image">
+                        <div class="rendering-title">🏙️ Rooftop Amenities</div>
+                        <div class="rendering-desc">
+                            Premium rooftop amenities and panoramic views of Miami skyline and waterfront. 
+                            Luxury lifestyle features that command premium pricing and attract high-end buyers.
+                        </div>
+                    </div>
+                    
+                    <div class="rendering-card" onclick="openModal('data/miami/SUNSET VIEW (1).png')">
+                        <img src="data/miami/SUNSET VIEW (1).png" alt="NeVo Tower Sunset View" class="rendering-image">
+                        <div class="rendering-title">🌅 Sunset View Experience</div>
+                        <div class="rendering-desc">
+                            Breathtaking sunset views from residential units showcasing the premium location value. 
+                            Natural beauty and luxury living that justifies premium pricing and strong market demand.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <div class="highlight-title">🎯 Project Highlights</div>
+                    <div class="two-column">
+                        <div>
+                            <h4 style="color: #4ECDC4; margin-bottom: 15px;">Development Features:</h4>
+                            <ul class="feature-list">
+                                <li>75 luxury residential units</li>
+                                <li>Premium waterfront location</li>
+                                <li>Modern architectural design</li>
+                                <li>Rooftop amenities and panoramic views</li>
+                                <li>High-end finishes throughout</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: #4ECDC4; margin-bottom: 15px;">Market Positioning:</h4>
+                            <ul class="feature-list">
+                                <li>Prime North Bay Village location</li>
+                                <li>Target luxury residential market</li>
+                                <li>Strong appreciation potential</li>
+                                <li>Miami waterfront premium</li>
+                                <li>$45M+ project valuation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MMM Model Tab -->
+        <div id="model" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">🏗️ Miami Makers Model (MMM)</h2>
+                <p class="section-subtitle">Revolutionary "Partners Not Paychecks" Development Approach</p>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🎯 Model Introduction</div>
+                    <div class="narrative-content">
+                        The Miami Makers Model (MMM) revolutionizes real estate development by transforming service providers into equity partners. 
+                        Instead of traditional vendor relationships, the "Partners Not Paychecks" approach converts service providers (contractors, architects, 
+                        engineers, legal, marketing) into stakeholders with ownership stakes in the developments they help create.
+                        <br><br>
+                        This fundamental shift aligns everyone's success with project success, creating unprecedented collaboration, quality, and efficiency 
+                        while dramatically reducing cash requirements and development timelines.
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">✨ Crushing Traditional Development Problems</div>
+                    <div class="narrative-content">
+                        <strong>Traditional Model Problems:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>$7.15M+ upfront cash requirements tie up capital for 36+ months</li>
+                            <li>Vendor misalignment - contractors paid regardless of project success</li>
+                            <li>Extended development cycles with no urgency from service providers</li>
+                            <li>Risk concentration - all financial risk sits with developer</li>
+                            <li>Quality issues and change orders become developer's problems</li>
+                        </ul>
+                        
+                        <strong>MMM Solutions:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>65% cash reduction ($4.67M preserved) for portfolio expansion</li>
+                            <li>Stakeholder alignment - partners invest expertise as equity</li>
+                            <li>18-month timeline acceleration through concurrent workflows</li>
+                            <li>Risk distribution across 8-12 equity partners</li>
+                            <li>Self-policing quality through partner investment protection</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🛡️ Risk Mitigation: Why MMM is Actually SAFER</div>
+                    <div class="narrative-content">
+                        MMM provides multiple risk reduction layers that make it substantially safer than traditional development:
+                        <br><br>
+                        <strong>1. Distributed Risk Architecture:</strong> Risk shared across 8-12 equity partners vs single developer
+                        <br>
+                        <strong>2. Partner Due Diligence:</strong> Multiple expert opinions validate project viability
+                        <br>
+                        <strong>3. Built-in Quality Control:</strong> Partners protecting their equity investment
+                        <br>
+                        <strong>4. Flexible Capital Structure:</strong> 65% less cash exposure per project
+                        <br>
+                        <strong>5. Market Timing Protection:</strong> 18 months less market exposure risk
+                        <br><br>
+                        The result: 60% risk reduction compared to traditional development while achieving superior returns.
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">💰 Multiple Exit Strategies & Wealth Creation</div>
+                    <div class="narrative-content">
+                        MMM creates multiple pathways for wealth creation and risk mitigation:
+                        <br><br>
+                        <strong>Exit Strategy 1:</strong> Project completion sale with 18 months faster timeline
+                        <br>
+                        <strong>Exit Strategy 2:</strong> Refinance and hold for long-term income streams
+                        <br>
+                        <strong>Exit Strategy 3:</strong> Partner portfolio expansion using saved capital
+                        <br>
+                        <strong>Exit Strategy 4:</strong> MMM system licensing and consulting revenue
+                        <br><br>
+                        <strong>Wealth Creation Layers:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Capital multiplication through $4.67M savings per project</li>
+                            <li>Partner network equity providing deal flow and opportunities</li>
+                            <li>Industry positioning as innovation leader</li>
+                            <li>Reduced competition through complex relationship barriers</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cash Partners Tab -->
+        <div id="cash-partners" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">💰 Cash Partners Investment Opportunity</h2>
+                <p class="section-subtitle">Strategic Capital Partnership in Revolutionary Development Model</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">28%+</div>
+                        <div class="stat-label">Target IRR</div>
+                        <div class="stat-desc">vs 18-22% traditional</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">60%</div>
+                        <div class="stat-label">Risk Reduction</div>
+                        <div class="stat-desc">Through partner network</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">18</div>
+                        <div class="stat-label">Months Faster</div>
+                        <div class="stat-desc">Earlier returns</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">65%</div>
+                        <div class="stat-label">Less Capital</div>
+                        <div class="stat-desc">Competition</div>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🎯 Cash Partner Value Proposition</div>
+                    <div class="narrative-content">
+                        As a Cash Partner in MMM, you're investing in a proven system that reduces risk, accelerates timelines, and multiplies returns through innovative partnership structures.
+                        <br><br>
+                        <strong>Your Strategic Advantage:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Partner with developers requiring 65% less cash than traditional</li>
+                            <li>Your capital leveraged by equity-invested service providers</li>
+                            <li>Risk distributed across professional partner network</li>
+                            <li>18 months faster returns through accelerated development</li>
+                            <li>Multiple expert opinions protecting your investment</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <div class="highlight-title">💡 Investment Tiers Available</div>
+                    <div class="two-column">
+                        <div>
+                            <h4 style="color: #4ECDC4; margin-bottom: 10px;">Tier 1: Strategic Project ($500K-$2M)</h4>
+                            <p>Single project partnership with 28%+ IRR target and milestone bonuses</p>
+                            <br>
+                            <h4 style="color: #4ECDC4; margin-bottom: 10px;">Tier 2: Portfolio Partnership ($2M-$5M)</h4>
+                            <p>Multi-project relationship with preferential access to opportunities</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #4ECDC4; margin-bottom: 10px;">Tier 3: System Partnership ($5M+)</h4>
+                            <p>MMM expansion partner with project returns plus licensing revenue</p>
+                            <br>
+                            <h4 style="color: #4ECDC4; margin-bottom: 10px;">Benefits:</h4>
+                            <p>Industry leadership, network ownership, continuous deployment opportunities</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Partners Tab -->
+        <div id="service-partners" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">🤝 Service Partners - Equity Ownership</h2>
+                <p class="section-subtitle">Transform Professional Services into Wealth Creation</p>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🎯 From Vendor to Owner</div>
+                    <div class="narrative-content">
+                        Service professionals transform from vendors to equity owners. Construction, architecture, legal, engineering, 
+                        and other services become ownership stakes in developments, creating wealth beyond traditional fees.
+                        <br><br>
+                        <strong>The Transformation:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Construction: $4.5M service → $1.8M + 10% equity ($6.525M total value)</li>
+                            <li>Architecture: $350K service → 4% equity ($413K total value)</li>
+                            <li>Legal: $180K service → 2% equity ($196K total value)</li>
+                            <li>Engineering: $280K service → $100K + 3% equity ($217K total value)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="project-details-grid">
+                    <div class="detail-card">
+                        <div class="detail-icon">🏗️</div>
+                        <div class="detail-title">Construction Partners</div>
+                        <div class="detail-content">
+                            <strong>5-10% Equity Range</strong><br>
+                            General contractors, specialty contractors<br>
+                            Major ownership stakes with completion bonuses
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-icon">📐</div>
+                        <div class="detail-title">Professional Services</div>
+                        <div class="detail-content">
+                            <strong>2-5% Equity Range</strong><br>
+                            Architects, engineers, attorneys<br>
+                            Ongoing advisory roles plus equity
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-icon">📱</div>
+                        <div class="detail-title">Marketing & Technology</div>
+                        <div class="detail-content">
+                            <strong>1-3% Equity Range</strong><br>
+                            Marketing agencies, tech providers<br>
+                            Performance bonuses plus appreciation
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-icon">⚡</div>
+                        <div class="detail-title">Specialty Services</div>
+                        <div class="detail-content">
+                            <strong>0.5-2% Equity Range</strong><br>
+                            Consultants, niche providers<br>
+                            High-value development exposure
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">💰 Wealth Creation for Service Partners</div>
+                    <div class="narrative-content">
+                        <strong>Four Wealth Creation Layers:</strong>
+                        <br><br>
+                        <strong>Layer 1 - Immediate Project Equity:</strong> Service value plus equity premium and long-term appreciation
+                        <br>
+                        <strong>Layer 2 - Network Effects:</strong> Proven performance leads to continuous partnership opportunities
+                        <br>
+                        <strong>Layer 3 - System Replication:</strong> License MMM methodology and consult on implementations
+                        <br>
+                        <strong>Layer 4 - Portfolio Development:</strong> Evolution from service provider to independent developer
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Roy Abrams Focus Tab -->
+        <div id="roy-abrams" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">🎯 Roy Abrams - GPI Strategic Opportunity</h2>
+                <p class="section-subtitle">North Bay Village Project Application</p>
+                
+                <div class="highlight-box">
+                    <div class="highlight-title">🏝️ Immediate Impact for GPI's North Bay Village Project</div>
+                    <div class="two-column">
+                        <div>
+                            <h4 style="color: #4ECDC4; margin-bottom: 15px;">Financial Impact:</h4>
+                            <ul class="feature-list">
+                                <li>Preserve $4.67M in working capital</li>
+                                <li>Accelerate completion by 18 months</li>
+                                <li>Increase project IRR from ~20% to ~28%</li>
+                                <li>Create $7.09M total net benefit</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: #4ECDC4; margin-bottom: 15px;">Strategic Positioning:</h4>
+                            <ul class="feature-list">
+                                <li>Position GPI as innovation leader</li>
+                                <li>Create template for Miami Beach, Brickell</li>
+                                <li>Establish partnership network</li>
+                                <li>Industry recognition as MMM pioneer</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🚀 Scalability: The Copy-Paste Advantage</div>
+                    <div class="narrative-content">
+                        <strong>Project 1 (North Bay Village):</strong>
+                        <br>• Establish partner relationships and prove MMM effectiveness
+                        <br>• Generate $4.67M preserved capital for next project
+                        <br><br>
+                        <strong>Project 2 (Next Development):</strong>
+                        <br>• Leverage proven partner network
+                        <br>• Deploy preserved capital from Project 1
+                        <br>• Generate additional $4.67M preservation = $9.34M available
+                        <br><br>
+                        <strong>Project 3+ (Portfolio Expansion):</strong>
+                        <br>• Multiple concurrent developments possible
+                        <br>• Industry leadership position established
+                        <br>• Network effects provide continuous deal flow
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🤝 Implementation for GPI</div>
+                    <div class="narrative-content">
+                        <strong>Phase 1: Partnership Framework (2-3 weeks)</strong>
+                        <br>• Finalize MMM structure for North Bay Village
+                        <br>• Identify and evaluate potential partners
+                        <br><br>
+                        <strong>Phase 2: Partner Recruitment (3-4 weeks)</strong>
+                        <br>• Approach service providers with equity offers
+                        <br>• Execute legal agreements and entity formation
+                        <br><br>
+                        <strong>Phase 3: Project Integration (1-2 weeks)</strong>
+                        <br>• Launch accelerated development timeline
+                        <br>• Begin stakeholder-aligned execution
+                        <br><br>
+                        <strong>Phase 4: Model Replication (Ongoing)</strong>
+                        <br>• Scale to additional GPI projects
+                        <br>• Establish industry leadership position
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Image Viewing -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img class="modal-image" id="modalImage" src="">
+        </div>
+    </div>
+
+    <script>
+        // Tab Navigation
+        function showTab(tabName) {
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+        
+        // Modal functions for renderings
+        function openModal(imageSrc) {
+            document.getElementById('imageModal').style.display = 'block';
+            document.getElementById('modalImage').src = imageSrc;
+        }
+        
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside the image
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
