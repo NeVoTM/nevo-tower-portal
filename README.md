@@ -1,5 +1,5 @@
 # MMM AI Agent & Dashboard Suite
-## Miami Makers Model - "Partners Not Paychecks" Revolutionary Development Platform
+## Miami Makers Model - "Partners Not Paychecks, Partners Not Investors" Revolutionary Development Platform
 
 **Live System Status:** ✅ Production Ready & Fully Deployed  
 **Last Updated:** September 16, 2024
@@ -15,7 +15,7 @@ This repository contains a comprehensive **Miami Makers Model (MMM)** presentati
 - **🎨 Professional Presentation System** for multiple audiences
 - **📈 Real Project Data Integration** using Roy Abrams' actual $158.9M development
 
-### Business Model: "Partners Not Paychecks"
+### Business Model: "Partners Not Paychecks, Partners Not Investors"
 Transform traditional real estate development by converting service providers (contractors, architects, engineers, legal) into **equity partners** instead of paying cash fees.
 
 ---
@@ -169,7 +169,7 @@ npm install                    # Update dependencies
 - **Developers:** Focus on cost savings and risk reduction
 - **Cash Partners:** Emphasis on ROI and investment security
 - **Service Partners:** Highlight equity ownership opportunities
-- **Universal:** Comprehensive "Partners Not Paychecks" messaging
+- **Universal:** Comprehensive "Partners Not Paychecks, Partners Not Investors" messaging
 
 ---
 
@@ -197,7 +197,7 @@ npm install                    # Update dependencies
 - **Repository:** https://github.com/NeVoTM/nevo-tower-portal
 - **Live AI Agent:** https://partnersnotpaychecks.com
 - **Documentation:** See `PROJECT_SETUP_AND_STATUS.md` for detailed technical info
-- **Business Model:** "Partners Not Paychecks" - equity-based real estate development
+- **Business Model:** "Partners Not Paychecks, Partners Not Investors" - equity-based real estate development
 
 ---
 

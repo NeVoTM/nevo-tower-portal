@@ -4,7 +4,7 @@
 
 Roy, the **Miami Makers Model (MMM)** represents a fundamental paradigm shift in real estate development, transforming traditional vendor relationships into strategic equity partnerships. Instead of paying contractors, architects, and service providers fixed fees in cash, MMM offers them ownership stakes in the development itself.
 
-### The Core Concept: "Partners Not Paychecks"
+### The Core Concept: "Partners Not Paychecks, Partners Not Investors"
 
 Traditional development treats professionals as vendors to be paid. MMM treats them as **partners** who share in both the risk and the extraordinary rewards. Your service providers become stakeholders with skin in the game, fundamentally aligning their success with your project's success.
 

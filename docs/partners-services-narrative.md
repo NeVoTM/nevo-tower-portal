@@ -7,7 +7,7 @@
 
 The **Miami Makers Model (MMM)** fundamentally transforms how contractors, architects, engineers, and professional service providers participate in real estate development. Instead of trading your expertise for fixed fees, MMM offers you **equity ownership** in the developments you help create.
 
-**The core concept**: "Partners Not Paychecks" — Your professional services become equity investments in high-value developments, transforming you from a vendor into a stakeholder.
+**The core concept**: "Partners Not Paychecks, Partners Not Investors" — Your professional services become equity investments in high-value developments, transforming you from a vendor into a stakeholder.
 
 ---
 

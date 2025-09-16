@@ -1,5 +1,5 @@
 # MMM Quick Reference Sheet
-## "Partners Not Paychecks" - Essential Information
+## "Partners Not Paychecks, Partners Not Investors" - Essential Information
 
 ---
 

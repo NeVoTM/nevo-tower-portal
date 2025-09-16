@@ -1,5 +1,5 @@
 # Miami Makers Model (MMM) Developer Guide
-## "Partners Not Paychecks" - Revolutionary Real Estate Development
+## "Partners Not Paychecks, Partners Not Investors" - Revolutionary Real Estate Development
 
 ---
 
