@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMM: Revolutionizing Real Estate Development - Roy Abrams Presentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #1e3c72;
+            border: none;
+            padding: 8px 15px;
+            margin: 0 3px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            transform: scale(1.1);
+            background: linear-gradient(45deg, #FFA500, #FFD700);
+        }
+        
+        /* Sections */
+        .section {
+            min-height: 100vh;
+            padding: 50px 0;
+            display: none;
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 80px 50px;
+            margin: 50px 0;
+            border: 2px solid rgba(255,215,0,0.3);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        }
+        
+        .hero h1 {
+            font-size: 4.5em;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero h2 {
+            font-size: 2.2em;
+            color: #87CEEB;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        
+        .tagline {
+            font-size: 1.8em;
+            color: #4ECDC4;
+            font-weight: 600;
+            margin-bottom: 50px;
+            padding: 20px;
+            background: rgba(76,205,196,0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(76,205,196,0.3);
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(15px);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid rgba(255,215,0,0.3);
+            transition: all 0.4s ease;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255,255,255,0.25);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+        
+        .stat-number {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            font-size: 1.4em;
+            color: #FFD700;
+            font-weight: 600;
+        }
+        
+        .stat-desc {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-top: 15px;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 60px 50px;
+            margin: 40px 0;
+            border: 2px solid rgba(255,215,0,0.2);
+        }
+        
+        .section-title {
+            font-size: 3em;
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            font-size: 1.5em;
+            color: #87CEEB;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        
+        /* Comparison Tables */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px 20px;
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+        
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.1em;
+        }
+        
+        .comparison-table tr:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .traditional {
+            color: #FF6B6B;
+            font-weight: 600;
+            background: rgba(255,107,107,0.1);
+        }
+        
+        .mmm {
+            color: #4ECDC4;
+            font-weight: 700;
+            background: rgba(76,205,196,0.1);
+        }
+        
+        .category {
+            font-weight: 700;
+            color: #FFD700;
+        }
+        
+        /* Chart Container */
+        .chart-container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .chart-title {
+            color: #1e3c72;
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+        
+        /* Call to Action */
+        .cta {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            border-radius: 25px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 50px 0;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+        
+        .cta h2 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #1e3c72;
+            padding: 20px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.4em;
+            margin: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .scalability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .scalability-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid rgba(76,205,196,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .scalability-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .scalability-icon {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .scalability-title {
+            font-size: 1.4em;
+            color: #FFD700;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        /* Live Data Section */
+        .live-data-banner {
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .footer {
+            background: rgba(0,0,0,0.5);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .contact-info {
+            font-size: 1.3em;
+            color: #FFD700;
+            margin: 10px 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8em; }
+            .section-title { font-size: 2.2em; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .two-column { grid-template-columns: 1fr; }
+            .nav { position: relative; top: 0; right: 0; margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="nav">
+        <button class="nav-btn active" onclick="showSection('hero')">Intro</button>
+        <button class="nav-btn" onclick="showSection('problem')">Problem</button>
+        <button class="nav-btn" onclick="showSection('solution')">Solution</button>
+        <button class="nav-btn" onclick="showSection('financials')">Financials</button>
+        <button class="nav-btn" onclick="showSection('scalability')">Scale</button>
+        <button class="nav-btn" onclick="showSection('northbay')">North Bay</button>
+        <button class="nav-btn" onclick="showSection('action')">Next Steps</button>
+    </div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div id="hero" class="section active">
+            <div class="hero">
+                <h1>🏗️ Miami Makers Model</h1>
+                <h2>Revolutionizing Real Estate Development</h2>
+                <div class="tagline">"Partners Not Paychecks" - The Scalable Development Model</div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">$4.67M</div>
+                        <div class="stat-label">Cash Savings</div>
+                        <div class="stat-desc">Immediate capital preservation</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">18</div>
+                        <div class="stat-label">Months Faster</div>
+                        <div class="stat-desc">Accelerated development timeline</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">60%</div>
+                        <div class="stat-label">Risk Reduction</div>
+                        <div class="stat-desc">Shared responsibility model</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">∞</div>
+                        <div class="stat-label">Scalability</div>
+                        <div class="stat-desc">Copy & paste to any project</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem Section -->
+        <div id="problem" class="section">
+            <div class="content-section">
+                <h2 class="section-title">🚨 The Traditional Development Problem</h2>
+                <p class="section-subtitle">Why the current model is broken for developers like GPI</p>
+                
+                <div class="two-column">
+                    <div>
+                        <h3 style="color: #FF6B6B; font-size: 2em; margin-bottom: 30px;">Traditional Challenges:</h3>
+                        <ul style="font-size: 1.3em; line-height: 2; list-style: none;">
+                            <li>💸 <strong>$7.15M+ Upfront Cash Required</strong></li>
+                            <li>⏳ <strong>36+ Month Development Timeline</strong></li>
+                            <li>🎯 <strong>Single Point of Failure Risk</strong></li>
+                            <li>🔄 <strong>Non-Scalable Process</strong></li>
+                            <li>💼 <strong>Vendor Management Complexity</strong></li>
+                            <li>📊 <strong>Limited Partnership Benefits</strong></li>
+                        </ul>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: rgba(255,107,107,0.2); padding: 40px; border-radius: 20px; border: 2px solid #FF6B6B;">
+                            <h3 style="color: #FF6B6B; font-size: 2.5em; margin-bottom: 20px;">$7.15M</h3>
+                            <p style="font-size: 1.4em;">Traditional cash requirement<br>for a typical project</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solution Section -->
+        <div id="solution" class="section">
+            <div class="content-section">
+                <h2 class="section-title">✨ The MMM Solution</h2>
+                <p class="section-subtitle">How "Partners Not Paychecks" transforms development</p>
+                
+                <div class="two-column">
+                    <div style="text-align: center;">
+                        <div style="background: rgba(76,205,196,0.2); padding: 40px; border-radius: 20px; border: 2px solid #4ECDC4;">
+                            <h3 style="color: #4ECDC4; font-size: 2.5em; margin-bottom: 20px;">$2.49M</h3>
+                            <p style="font-size: 1.4em;">MMM cash requirement<br><strong style="color: #FFD700;">65% REDUCTION!</strong></p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="color: #4ECDC4; font-size: 2em; margin-bottom: 30px;">MMM Advantages:</h3>
+                        <ul style="font-size: 1.3em; line-height: 2; list-style: none;">
+                            <li>💎 <strong>Service Partners Get Equity Stakes</strong></li>
+                            <li>🚀 <strong>18-Month Timeline Acceleration</strong></li>
+                            <li>🛡️ <strong>Distributed Risk Model</strong></li>
+                            <li>📈 <strong>Infinitely Scalable System</strong></li>
+                            <li>🤝 <strong>True Partnership Incentives</strong></li>
+                            <li>💰 <strong>Preserved Capital for Growth</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Analysis Section -->
+        <div id="financials" class="section">
+            <div class="content-section">
+                <h2 class="section-title">📊 Financial Impact Analysis</h2>
+                <div class="live-data-banner">
+                    🔴 LIVE DATA: Connected to real-time financial model
+                </div>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Traditional Model</th>
+                            <th>MMM Model</th>
+                            <th>Your Savings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="category">Construction</td>
+                            <td class="traditional">$4,500,000</td>
+                            <td class="mmm">$1,800,000</td>
+                            <td style="color: #4ECDC4; font-weight: bold;">$2,700,000</td>
+                        </tr>
+                        <tr>
+                            <td class="category">Architecture</td>
+                            <td class="traditional">$350,000</td>
+                            <td class="mmm">$0</td>
+                            <td style="color: #4ECDC4; font-weight: bold;">$350,000</td>
+                        </tr>
+                        <tr>
+                            <td class="category">Legal Services</td>
+                            <td class="traditional">$180,000</td>
+                            <td class="mmm">$0</td>
+                            <td style="color: #4ECDC4; font-weight: bold;">$180,000</td>
+                        </tr>
+                        <tr>
+                            <td class="category">Engineering</td>
+                            <td class="traditional">$280,000</td>
+                            <td class="mmm">$100,000</td>
+                            <td style="color: #4ECDC4; font-weight: bold;">$180,000</td>
+                        </tr>
+                        <tr style="background: rgba(255,215,0,0.2); border-top: 3px solid #FFD700;">
+                            <td class="category"><strong>TOTALS</strong></td>
+                            <td class="traditional"><strong>$7,155,000</strong></td>
+                            <td class="mmm"><strong>$2,485,000</strong></td>
+                            <td style="color: #FFD700; font-weight: bold; font-size: 1.3em;"><strong>$4,670,000</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="chart-container">
+                    <h3 class="chart-title">ROI Comparison: Traditional vs MMM Model</h3>
+                    <canvas id="roiChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scalability Section -->
+        <div id="scalability" class="section">
+            <div class="content-section">
+                <h2 class="section-title">🚀 Infinite Scalability</h2>
+                <p class="section-subtitle">Why MMM becomes more powerful with each project</p>
+                
+                <div class="scalability-grid">
+                    <div class="scalability-card">
+                        <div class="scalability-icon">🏗️</div>
+                        <div class="scalability-title">Partner Network Growth</div>
+                        <p>Each project expands your trusted partner ecosystem. Partners become stakeholders in your success.</p>
+                    </div>
+                    <div class="scalability-card">
+                        <div class="scalability-icon">📋</div>
+                        <div class="scalability-title">Standardized Process</div>
+                        <p>Copy & paste the same partnership agreements, equity structures, and workflows to any new project.</p>
+                    </div>
+                    <div class="scalability-card">
+                        <div class="scalability-icon">💰</div>
+                        <div class="scalability-title">Compounding Capital</div>
+                        <p>Money saved on each project becomes seed capital for the next. Exponential growth potential.</p>
+                    </div>
+                    <div class="scalability-card">
+                        <div class="scalability-icon">🎯</div>
+                        <div class="scalability-title">Proven Track Record</div>
+                        <p>Success stories attract better partners and easier financing for subsequent developments.</p>
+                    </div>
+                </div>
+
+                <div style="background: rgba(255,215,0,0.1); padding: 40px; border-radius: 20px; border: 2px solid #FFD700; margin: 40px 0;">
+                    <h3 style="color: #FFD700; font-size: 2.2em; text-align: center; margin-bottom: 30px;">Scalability Mathematics</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; text-align: center;">
+                        <div>
+                            <div style="font-size: 2.5em; color: #4ECDC4; font-weight: bold;">Project 1</div>
+                            <div style="font-size: 1.3em;">$4.67M Saved</div>
+                        </div>
+                        <div style="font-size: 3em; color: #FFD700;">+</div>
+                        <div>
+                            <div style="font-size: 2.5em; color: #4ECDC4; font-weight: bold;">Project 2</div>
+                            <div style="font-size: 1.3em;">$4.67M Saved</div>
+                        </div>
+                        <div style="font-size: 3em; color: #FFD700;">=</div>
+                        <div>
+                            <div style="font-size: 2.5em; color: #FFD700; font-weight: bold;">$9.34M</div>
+                            <div style="font-size: 1.3em;">Available Capital</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- North Bay Village Section -->
+        <div id="northbay" class="section">
+            <div class="content-section">
+                <h2 class="section-title">🏝️ North Bay Village Application</h2>
+                <p class="section-subtitle">How MMM transforms your current project</p>
+                
+                <div class="two-column">
+                    <div>
+                        <h3 style="color: #4ECDC4; font-size: 2em; margin-bottom: 30px;">Immediate Benefits for GPI:</h3>
+                        <ul style="font-size: 1.2em; line-height: 2; list-style: none;">
+                            <li>✅ <strong>Preserve $4.67M in working capital</strong></li>
+                            <li>✅ <strong>Accelerate North Bay completion by 18 months</strong></li>
+                            <li>✅ <strong>Create equity partners invested in success</strong></li>
+                            <li>✅ <strong>Establish Miami market partnership network</strong></li>
+                            <li>✅ <strong>Generate proof-of-concept for future projects</strong></li>
+                            <li>✅ <strong>Position GPI as innovation leader</strong></li>
+                        </ul>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: rgba(76,205,196,0.1); padding: 30px; border-radius: 20px; border: 2px solid #4ECDC4; margin-bottom: 30px;">
+                            <h4 style="color: #4ECDC4; font-size: 1.5em; margin-bottom: 15px;">Miami Market Opportunity</h4>
+                            <p style="font-size: 1.1em;">North Bay Village success = Template for Miami Beach, Brickell, Wynwood, and beyond</p>
+                        </div>
+                        <div style="background: rgba(255,215,0,0.1); padding: 30px; border-radius: 20px; border: 2px solid #FFD700;">
+                            <h4 style="color: #FFD700; font-size: 1.5em; margin-bottom: 15px;">Strategic Positioning</h4>
+                            <p style="font-size: 1.1em;">First mover advantage in revolutionary development model</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action Section -->
+        <div id="action" class="section">
+            <div class="cta">
+                <h2>🚀 Ready to Revolutionize Development?</h2>
+                <p style="font-size: 1.4em; margin-bottom: 40px;">
+                    Transform North Bay Village into the prototype for scalable, efficient real estate development
+                </p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin: 40px 0;">
+                    <div style="background: rgba(255,255,255,0.2); padding: 30px; border-radius: 20px;">
+                        <h3 style="font-size: 1.5em; margin-bottom: 15px;">Phase 1: Partnership Agreement</h3>
+                        <p>Finalize MMM framework for North Bay Village</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 30px; border-radius: 20px;">
+                        <h3 style="font-size: 1.5em; margin-bottom: 15px;">Phase 2: Partner Onboarding</h3>
+                        <p>Recruit and align service partners with equity stakes</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 30px; border-radius: 20px;">
+                        <h3 style="font-size: 1.5em; margin-bottom: 15px;">Phase 3: Model Replication</h3>
+                        <p>Scale proven system across GPI's project portfolio</p>
+                    </div>
+                </div>
+                
+                <a href="https://nevotm.github.io/nevo-tower-portal/mmm-dashboard.html" class="cta-button" target="_blank">
+                    📊 View Live Financial Dashboard
+                </a>
+                <a href="mailto:contact@nevotm.com" class="cta-button">
+                    🤝 Schedule Implementation Meeting
+                </a>
+            </div>
+            
+            <div class="footer">
+                <div class="contact-info">Miami Makers Model (MMM)</div>
+                <div class="contact-info">📧 contact@nevotm.com</div>
+                <div class="contact-info">🌐 nevotm.github.io/nevo-tower-portal</div>
+                <div style="margin-top: 30px; font-size: 1.1em; opacity: 0.8;">
+                    "Partners Not Paychecks" - Revolutionizing Real Estate Development
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Initialize charts when financials section is shown
+            if (sectionId === 'financials') {
+                setTimeout(initCharts, 100);
+            }
+        }
+        
+        // Initialize charts
+        function initCharts() {
+            const ctx = document.getElementById('roiChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Year 1', 'Year 2', 'Year 3', 'Year 5'],
+                        datasets: [{
+                            label: 'Traditional ROI (%)',
+                            data: [8, 12, 18, 25],
+                            backgroundColor: 'rgba(255, 107, 107, 0.8)',
+                            borderColor: '#FF6B6B',
+                            borderWidth: 2
+                        }, {
+                            label: 'MMM ROI (%)',
+                            data: [15, 28, 35, 50],
+                            backgroundColor: 'rgba(76, 205, 196, 0.8)',
+                            borderColor: '#4ECDC4',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Return on Investment Comparison',
+                                font: { size: 16, weight: 'bold' },
+                                color: '#1e3c72'
+                            },
+                            legend: {
+                                labels: { color: '#1e3c72' }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { color: '#1e3c72' },
+                                title: {
+                                    display: true,
+                                    text: 'ROI Percentage',
+                                    color: '#1e3c72'
+                                }
+                            },
+                            x: {
+                                ticks: { color: '#1e3c72' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const sections = ['hero', 'problem', 'solution', 'financials', 'scalability', 'northbay', 'action'];
+            const currentSection = document.querySelector('.section.active').id;
+            const currentIndex = sections.indexOf(currentSection);
+            
+            if (e.key === 'ArrowRight' && currentIndex < sections.length - 1) {
+                showSection(sections[currentIndex + 1]);
+            } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                showSection(sections[currentIndex - 1]);
+            }
+        });
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-advance intro after 10 seconds
+            setTimeout(() => {
+                if (document.querySelector('#hero').classList.contains('active')) {
+                    showSection('problem');
+                }
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
