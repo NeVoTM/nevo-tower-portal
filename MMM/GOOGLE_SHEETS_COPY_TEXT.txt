@@ -1,0 +1,30 @@
+📊 MMM DASHBOARD UPDATE INSTRUCTIONS 📊
+
+🔄 AFTER CHANGING THIS GOOGLE SHEET:
+
+1. Save your changes (auto-saves)
+2. Update live dashboard:
+
+From Codespace (Recommended):
+• Open: https://github.com/NeVoTM/nevo-tower-portal
+• Terminal: cd MMM
+• Run: node generate-shareable-dashboard.js
+• Wait for SUCCESS message
+
+From Windows:
+• PowerShell: cd "C:\Users\user\Documents\GitHub\nevo-tower-portal\MMM"
+• Run: node generate-shareable-dashboard.js
+• Wait for SUCCESS message
+
+🌐 LIVE DASHBOARD LINK:
+https://nevotm.github.io/nevo-tower-portal/mmm-dashboard.html
+
+⚡ WHAT HAPPENS:
+✅ Fetches data from THIS sheet
+✅ Updates beautiful dashboard
+✅ Commits to GitHub
+✅ Live in 2-3 minutes
+
+💡 SHARE THIS LINK: https://nevotm.github.io/nevo-tower-portal/mmm-dashboard.html
+
+🔄 UPDATE AFTER EVERY MAJOR CHANGE TO KEEP DASHBOARD CURRENT!
