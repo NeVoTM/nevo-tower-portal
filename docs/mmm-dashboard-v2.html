@@ -14,7 +14,7 @@
     
     <script>
         // AUTO-REFRESH SYSTEM - Forces fresh content every time
-        const VERSION = '20250916_230300'; // Update this timestamp when you make changes
+        const VERSION = '20250916_230500'; // Update this timestamp when you make changes
         
         // Check if this is the latest version
         if (localStorage.getItem('mmm_version') !== VERSION) {
@@ -220,6 +220,122 @@
             margin-bottom: 15px;
         }
         
+        /* Renderings Gallery */
+        .renderings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .rendering-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid rgba(255,215,0,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .rendering-card:active {
+            transform: scale(0.98);
+            background: rgba(255,215,0,0.2);
+        }
+        
+        .rendering-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255,255,255,0.2);
+            border-color: #FFD700;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .rendering-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+        
+        .rendering-image:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+            transition: all 0.3s ease;
+        }
+        
+        .rendering-title {
+            font-size: 1.3em;
+            color: #FFD700;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .rendering-desc {
+            font-size: 1em;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        /* Modal for Renderings */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 95%;
+            max-height: 95%;
+            text-align: center;
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            border: 3px solid rgba(255,215,0,0.5);
+        }
+        
+        .close {
+            position: fixed;
+            top: 20px;
+            right: 40px;
+            color: #FFD700;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            transition: all 0.3s ease;
+        }
+        
+        .close:hover {
+            color: #FFA500;
+            transform: scale(1.1);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .nav-tabs {
@@ -249,7 +365,7 @@
 </head>
 <body>
     <!-- Version Indicator for Debugging -->
-    <div class="version-indicator">v3.1 - 20250916_230300</div>
+    <div class="version-indicator">v3.2 - 20250916_230500</div>
     
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
@@ -448,14 +564,79 @@
         
         <div id="renderings" class="tab-content">
             <div class="content-section">
-                <h2 class="section-title">🏢 NeVo Tower Renderings</h2>
-                <p class="section-subtitle">Architectural visualizations and project renderings</p>
+                <h2 class="section-title">🏢 NeVo Tower - 1580 79th St Project Renderings</h2>
+                <p class="section-subtitle">North Bay Village Miami - 75 Luxury Units</p>
                 
-                <div class="narrative-section">
-                    <div class="narrative-title">🎨 Project Visualizations</div>
-                    <div class="narrative-content">
-                        Professional architectural renderings and project visualizations will be displayed here.
-                        This section will showcase the luxury development design, amenities, and location advantages.
+                <div class="renderings-grid">
+                    <div class="rendering-card" onclick="openModal('images/miami/TOWER (2).png')">
+                        <img src="images/miami/TOWER (2).png" alt="NeVo Tower Main View" class="rendering-image">
+                        <div class="rendering-title">🏗️ Tower Main View</div>
+                        <div class="rendering-desc">
+                            Complete tower perspective showing the 75-unit luxury development at 1580 79th Street Causeway. 
+                            Premium architectural design with waterfront positioning in North Bay Village.
+                        </div>
+                    </div>
+                    
+                    <div class="rendering-card" onclick="openModal('images/miami/Render 3.0 (2).png')">
+                        <img src="images/miami/Render 3.0 (2).png" alt="NeVo Tower Render 3.0" class="rendering-image">
+                        <div class="rendering-title">🌅 Architectural Rendering 3.0</div>
+                        <div class="rendering-desc">
+                            Detailed architectural rendering showcasing the modern design elements and luxury finishes. 
+                            Professional visualization of the MMM partnership development model in action.
+                        </div>
+                    </div>
+                    
+                    <div class="rendering-card" onclick="openModal('images/miami/Render 6 (1).png')">
+                        <img src="images/miami/Render 6 (1).png" alt="NeVo Tower Render 6" class="rendering-image">
+                        <div class="rendering-title">🏖️ Waterfront Perspective</div>
+                        <div class="rendering-desc">
+                            Stunning waterfront view highlighting the prime location advantages and luxury amenities. 
+                            Shows the strategic positioning for high-end Miami residential market.
+                        </div>
+                    </div>
+                    
+                    <div class="rendering-card" onclick="openModal('images/miami/ROOF TOP  (1).png')">
+                        <img src="images/miami/ROOF TOP  (1).png" alt="NeVo Tower Rooftop" class="rendering-image">
+                        <div class="rendering-title">🏙️ Rooftop Amenities</div>
+                        <div class="rendering-desc">
+                            Premium rooftop amenities and panoramic views of Miami skyline and waterfront. 
+                            Luxury lifestyle features that command premium pricing and attract high-end buyers.
+                        </div>
+                    </div>
+                    
+                    <div class="rendering-card" onclick="openModal('images/miami/SUNSET VIEW (1).png')">
+                        <img src="images/miami/SUNSET VIEW (1).png" alt="NeVo Tower Sunset View" class="rendering-image">
+                        <div class="rendering-title">🌅 Sunset View Experience</div>
+                        <div class="rendering-desc">
+                            Breathtaking sunset views from residential units showcasing the premium location value. 
+                            Natural beauty and luxury living that justifies premium pricing and strong market demand.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <div class="highlight-title">🎯 Project Highlights</div>
+                    <div class="two-column">
+                        <div>
+                            <h4 style="color: #4ECDC4; margin-bottom: 15px;">Development Features:</h4>
+                            <ul class="feature-list">
+                                <li>75 luxury residential units</li>
+                                <li>Premium waterfront location</li>
+                                <li>Modern architectural design</li>
+                                <li>Rooftop amenities and panoramic views</li>
+                                <li>High-end finishes throughout</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: #4ECDC4; margin-bottom: 15px;">Market Positioning:</h4>
+                            <ul class="feature-list">
+                                <li>Prime North Bay Village location</li>
+                                <li>Target luxury residential market</li>
+                                <li>Strong appreciation potential</li>
+                                <li>Miami waterfront premium</li>
+                                <li>$45M+ project valuation</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -532,6 +713,14 @@
         </div>
     </div>
 
+    <!-- Modal for Image Viewing -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img class="modal-image" id="modalImage" src="">
+        </div>
+    </div>
+
     <script>
         // Tab Navigation
         function showTab(tabName) {
@@ -574,6 +763,59 @@
             // Activate MMM Model tab
             document.getElementById('model').classList.add('active');
             document.querySelector('button[onclick="showTab(\'model\')"]').classList.add('active');
+        });
+        
+        // Modal functions for renderings
+        function openModal(imageSrc) {
+            console.log('Opening modal with image:', imageSrc);
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            
+            if (!modal || !modalImage) {
+                console.error('Modal elements not found');
+                return;
+            }
+            
+            // Add cache-busting timestamp to image
+            const timestamp = new Date().getTime();
+            const cacheBustedSrc = imageSrc + (imageSrc.includes('?') ? '&' : '?') + 'v=' + timestamp;
+            modalImage.src = cacheBustedSrc;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            
+            // Add error handling for image loading
+            modalImage.onerror = function() {
+                console.error('Failed to load image:', imageSrc);
+                modalImage.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4=';
+            };
+            
+            modalImage.onload = function() {
+                console.log('Image loaded successfully');
+            };
+        }
+        
+        function closeModal() {
+            console.log('Closing modal');
+            const modal = document.getElementById('imageModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Re-enable scrolling
+            }
+        }
+        
+        // Close modal when clicking outside the image
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
         });
     </script>
 </body>
