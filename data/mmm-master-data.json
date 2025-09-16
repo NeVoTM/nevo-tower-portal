@@ -1,0 +1,166 @@
+{
+  "project_info": {
+    "name": "1580 Kennedy Causeway",
+    "location": "North Bay Village, Miami, Florida",
+    "developer": "Roy Abrams - GPI Group (USA) LLC",
+    "total_units": 147,
+    "condo_units": 48,
+    "hotel_units": 99,
+    "building_height": "24 stories, 240 ft",
+    "average_unit_size": "1,520 sq ft (condos)",
+    "project_type": "Mixed-use luxury development",
+    "last_updated": "2024-09-16"
+  },
+  "financial_summary": {
+    "traditional_model": {
+      "total_development_cost": 158856137,
+      "projected_revenue": 193035163,
+      "traditional_profit": 34179026,
+      "traditional_roi_percent": 21.5,
+      "development_timeline_months": 36
+    },
+    "mmm_model": {
+      "total_cash_required": "TBD - To be calculated",
+      "projected_revenue": 193035163,
+      "cash_savings": "TBD - To be calculated",
+      "equity_value_created": "TBD - To be calculated",
+      "total_mmm_benefit": "TBD - To be calculated",
+      "mmm_roi_percent": "TBD - Target 28%+",
+      "development_timeline_months": "TBD - Target 18 months faster"
+    }
+  },
+  "cost_breakdown_traditional": {
+    "hard_costs": {
+      "total": 91854000,
+      "construction_management": 1837080,
+      "residential_construction": "TBD - Part of total hard costs",
+      "commercial_construction": "TBD - Part of total hard costs",
+      "pools_pool_deck": 1200000,
+      "landscaping": 300000,
+      "ff_e": 4678110,
+      "general_conditions": 4191370,
+      "contingency": 4191370
+    },
+    "soft_costs": {
+      "total": 38878121,
+      "architecture_design": 1515591,
+      "engineering_total": 642978,
+      "engineering_civil": 183708,
+      "engineering_mep": 183708,
+      "engineering_structural": 275562,
+      "legal_services_total": 593043,
+      "legal_acquisition": 275562,
+      "legal_zoning": 183708,
+      "legal_condo_docs": 183708,
+      "legal_construction": 229635,
+      "marketing_sales_total": 2068735,
+      "pre_sales_marketing": 248410,
+      "website_model": 156556,
+      "pr_events": 248410,
+      "sales_center": 918540,
+      "municipal_impacts": 5108620,
+      "development_fee": 4539316,
+      "commissions_total": 17373165,
+      "commissions_in_house": 5791055,
+      "commissions_outside": 11582110
+    },
+    "acquisition_financing": {
+      "total": 28124016,
+      "land_acquisition": 11248000,
+      "financial_costs": 3507051,
+      "interest_reserve": 13368965
+    }
+  },
+  "mmm_model_template": {
+    "note": "Fill in these values with MMM calculations",
+    "core_services": {
+      "construction": {
+        "traditional_cost": "Extract from hard_costs",
+        "mmm_cash_cost": "TBD",
+        "equity_percent": "TBD - typically 8-12%",
+        "cash_savings": "TBD - Traditional - MMM Cash",
+        "equity_value": "TBD - Project value * equity %",
+        "net_benefit": "TBD - Cash savings + Equity value"
+      },
+      "architecture": {
+        "traditional_cost": 1515591,
+        "mmm_cash_cost": "TBD",
+        "equity_percent": "TBD - typically 3-5%",
+        "cash_savings": "TBD",
+        "equity_value": "TBD",
+        "net_benefit": "TBD"
+      },
+      "engineering": {
+        "traditional_cost": 642978,
+        "mmm_cash_cost": "TBD",
+        "equity_percent": "TBD - typically 2-4%",
+        "cash_savings": "TBD",
+        "equity_value": "TBD",
+        "net_benefit": "TBD"
+      },
+      "legal": {
+        "traditional_cost": 593043,
+        "mmm_cash_cost": "TBD",
+        "equity_percent": "TBD - typically 1-3%",
+        "cash_savings": "TBD",
+        "equity_value": "TBD",
+        "net_benefit": "TBD"
+      }
+    },
+    "marketing_sales": {
+      "marketing": {
+        "traditional_cost": 2068735,
+        "mmm_cash_cost": "TBD",
+        "equity_percent": "TBD - typically 2-4%",
+        "cash_savings": "TBD",
+        "equity_value": "TBD",
+        "net_benefit": "TBD"
+      },
+      "commissions": {
+        "traditional_cost": 17373165,
+        "mmm_cash_cost": "TBD",
+        "equity_percent": "TBD - typically 4-8%",
+        "cash_savings": "TBD",
+        "equity_value": "TBD",
+        "net_benefit": "TBD"
+      }
+    },
+    "calculated_totals": {
+      "total_traditional_cost": 158856137,
+      "total_mmm_cash_required": "TBD - Sum of all MMM cash costs",
+      "total_cash_savings": "TBD - Traditional - MMM Cash",
+      "total_equity_value": "TBD - Sum of all equity values",
+      "total_net_benefit": "TBD - Cash savings + Equity value",
+      "cash_reduction_percent": "TBD - (Cash savings / Traditional cost) * 100",
+      "mmm_roi_improvement": "TBD - MMM ROI - Traditional ROI"
+    }
+  },
+  "dashboard_settings": {
+    "primary_color": "#FFD700",
+    "secondary_color": "#4ECDC4",
+    "accent_color": "#FF6B6B",
+    "background_gradient": "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
+    "currency_format": "USD",
+    "number_format": "US",
+    "show_percentages": true,
+    "show_timelines": true,
+    "show_roi_comparison": true
+  },
+  "update_instructions": {
+    "how_to_update": [
+      "1. Edit this file directly in GitHub web interface",
+      "2. Update the TBD values with calculated MMM numbers",
+      "3. Commit changes to GitHub",
+      "4. Notify AI agent to pull updated data",
+      "5. AI agent will automatically use new data in responses"
+    ],
+    "calculation_notes": [
+      "Equity percentages typically range 1-12% based on service type",
+      "Cash savings = Traditional cost - MMM cash cost",
+      "Equity value = Project total value * equity percentage",
+      "Net benefit = Cash savings + Equity value",
+      "Target total cash reduction: 65-70%",
+      "Target timeline reduction: 18+ months"
+    ]
+  }
+}
