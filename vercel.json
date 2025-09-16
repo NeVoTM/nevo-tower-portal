@@ -1,7 +1,10 @@
 {
-  "name": "mmm-ai-agent-portal",
   "framework": "nextjs",
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "installCommand": "npm install"
+  "installCommand": "npm install",
+  "domains": [
+    "partnersnotpaychecks.com",
+    "www.partnersnotpaychecks.com"
+  ]
 }
