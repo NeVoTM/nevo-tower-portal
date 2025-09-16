@@ -396,6 +396,57 @@
             border: 2px solid rgba(76,205,196,0.3);
         }
         
+        /* Roy's Resource Buttons */
+        .roy-button {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #1e3c72;
+            border: none;
+            padding: 25px 30px;
+            border-radius: 20px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            border: 3px solid rgba(255,215,0,0.3);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+            text-align: center;
+            width: 100%;
+        }
+        
+        .roy-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(255,215,0,0.5);
+            background: linear-gradient(45deg, #FFA500, #FFD700);
+            color: #1e3c72;
+        }
+        
+        .roy-button-icon {
+            font-size: 2em;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .roy-button-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .roy-button-desc {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .roy-resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
         /* Launch AI Agent Button */
         .launch-ai-button {
             background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
@@ -962,70 +1013,64 @@
         <!-- Roy Abrams Focus Tab -->
         <div id="roy-abrams" class="tab-content">
             <div class="content-section">
-                <h2 class="section-title">🎯 Roy Abrams - GPI Strategic Opportunity</h2>
-                <p class="section-subtitle">North Bay Village Project Application</p>
+                <h2 class="section-title">🎯 Roy Abrams - NeVo Tower Resources</h2>
+                <p class="section-subtitle">1580 Kennedy Causeway Project - Click below to explore</p>
                 
                 <div class="highlight-box">
-                    <div class="highlight-title">🏝️ Immediate Impact for GPI's North Bay Village Project</div>
+                    <div class="highlight-title">🏢 Your Project: Kennedy Causeway NeVo Tower</div>
                     <div class="two-column">
                         <div>
-                            <h4 style="color: #4ECDC4; margin-bottom: 15px;">Financial Impact:</h4>
+                            <h4 style="color: #FFD700; margin-bottom: 15px;">Project Scale:</h4>
                             <ul class="feature-list">
-                                <li>Preserve $4.67M in working capital</li>
-                                <li>Accelerate completion by 18 months</li>
-                                <li>Increase project IRR from ~20% to ~28%</li>
-                                <li>Create $7.09M total net benefit</li>
+                                <li><strong>147 units</strong> (48 condos + 99 condo/hotel)</li>
+                                <li><strong>24 stories</strong>, 240 ft height</li>
+                                <li><strong>$158.9M</strong> traditional development cost</li>
+                                <li><strong>$193M</strong> projected revenue</li>
                             </ul>
                         </div>
                         <div>
-                            <h4 style="color: #4ECDC4; margin-bottom: 15px;">Strategic Positioning:</h4>
+                            <h4 style="color: #FFD700; margin-bottom: 15px;">MMM Model Impact:</h4>
                             <ul class="feature-list">
-                                <li>Position GPI as innovation leader</li>
-                                <li>Create template for Miami Beach, Brickell</li>
-                                <li>Establish partnership network</li>
-                                <li>Industry recognition as MMM pioneer</li>
+                                <li><strong>$55.7M</strong> cash required (65% reduction)</li>
+                                <li><strong>$103M+</strong> cash savings</li>
+                                <li><strong>18 months</strong> faster completion</li>
+                                <li><strong>$156.8M+</strong> total benefit</li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 
-                <div class="narrative-section">
-                    <div class="narrative-title">🚀 Scalability: The Copy-Paste Advantage</div>
-                    <div class="narrative-content">
-                        <strong>Project 1 (North Bay Village):</strong>
-                        <br>• Establish partner relationships and prove MMM effectiveness
-                        <br>• Generate $4.67M preserved capital for next project
-                        <br><br>
-                        <strong>Project 2 (Next Development):</strong>
-                        <br>• Leverage proven partner network
-                        <br>• Deploy preserved capital from Project 1
-                        <br>• Generate additional $4.67M preservation = $9.34M available
-                        <br><br>
-                        <strong>Project 3+ (Portfolio Expansion):</strong>
-                        <br>• Multiple concurrent developments possible
-                        <br>• Industry leadership position established
-                        <br>• Network effects provide continuous deal flow
+                <div class="content-section">
+                    <h3 class="section-title" style="font-size: 2.2em; margin-bottom: 20px;">🔗 Roy's Resources - Click to Open</h3>
+                    
+                    <div class="roy-resources-grid">
+                        <a href="https://nevotm.github.io/nevo-tower-portal/roy-abrams-real-numbers-template.html" target="_blank" class="roy-button">
+                            <div class="roy-button-icon">🏢</div>
+                            <div class="roy-button-title">Your Project Analysis</div>
+                            <div class="roy-button-desc">Kennedy Causeway $158.9M breakdown<br>Traditional vs MMM comparison</div>
+                        </a>
+                        
+                        <a href="https://nevotm.github.io/nevo-tower-portal/mmm-dashboard.html" target="_blank" class="roy-button">
+                            <div class="roy-button-icon">📊</div>
+                            <div class="roy-button-title">Live Financial Dashboard</div>
+                            <div class="roy-button-desc">Real-time MMM model data<br>Interactive charts & graphs</div>
+                        </a>
+                        
+                        <a href="https://partnersnotinvestors.com" target="_blank" class="roy-button">
+                            <div class="roy-button-icon">🤖</div>
+                            <div class="roy-button-title">Ask the AI Agent</div>
+                            <div class="roy-button-desc">Get instant answers<br>Voice & text interface</div>
+                        </a>
                     </div>
-                </div>
-                
-                <div class="narrative-section">
-                    <div class="narrative-title">🤝 Implementation for GPI</div>
-                    <div class="narrative-content">
-                        <strong>Phase 1: Partnership Framework (2-3 weeks)</strong>
-                        <br>• Finalize MMM structure for North Bay Village
-                        <br>• Identify and evaluate potential partners
-                        <br><br>
-                        <strong>Phase 2: Partner Recruitment (3-4 weeks)</strong>
-                        <br>• Approach service providers with equity offers
-                        <br>• Execute legal agreements and entity formation
-                        <br><br>
-                        <strong>Phase 3: Project Integration (1-2 weeks)</strong>
-                        <br>• Launch accelerated development timeline
-                        <br>• Begin stakeholder-aligned execution
-                        <br><br>
-                        <strong>Phase 4: Model Replication (Ongoing)</strong>
-                        <br>• Scale to additional GPI projects
-                        <br>• Establish industry leadership position
+                    
+                    <div style="text-align: center; margin: 40px 0; padding: 30px; background: rgba(255,215,0,0.1); border-radius: 20px; border: 2px solid rgba(255,215,0,0.3);">
+                        <h3 style="color: #FFD700; margin-bottom: 20px;">Ready to Transform Your Development?</h3>
+                        <p style="font-size: 1.2em; margin-bottom: 20px;">The MMM "Partners Not Paychecks" model can save you $103M+ on Kennedy Causeway</p>
+                        <div style="font-size: 1.1em; color: #4ECDC4;">
+                            📞 <strong>Next Step:</strong> Schedule implementation discussion<br>
+                            📅 <strong>Timeline:</strong> 4-6 weeks to launch partner recruitment<br>
+                            🎆 <strong>Result:</strong> 18 months faster, 65% less cash required
+                        </div>
                     </div>
                 </div>
             </div>
