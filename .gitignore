@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# GitHub Token Security
+.env.github
+.github_token_nevotm.txt
+*.token
+*_SECURE.txt
