@@ -14,7 +14,7 @@
     
     <script>
         // AUTO-REFRESH SYSTEM - Forces fresh content every time
-        const VERSION = '20250917_012900'; // EST timestamp when you make changes
+        const VERSION = '20250917_014700'; // EST timestamp when you make changes
         
         // Check if this is the latest version
         if (localStorage.getItem('mmm_version') !== VERSION) {
@@ -375,7 +375,7 @@
 </head>
 <body>
     <!-- Version Indicator for Debugging -->
-    <div class="version-indicator" onclick="checkPassword()" title="MMM Master Dashboard v6.7 - Click for Language Review Panel">v6.7-091701:29-EST-ALL-TABS-WORKING</div>
+    <div class="version-indicator" onclick="checkPassword()" title="MMM Master Dashboard v6.8 - Click for Language Review Panel">v6.8-091701:47-EST-FULLY-INTEGRATED</div>
     
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
@@ -1504,7 +1504,7 @@
             // Create context-rich URL with dashboard information
             const dashboardUrl = encodeURIComponent(window.location.href);
             const currentTab = document.querySelector('.tab-content.active')?.id || 'model';
-            const dashboardVersion = 'v6.7-091701:29-EST-ALL-TABS-WORKING';
+            const dashboardVersion = 'v6.8-091701:47-EST-FULLY-INTEGRATED';
             
             // Build AI Agent URL with context parameters
             const aiAgentUrl = `https://partnersnotinvestors.com/?` +
