@@ -14,7 +14,7 @@
     
     <script>
         // AUTO-REFRESH SYSTEM - Forces fresh content every time
-        const VERSION = '20250917_032500'; // Update this timestamp when you make changes
+        const VERSION = '20250917_032800'; // Update this timestamp when you make changes
         
         // Check if this is the latest version
         if (localStorage.getItem('mmm_version') !== VERSION) {
@@ -64,6 +64,16 @@
             font-size: 10px;
             font-weight: bold;
             z-index: 9999;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .version-indicator:hover {
+            background: rgba(255,215,0,1);
+            transform: scale(1.05);
+            border: 2px solid rgba(30, 60, 114, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
         }
         
         .container {
@@ -365,7 +375,7 @@
 </head>
 <body>
     <!-- Version Indicator for Debugging -->
-    <div class="version-indicator">v5.5 - 20250917_032500</div>
+    <div class="version-indicator" onclick="showTab('language-review')" title="Click to access Language Review Control Panel">v5.6 - 20250917_032800</div>
     
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
@@ -376,9 +386,6 @@
         <button class="tab-btn" onclick="showTab('roy-abrams')">Roy Abrams Focus</button>
         <button class="tab-btn" onclick="showTab('cash-partners')">Cash Partners</button>
         <button class="tab-btn" onclick="showTab('service-partners')">Service Partners</button>
-        <button class="tab-btn" onclick="showTab('language-review')" style="background: linear-gradient(45deg, #FF6B35, #FF8C42);">🔍 Language Review</button>
-        <button class="tab-btn" onclick="copySelectionsToClipboard()" style="background: linear-gradient(45deg, #4ECDC4, #45B7B8);">📋 Submit Selections</button>
-        <button class="tab-btn" onclick="clearAllSelections()" style="background: linear-gradient(45deg, #FF6B6B, #FF8E8E);">🗑️ Clear All</button>
         <a href="https://partnersnotinvestors.com" target="_blank" class="tab-btn" style="background: linear-gradient(45deg, #6C5CE7, #A29BFE); text-decoration: none;">🤖 AI Agent</a>
     </div>
 
@@ -953,6 +960,97 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Language Review Tab - HIDDEN BY DEFAULT, ACTIVATED BY VERSION CLICK -->
+        <div id="language-review" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">🔍 Language Review Control Panel</h2>
+                <p class="section-subtitle">Interactive terminology review and submission system</p>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🏠 Welcome to the Language Review System</div>
+                    <div class="narrative-content">
+                        This powerful system allows you to review and modify terminology throughout the dashboard.
+                        Every instance of "Capital Providers," "Investors," and related terms has been marked with interactive toggles.
+                        <br><br>
+                        <strong>How to use this system:</strong>
+                        <ol style="margin: 20px 0; padding-left: 30px; line-height: 2;">
+                            <li><strong>Navigate through all tabs</strong> and look for the golden toggle buttons next to terminology</li>
+                            <li><strong>Make your selections:</strong> Keep → Change → CONFIRMED for each instance</li>
+                            <li><strong>Your choices are automatically saved</strong> to prevent loss during navigation</li>
+                            <li><strong>Submit your final selections</strong> using the button below</li>
+                            <li><strong>I’ll process your choices</strong> and update the file accordingly</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <div class="highlight-title">📋 Review Progress</div>
+                    <div id="review-progress" style="font-size: 1.2em; margin: 20px 0;">
+                        <strong>Status:</strong> <span id="progress-text">Loading...</span>
+                    </div>
+                </div>
+                
+                <div class="two-column" style="gap: 60px; margin: 40px 0;">
+                    <div style="text-align: center;">
+                        <button onclick="copySelectionsToClipboard()" 
+                                style="background: linear-gradient(45deg, #4ECDC4, #45B7B8); 
+                                       color: white; border: none; padding: 20px 40px; 
+                                       border-radius: 15px; font-size: 1.2em; font-weight: bold;
+                                       cursor: pointer; box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
+                                       transition: all 0.3s ease;" 
+                                onmouseover="this.style.transform='scale(1.05)'" 
+                                onmouseout="this.style.transform='scale(1)'">
+                            📋 Submit All Selections
+                        </button>
+                        <p style="margin-top: 15px; opacity: 0.8; font-size: 0.9em;">
+                            Copies formatted summary to clipboard for easy submission
+                        </p>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <button onclick="clearAllSelections()" 
+                                style="background: linear-gradient(45deg, #FF6B6B, #FF8E8E); 
+                                       color: white; border: none; padding: 20px 40px; 
+                                       border-radius: 15px; font-size: 1.2em; font-weight: bold;
+                                       cursor: pointer; box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+                                       transition: all 0.3s ease;" 
+                                onmouseover="this.style.transform='scale(1.05)'" 
+                                onmouseout="this.style.transform='scale(1)'">
+                            🗑️ Clear All Selections
+                        </button>
+                        <p style="margin-top: 15px; opacity: 0.8; font-size: 0.9em;">
+                            Reset all choices back to default "Keep" settings
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🚀 Instructions for Efficient Review</div>
+                    <div class="narrative-content">
+                        <strong>Three-Stage Process:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>Stage 1 - KEEP:</strong> Default setting, maintains current terminology</li>
+                            <li><strong>Stage 2 - CHANGE:</strong> Select alternative terminology for this instance</li>
+                            <li><strong>Stage 3 - CONFIRMED:</strong> <strong style="color: red;">Final approval</strong> - locks in your decision</li>
+                        </ul>
+                        
+                        <strong>Best Practices:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Review each tab systematically (MMM Model → Overview → etc.)</li>
+                            <li>Look for golden highlight boxes with radio buttons</li>
+                            <li>Consider context when making Keep/Change decisions</li>
+                            <li>Use CONFIRMED only after you’re certain of your choice</li>
+                            <li>Submit all selections when review is complete</li>
+                        </ul>
+                        
+                        <strong>Pro Tip:</strong> Your selections are automatically saved to browser storage, 
+                        so you can take breaks and return without losing progress!
+                    </div>
+                </div>
+                
+            </div>
+        </div>
     </div>
 
     <!-- Modal for Image Viewing -->
@@ -1115,10 +1213,16 @@
             const reviewedItems = Object.keys(selections).length;
             const confirmedItems = Object.values(selections).filter(v => v === 'confirmed').length;
             
-            // Update status in the version indicator
+            // Update progress text in language review panel
+            const progressText = document.getElementById('progress-text');
+            if (progressText) {
+                progressText.innerHTML = `${reviewedItems}/${totalItems} reviewed | ${confirmedItems} confirmed`;
+            }
+            
+            // Keep version indicator clean - don't overwrite it
             const versionIndicator = document.querySelector('.version-indicator');
-            if (versionIndicator) {
-                versionIndicator.innerHTML = `v5.4 - Review: ${reviewedItems}/${totalItems} | Confirmed: ${confirmedItems}`;
+            if (versionIndicator && !versionIndicator.innerHTML.includes('v5.6')) {
+                versionIndicator.innerHTML = 'v5.6 - 20250917_032800';
             }
         }
         
