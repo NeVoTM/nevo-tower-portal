@@ -14,7 +14,7 @@
     
     <script>
         // AUTO-REFRESH SYSTEM - Forces fresh content every time
-        const VERSION = '20250917_032800'; // Update this timestamp when you make changes
+        const VERSION = '20250917_033200'; // Update this timestamp when you make changes
         
         // Check if this is the latest version
         if (localStorage.getItem('mmm_version') !== VERSION) {
@@ -375,7 +375,7 @@
 </head>
 <body>
     <!-- Version Indicator for Debugging -->
-    <div class="version-indicator" onclick="showTab('language-review')" title="Click to access Language Review Control Panel">v5.6 - 20250917_032800</div>
+    <div class="version-indicator" onclick="showTab('language-review')" title="Click to access Language Review Control Panel">v5.7 - 20250917_033200</div>
     
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
@@ -439,6 +439,7 @@
                     <span style="background: #FFD700; color: black; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin-left: 10px;">
                         Keep: <input type="radio" name="line417" value="keep" checked> | Change: <input type="radio" name="line417" value="change"> | <strong style="color: red;">CONFIRMED: <input type="radio" name="line417" value="confirmed"></strong>
                     </span>
+                    </div>
                     <div class="narrative-content">
                         <strong>MMM ensures Howey Test compliance and completely eliminates SEC regulatory requirements through active partner governance.</strong>
                         <br><br>
@@ -1221,8 +1222,8 @@
             
             // Keep version indicator clean - don't overwrite it
             const versionIndicator = document.querySelector('.version-indicator');
-            if (versionIndicator && !versionIndicator.innerHTML.includes('v5.6')) {
-                versionIndicator.innerHTML = 'v5.6 - 20250917_032800';
+            if (versionIndicator && !versionIndicator.innerHTML.includes('v5.7')) {
+                versionIndicator.innerHTML = 'v5.7 - 20250917_033200';
             }
         }
         
