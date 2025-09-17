@@ -651,53 +651,39 @@ const testBusinessVoice = () => {
           </div>
         </div>
 
-        {/* Return to Dashboard Button */}
+        {/* Return to Dashboard Button - Discrete */}
         {showReturnButton && dashboardContext && (
-          <div className="fixed top-5 right-5 z-50">
-            <button
-              onClick={returnToDashboard}
-              className="inline-flex items-center gap-2 px-4 py-3 font-bold text-sm rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-              style={{
-                background: 'linear-gradient(45deg, #1e3c72, #2a5298)',
-                color: '#FFD700',
-                border: '2px solid #FFD700',
-                backdropFilter: 'blur(10px)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.05) translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 8px 25px rgba(30, 60, 114, 0.6)';
-                e.currentTarget.style.background = 'linear-gradient(45deg, #2a5298, #1e3c72)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                e.currentTarget.style.boxShadow = '0 5px 20px rgba(30, 60, 114, 0.4)';
-                e.currentTarget.style.background = 'linear-gradient(45deg, #1e3c72, #2a5298)';
-              }}
-            >
-              <span>🏗️</span>
-              <span>Return to MMM Dashboard</span>
-            </button>
-          </div>
-        )}
-
-        {/* Dashboard Welcome Message */}
-        {dashboardContext && (
-          <div className="mb-6 p-4 rounded-xl" style={{
-            background: 'rgba(0, 0, 0, 0.3)',
-            border: '2px solid rgba(255, 215, 0, 0.3)',
-            backdropFilter: 'blur(10px)'
-          }}>
-            <div className="flex items-center gap-3 text-white">
-              <span className="text-2xl">🤖</span>
-              <div>
-                <h3 className="font-bold" style={{color: '#FFD700'}}>Welcome from MMM Dashboard!</h3>
-                <p className="text-sm text-gray-300">
-                  Context loaded: Miami Makers Model • {dashboardContext.currentTab} tab • {dashboardContext.version}
-                </p>
+          <div className="fixed top-3 right-3 z-50">
+            <div className="flex flex-col items-end gap-1">
+              <button
+                onClick={returnToDashboard}
+                className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                style={{
+                  background: 'rgba(30, 60, 114, 0.8)',
+                  color: '#FFD700',
+                  border: '1px solid rgba(255, 215, 0, 0.5)',
+                  backdropFilter: 'blur(10px)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.02)';
+                  e.currentTarget.style.background = 'rgba(30, 60, 114, 0.9)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.background = 'rgba(30, 60, 114, 0.8)';
+                }}
+              >
+                <span>🏗️</span>
+                <span>Return</span>
+              </button>
+              <div className="text-xs text-gray-400 opacity-70">
+                {dashboardContext.version}
               </div>
             </div>
           </div>
         )}
+
+        {/* Dashboard Context - Minimal */}
 
         {/* DMM Charts Component */}
         <div className="mb-8">
