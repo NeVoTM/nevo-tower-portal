@@ -14,7 +14,7 @@
     
     <script>
         // AUTO-REFRESH SYSTEM - Forces fresh content every time
-        const VERSION = '20250917_082200'; // EST timestamp when you make changes - MOBILE TEXT SPACING FIXED
+        const VERSION = '20250917_083900'; // EST timestamp when you make changes - MOBILE CONTENT RESTRUCTURED
         
         // Check if this is the latest version
         if (localStorage.getItem('mmm_version') !== VERSION) {
@@ -429,13 +429,15 @@
             
             .narrative-content {
                 font-size: 0.95em;
-                line-height: 1.6;
+                line-height: 1.8;
                 text-align: left !important;
                 text-justify: none;
                 word-spacing: normal;
-                hyphens: auto;
-                -webkit-hyphens: auto;
-                -ms-hyphens: auto;
+                hyphens: none;
+                -webkit-hyphens: none;
+                -ms-hyphens: none;
+                overflow-wrap: break-word;
+                word-break: normal;
             }
             
             .stats-grid,
@@ -478,7 +480,7 @@
 </head>
 <body>
     <!-- Version Indicator for Debugging -->
-    <div class="version-indicator" onclick="checkPassword()" title="MMM Master Dashboard v7.1 - Mobile Text Spacing Fixed - Click for Language Review Panel">v7.1-091708:22-TEXT-FIX</div>
+    <div class="version-indicator" onclick="checkPassword()" title="MMM Master Dashboard v7.2 - Mobile Content Restructured - Click for Language Review Panel">v7.2-091708:39-MOBILE-FRIENDLY</div>
     
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
@@ -505,28 +507,38 @@
                 <div class="narrative-section">
                     <div class="narrative-title">🎯 Model Introduction</div>
                     <div class="narrative-content">
-                        The Miami Makers Model (MMM) revolutionizes real estate development by transforming the entire ecosystem of development partners into equity stakeholders. 
-                        The "Partners Not Paychecks, Partners Not Investors" approach
-                        converts key development participants—including general service providers (contractors, architects,
-                        engineers, legal, marketing), MEP technical professionals (electricians, plumbers, HVAC, fire safety, telecommunications), cash partners (private capital contributors, 
-                        family offices), material supply partners (steel, concrete, fixtures, technology suppliers), and land owner partners (property contribution as equity)—into equity owners with direct stakes in the developments they help create.
+                        <strong>The Miami Makers Model (MMM) revolutionizes real estate development.</strong>
                         <br><br>
-                        This comprehensive partnership structure creates a powerful alignment where every participant's success is directly tied to project success. 
-                        Cash partners provide capital in exchange for equity rather than traditional debt structures, while material suppliers contribute products 
-                        and services for ownership stakes rather than just payment terms. Crucially, cash partners are not passive investors
-                        but active decision-makers
-                        participating in key project decisions through an online voting system, ensuring compliance with the Howey Test and completely eliminating
-                        SEC regulatory requirements. The result is unprecedented collaboration, 2x+ efficiency gains from "skin in the game" motivation, 
-                        enhanced quality control, accelerated timelines, and dramatically reduced cash requirements across the entire development process.
-                        <br><br>
-                        <strong>The MMM Ecosystem includes:</strong>
+                        
+                        <strong>🔄 Core Innovation:</strong>
                         <ul class="feature-list" style="margin: 15px 0;">
-                            <li><strong>General Service Partners:</strong> General contractors, architects, structural engineers, legal, marketing teams</li>
-                            <li><strong>MEP Technical Partners:</strong> Electricians, plumbers, HVAC technicians, fire safety, telecommunications, security systems</li>
-                            <li><strong>Cash Partners:</strong> Private capital contributors, family offices, strategic funding partners</li>
-                            <li><strong>Material Supply Partners:</strong> Steel suppliers, concrete providers, fixture manufacturers, technology vendors</li>
-                            <li><strong>Development Leadership:</strong> Project managers, construction oversight, sales coordination</li>
-                            <li><strong>Land Owner Partners:</strong> Property owners contribute land as equity stake instead of traditional sale</li>
+                            <li>Transforms contractors into equity partners</li>
+                            <li>"Partners Not Paychecks" approach</li>
+                            <li>Direct stakes in developments they build</li>
+                        </ul>
+                        
+                        <strong>⚖️ Legal Advantage:</strong>
+                        <ul class="feature-list" style="margin: 15px 0;">
+                            <li>Partners vote on key decisions</li>
+                            <li>Compliance with Howey Test</li>
+                            <li>Zero SEC regulatory requirements</li>
+                        </ul>
+                        
+                        <strong>🚀 Results:</strong>
+                        <ul class="feature-list" style="margin: 15px 0;">
+                            <li>2x+ efficiency gains from ownership motivation</li>
+                            <li>Enhanced quality control</li>
+                            <li>Faster timelines</li>
+                            <li>Reduced cash requirements</li>
+                        </ul>
+                        
+                        <strong>🤝 The MMM Partner Ecosystem:</strong>
+                        <ul class="feature-list" style="margin: 15px 0;">
+                            <li><strong>General Service Partners:</strong> Contractors, architects, engineers, legal, marketing</li>
+                            <li><strong>MEP Technical Partners:</strong> Electricians, plumbers, HVAC, fire safety, telecom</li>
+                            <li><strong>Cash Partners:</strong> Private capital, family offices, strategic funding</li>
+                            <li><strong>Material Partners:</strong> Steel, concrete, fixtures, technology suppliers</li>
+                            <li><strong>Land Owner Partners:</strong> Property owners contributing land as equity</li>
                         </ul>
                     </div>
                 </div>
@@ -1607,7 +1619,7 @@
             // Create context-rich URL with dashboard information
             const dashboardUrl = encodeURIComponent(window.location.href);
             const currentTab = document.querySelector('.tab-content.active')?.id || 'model';
-            const dashboardVersion = 'v7.1-091708:22-TEXT-FIX';
+            const dashboardVersion = 'v7.2-091708:39-MOBILE-FRIENDLY';
             
             // Build AI Agent URL with context parameters
             const aiAgentUrl = `https://partnersnotinvestors.com/?` +
