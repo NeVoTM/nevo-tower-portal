@@ -647,7 +647,7 @@ const testBusinessVoice = () => {
           <div className="flex items-center justify-center gap-2 mb-2">
             <Sparkles className="h-6 w-6" style={{color: '#FFD700'}} />
             <h1 className="text-2xl font-bold text-white">DMM AI Agent</h1>
-            <span className="text-sm" style={{color: '#87CEEB'}}>Intelligence System</span>
+            <span className="text-sm" style={{color: '#87CEEB'}}>Intelligence System v6.8</span>
           </div>
         </div>
 
