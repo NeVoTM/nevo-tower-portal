@@ -649,6 +649,7 @@
                         The result: 60% risk reduction compared to traditional development while achieving superior returns.
                     </div>
                 </div>
+            </div>
         </div>
 
         <!-- Financials Tab -->
@@ -1112,11 +1113,14 @@
     </div>
 
     <script>
-        // Tab Navigation
+        // Tab Navigation with Error Checking
         function showTab(tabName) {
+            console.log('Showing tab:', tabName);
+            
             // Hide all tab content
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
+                console.log('Hiding tab:', content.id);
             });
             
             // Remove active class from all buttons
@@ -1125,11 +1129,33 @@
             });
             
             // Show selected tab content
-            document.getElementById(tabName).classList.add('active');
+            const targetTab = document.getElementById(tabName);
+            if (targetTab) {
+                targetTab.classList.add('active');
+                console.log('Successfully showing tab:', tabName);
+            } else {
+                console.error('Tab not found:', tabName);
+                return;
+            }
             
             // Add active class to clicked button
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
         }
+        
+        // Initialize first tab on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded - checking tabs');
+            const allTabs = ['model', 'overview', 'financials', 'renderings', 'roy-abrams', 'cash-partners', 'service-partners'];
+            allTabs.forEach(tab => {
+                const element = document.getElementById(tab);
+                console.log('Tab', tab, 'exists:', !!element);
+            });
+            
+            // Ensure model tab is active on load
+            showTab('model');
+        });
         
         // Modal functions for renderings
         function openModal(imageSrc) {
