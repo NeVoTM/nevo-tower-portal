@@ -375,7 +375,7 @@
 </head>
 <body>
     <!-- Version Indicator for Debugging -->
-    <div class="version-indicator" onclick="doNothing()" title="MMM Master Dashboard v6.7 - All Tabs Fixed EST">v6.7-091701:29-EST-ALL-TABS-WORKING</div>
+    <div class="version-indicator" onclick="checkPassword()" title="MMM Master Dashboard v6.7 - Click for Language Review Panel">v6.7-091701:29-EST-ALL-TABS-WORKING</div>
     
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
@@ -386,6 +386,7 @@
         <button class="tab-btn" onclick="showTab('roy-abrams')">Roy Abrams Focus</button>
         <button class="tab-btn" onclick="showTab('cash-partners')">Cash Partners</button>
         <button class="tab-btn" onclick="showTab('service-partners')">Service Partners</button>
+        <button class="tab-btn" onclick="showTab('language-review')" style="background: linear-gradient(45deg, #FF6B35, #FF8C42); display: none;" id="language-review-btn">📝 Language Review</button>
         <button class="tab-btn" onclick="applyAllSelections()" style="background: linear-gradient(45deg, #4ECDC4, #45B7B8); display: none;">🚀 Apply Changes</button>
         <button class="tab-btn" onclick="forceRefresh()" style="background: linear-gradient(45deg, #FF6B35, #FF8C42); display: none;">🔄 Force Refresh</button>
         <button class="tab-btn" onclick="openAIAgent()" style="background: linear-gradient(45deg, #6C5CE7, #A29BFE);">🤖 AI Agent</button>
@@ -1022,6 +1023,92 @@
                 
             </div>
         </div>
+        
+        <!-- Language Review Control Panel - Hidden Tab -->
+        <div id="language-review" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">📝 Language Review Control Panel</h2>
+                <p class="section-subtitle">Advanced Content Management System - Password Protected Access</p>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🎯 Progress Tracker</div>
+                    <div class="narrative-content">
+                        <div style="text-align: center; font-size: 1.3em; padding: 20px; background: rgba(255,215,0,0.1); border-radius: 15px; border: 2px solid rgba(255,215,0,0.3);">
+                            <strong>Review Progress:</strong> <span id="progress-text">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🔄 Control Panel Actions</div>
+                    <div class="two-column">
+                        <div style="text-align: center;">
+                            <button onclick="copySelectionsToClipboard()" 
+                                    style="background: linear-gradient(45deg, #4ECDC4, #45B7B8); 
+                                           color: white; border: none; padding: 20px 40px; 
+                                           border-radius: 15px; font-size: 1.2em; font-weight: bold;
+                                           cursor: pointer; box-shadow: 0 5px 15px rgba(76, 205, 196, 0.3);
+                                           transition: all 0.3s ease;" 
+                                    onmouseover="this.style.transform='scale(1.05)'" 
+                                    onmouseout="this.style.transform='scale(1)'">
+                                📋 Submit All Selections
+                            </button>
+                            <p style="margin-top: 15px; opacity: 0.8; font-size: 0.9em;">
+                                Copies formatted summary to clipboard for easy submission
+                            </p>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <button onclick="clearAllSelections()" 
+                                    style="background: linear-gradient(45deg, #FF6B6B, #FF8E8E); 
+                                           color: white; border: none; padding: 20px 40px; 
+                                           border-radius: 15px; font-size: 1.2em; font-weight: bold;
+                                           cursor: pointer; box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+                                           transition: all 0.3s ease;" 
+                                    onmouseover="this.style.transform='scale(1.05)'" 
+                                    onmouseout="this.style.transform='scale(1)'">
+                                🗺️ Clear All Selections
+                            </button>
+                            <p style="margin-top: 15px; opacity: 0.8; font-size: 0.9em;">
+                                Reset all choices back to default "Keep" settings
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🚀 Instructions for Efficient Review</div>
+                    <div class="narrative-content">
+                        <strong>Three-Stage Process:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>Stage 1 - KEEP:</strong> Default setting, maintains current terminology</li>
+                            <li><strong>Stage 2 - CHANGE:</strong> Select alternative terminology for this instance</li>
+                            <li><strong>Stage 3 - CONFIRMED:</strong> <strong style="color: red;">Final approval</strong> - locks in your decision</li>
+                        </ul>
+                        
+                        <strong>Best Practices:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Review each tab systematically (MMM Model → Overview → etc.)</li>
+                            <li>Look for golden highlight boxes with radio buttons</li>
+                            <li>Consider context when making Keep/Change decisions</li>
+                            <li>Use CONFIRMED only after you're certain of your choice</li>
+                            <li>Submit all selections when review is complete</li>
+                        </ul>
+                        
+                        <strong>Access Methods:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>Version Button:</strong> Click version indicator + password</li>
+                            <li><strong>Ctrl+Shift+!</strong> Direct access (no password)</li>
+                            <li><strong>Ctrl+Shift+$</strong> Alternative direct access (no password)</li>
+                        </ul>
+                        
+                        <strong>Pro Tip:</strong> Your selections are automatically saved to browser storage, 
+                        so you can take breaks and return without losing progress!
+                    </div>
+                </div>
+                
+            </div>
+        </div>
     </div>
 
     <!-- Modal for Image Viewing -->
@@ -1139,28 +1226,39 @@
                 closeModal();
             }
             
-            // Secret keyboard shortcut 1: Ctrl+Alt+L for Language review password prompt
-            if (e.ctrlKey && e.altKey && e.key === 'L') {
+            // Secret keyboard shortcut 1: Ctrl+Shift+! for direct access (no password)
+            if (e.ctrlKey && e.shiftKey && e.key === '!') {
                 e.preventDefault();
-                accessLanguageReview();
+                showSuccessMessage('Direct Access Granted');
+                showTab('language-review');
+                document.getElementById('language-review-btn').style.display = 'inline-block';
+            }
+            
+            // Secret keyboard shortcut 2: Ctrl+Shift+$ for direct access (no password)
+            if (e.ctrlKey && e.shiftKey && e.key === '$') {
+                e.preventDefault();
+                showSuccessMessage('Direct Access Granted');
+                showTab('language-review');
+                document.getElementById('language-review-btn').style.display = 'inline-block';
             }
         });
         
-        // Do nothing function for version indicator click
-        function doNothing() {
-            // Version indicator click does nothing - access is keyboard-only
-        }
-        
-        // Password-protected access to Language Review (Ctrl+Alt+L)
-        function accessLanguageReview() {
+        // Password-protected access via version button click
+        function checkPassword() {
             const password = prompt('🔒 Enter password to access Language Review Control Panel:');
             
             if (password === 'Hanavi') {
                 showSuccessMessage('Access Granted');
                 showTab('language-review');
+                document.getElementById('language-review-btn').style.display = 'inline-block';
             } else if (password !== null) { // Only show error if not cancelled
                 showErrorMessage('Access Denied - Incorrect Password');
             }
+        }
+        
+        // Legacy function for compatibility
+        function accessLanguageReview() {
+            checkPassword();
         }
         
         // Success message display
@@ -1296,6 +1394,58 @@
                 });
             } else {
                 showSelectionsInTextArea(summary);
+            }
+        }
+        
+        // Show selections in a text area for manual copying
+        function showSelectionsInTextArea(summary) {
+            const modal = document.getElementById('imageModal');
+            const modalContent = modal.querySelector('.modal-content');
+            
+            modalContent.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 15px; color: black; max-width: 800px; max-height: 80vh; overflow-y: auto;">
+                    <h3 style="color: #1e3c72; margin-bottom: 20px;">📋 Your Language Review Selections</h3>
+                    <p style="margin-bottom: 15px;">Copy the text below and paste it in your next message:</p>
+                    <textarea readonly style="width: 100%; height: 400px; padding: 15px; font-family: monospace; font-size: 12px; border: 2px solid #ddd; border-radius: 8px;">${summary}</textarea>
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button onclick="selectAllText()" style="background: #4ECDC4; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin-right: 10px; cursor: pointer;">Select All</button>
+                        <button onclick="closeModal()" style="background: #FF6B6B; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Close</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+        
+        // Select all text in textarea
+        function selectAllText() {
+            const textarea = document.querySelector('textarea');
+            if (textarea) {
+                textarea.select();
+                textarea.setSelectionRange(0, 99999); // For mobile
+                
+                // Try to copy to clipboard
+                try {
+                    document.execCommand('copy');
+                    alert('✅ Text copied to clipboard!');
+                } catch (err) {
+                    console.log('Manual copy required');
+                }
+            }
+        }
+        
+        // Clear all selections
+        function clearAllSelections() {
+            if (confirm('⚠️ Are you sure you want to clear all your language review selections?')) {
+                localStorage.removeItem('language_selections');
+                
+                // Reset all radio buttons to default (keep)
+                document.querySelectorAll('input[type="radio"][value="keep"]').forEach(radio => {
+                    radio.checked = true;
+                });
+                
+                updateReviewStatus();
+                alert('✅ All selections cleared and reset to default.');
             }
         }
         
