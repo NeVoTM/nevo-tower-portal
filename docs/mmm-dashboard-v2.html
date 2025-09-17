@@ -14,7 +14,7 @@
     
     <script>
         // AUTO-REFRESH SYSTEM - Forces fresh content every time
-        const VERSION = '20250917_035300'; // Update this timestamp when you make changes
+        const VERSION = '20250917_235400'; // Update this timestamp when you make changes
         
         // Check if this is the latest version
         if (localStorage.getItem('mmm_version') !== VERSION) {
@@ -375,7 +375,7 @@
 </head>
 <body>
     <!-- Version Indicator for Debugging -->
-    <div class="version-indicator" onclick="showTab('language-review')" title="Click to access Language Review Control Panel">v6.1-091703:53-FINAL</div>
+    <div class="version-indicator" onclick="showTab('language-review')" title="Click to access Language Review Control Panel">v6.1-091623:54-FINAL</div>
     
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
@@ -1190,8 +1190,8 @@ investments
             
             // Keep version indicator clean - don't overwrite it
             const versionIndicator = document.querySelector('.version-indicator');
-            if (versionIndicator && !versionIndicator.innerHTML.includes('v6.0-091703:49')) {
-                versionIndicator.innerHTML = 'v6.0-091703:49';
+            if (versionIndicator && !versionIndicator.innerHTML.includes('v6.1-091623:54-FINAL')) {
+                versionIndicator.innerHTML = 'v6.1-091623:54-FINAL';
             }
         }
         
