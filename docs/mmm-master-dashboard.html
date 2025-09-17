@@ -14,7 +14,7 @@
     
     <script>
         // AUTO-REFRESH SYSTEM - Forces fresh content every time
-        const VERSION = '20250917_064800'; // EST timestamp when you make changes - MOBILE FIXES APPLIED
+        const VERSION = '20250917_082200'; // EST timestamp when you make changes - MOBILE TEXT SPACING FIXED
         
         // Check if this is the latest version
         if (localStorage.getItem('mmm_version') !== VERSION) {
@@ -430,6 +430,12 @@
             .narrative-content {
                 font-size: 0.95em;
                 line-height: 1.6;
+                text-align: left !important;
+                text-justify: none;
+                word-spacing: normal;
+                hyphens: auto;
+                -webkit-hyphens: auto;
+                -ms-hyphens: auto;
             }
             
             .stats-grid,
@@ -450,6 +456,9 @@
             
             .feature-list li {
                 margin-bottom: 8px;
+                text-align: left;
+                word-spacing: normal;
+                line-height: 1.5;
             }
             
             .highlight-box {
@@ -469,7 +478,7 @@
 </head>
 <body>
     <!-- Version Indicator for Debugging -->
-    <div class="version-indicator" onclick="checkPassword()" title="MMM Master Dashboard v7.0 - Mobile Responsive + Notification Fix - Click for Language Review Panel">v7.0-091706:48-MOBILE-FIX</div>
+    <div class="version-indicator" onclick="checkPassword()" title="MMM Master Dashboard v7.1 - Mobile Text Spacing Fixed - Click for Language Review Panel">v7.1-091708:22-TEXT-FIX</div>
     
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
@@ -1598,7 +1607,7 @@
             // Create context-rich URL with dashboard information
             const dashboardUrl = encodeURIComponent(window.location.href);
             const currentTab = document.querySelector('.tab-content.active')?.id || 'model';
-            const dashboardVersion = 'v7.0-091706:48-MOBILE-FIX';
+            const dashboardVersion = 'v7.1-091708:22-TEXT-FIX';
             
             // Build AI Agent URL with context parameters
             const aiAgentUrl = `https://partnersnotinvestors.com/?` +
