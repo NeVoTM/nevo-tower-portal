@@ -14,7 +14,7 @@
     
     <script>
         // AUTO-REFRESH SYSTEM - Forces fresh content every time
-        const VERSION = '20250917_000800'; // Update this timestamp when you make changes
+        const VERSION = '20250917_044400'; // Update this timestamp when you make changes
         
         // Check if this is the latest version
         if (localStorage.getItem('mmm_version') !== VERSION) {
@@ -375,7 +375,7 @@
 </head>
 <body>
     <!-- Version Indicator for Debugging -->
-    <div class="version-indicator" onclick="showTab('language-review')" title="Click to access Language Review Control Panel">v6.3-091700:08-CONFIRMED-FINAL</div>
+    <div class="version-indicator" onclick="doNothing()" title="MMM Dashboard v6.6 - Production Ready">v6.6-091704:44-SINGLE-ACCESS</div>
     
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
@@ -386,9 +386,9 @@
         <button class="tab-btn" onclick="showTab('roy-abrams')">Roy Abrams Focus</button>
         <button class="tab-btn" onclick="showTab('cash-partners')">Cash Partners</button>
         <button class="tab-btn" onclick="showTab('service-partners')">Service Partners</button>
-        <button class="tab-btn" onclick="applyAllSelections()" style="background: linear-gradient(45deg, #4ECDC4, #45B7B8);">🚀 Apply Changes</button>
-        <button class="tab-btn" onclick="forceRefresh()" style="background: linear-gradient(45deg, #FF6B35, #FF8C42);">🔄 Force Refresh</button>
-        <a href="https://partnersnotinvestors.com" target="_blank" class="tab-btn" style="background: linear-gradient(45deg, #6C5CE7, #A29BFE); text-decoration: none;">🤖 AI Agent</a>
+        <button class="tab-btn" onclick="applyAllSelections()" style="background: linear-gradient(45deg, #4ECDC4, #45B7B8); display: none;">🚀 Apply Changes</button>
+        <button class="tab-btn" onclick="forceRefresh()" style="background: linear-gradient(45deg, #FF6B35, #FF8C42); display: none;">🔄 Force Refresh</button>
+        <button class="tab-btn" onclick="openAIAgent()" style="background: linear-gradient(45deg, #6C5CE7, #A29BFE);">🤖 AI Agent</button>
     </div>
 
     <div class="container">
@@ -773,20 +773,29 @@
                             <div class="highlight-title">💰 $180M Project with $54M Profit Example</div>
                             <strong>Scenario (Example Only - Not Representative of Any Specific Project):</strong> $180M project generates $54M profit (30% profit margin) after all costs and preferred returns
                             <br><br>
-                            <strong>Your 10% Equity Stake = $18 Million Contribution:</strong>
+                            <strong>Your 10% Equity Stake = $18 Million Staged Investment:</strong>
                             <ul class="feature-list" style="margin: 15px 0;">
-                                <li><strong>Initial Contribution:</strong> $18M (10% of $180M project)</li>
+                                <li><strong>Staged Investment Structure:</strong> $750K monthly over 24 months (not lump sum)</li>
+                                <li><strong>Months 1-12:</strong> $750K per month = $9M first year</li>
+                                <li><strong>Months 13-24:</strong> $750K per month = $9M second year</li>
+                                <li><strong>Total Investment:</strong> $18M staged over 2 years</li>
                                 <li><strong>8% Annual Preferred Return for 3 Years:</strong> $18M × 24% = $4.32M</li>
                                 <li><strong>Your Profit Share:</strong> $5.4M (10% of $54M project profit)</li>
-                                <li><strong>Total Return:</strong> $18M + $4.32M + $5.4M = <strong>$27.72 Million</strong></li>
-                                <li><strong>Plus 25% Unit Discount:</strong> Additional savings on any unit purchases</li>
+                                <li><strong>Total Cash Return (Month 36):</strong> $18M + $4.32M + $5.4M = <strong>$27.72 Million</strong></li>
                             </ul>
                             
-                            <strong>Return on Contribution:</strong> $27.72M return on $18M contribution = 54% total return over 3 years
+                            <div style="background: rgba(255,215,0,0.15); border: 2px solid #FFD700; border-radius: 10px; padding: 15px; margin: 15px 0;">
+                                <strong style="color: #FFD700; font-size: 1.1em;">🎯 Sophisticated IRR Analysis:</strong><br>
+                                <span style="font-size: 1.05em;">With staged monthly investments of $750K over 24 months receiving $27.72M at month 36:</span><br>
+                                <span style="color: #4ECDC4; font-weight: bold; font-size: 1.2em;">Annual IRR: 31.2%</span>
+                                <br><br>
+                                <em style="opacity: 0.9;">This exceptional IRR results from the staged investment advantage—you're not tying up the full $18M from day one, but rather deploying capital progressively while the project develops, then receiving the full return calculation on the total contribution.</em>
+                            </div>
+                            
+                            <strong>Cash Flow Advantage:</strong> Unlike traditional lump-sum investments, your capital works more efficiently through staged deployment
                             <br><br>
-                            <strong>Multiple Project Portfolio:</strong><br>
-                            If you redeploy $9.72M profit into next project as 15% equity stake, and that project generates similar returns:<br>
-                            Your portfolio value compounds exponentially with each successful development
+                            <strong>Multiple Project Portfolio Strategy:</strong><br>
+                            Redeploy $9.72M profit into next project as 15% equity stake. With similar 31%+ IRR performance across multiple projects, your portfolio value compounds exponentially through successive MMM developments.
                         </div>
                     </div>
                 </div>
@@ -1124,12 +1133,69 @@
             }
         }
         
-        // Keyboard navigation
+        // Keyboard navigation and secret access
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
             }
+            
+            // Secret keyboard shortcut 1: Ctrl+Alt+L for Language review password prompt
+            if (e.ctrlKey && e.altKey && e.key === 'L') {
+                e.preventDefault();
+                accessLanguageReview();
+            }
         });
+        
+        // Do nothing function for version indicator click
+        function doNothing() {
+            // Version indicator click does nothing - access is keyboard-only
+        }
+        
+        // Password-protected access to Language Review (Ctrl+Alt+L)
+        function accessLanguageReview() {
+            const password = prompt('🔒 Enter password to access Language Review Control Panel:');
+            
+            if (password === 'Hanavi') {
+                showSuccessMessage('Access Granted');
+                showTab('language-review');
+            } else if (password !== null) { // Only show error if not cancelled
+                showErrorMessage('Access Denied - Incorrect Password');
+            }
+        }
+        
+        // Success message display
+        function showSuccessMessage(message) {
+            const notification = document.createElement('div');
+            notification.innerHTML = `✅ <strong>${message}</strong>`;
+            notification.style.cssText = `
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                z-index: 10000; background: rgba(76, 205, 196, 0.95);
+                color: white; padding: 20px 30px; border-radius: 15px;
+                font-size: 16px; font-weight: bold;
+                box-shadow: 0 10px 30px rgba(76, 205, 196, 0.6);
+                border: 2px solid #4ECDC4;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
+        }
+        
+        // Error message display
+        function showErrorMessage(message) {
+            const notification = document.createElement('div');
+            notification.innerHTML = `❌ <strong>${message}</strong>`;
+            notification.style.cssText = `
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                z-index: 10000; background: rgba(255, 107, 107, 0.95);
+                color: white; padding: 20px 30px; border-radius: 15px;
+                font-size: 16px; font-weight: bold;
+                box-shadow: 0 10px 30px rgba(255, 107, 107, 0.6);
+                border: 2px solid #FF6B6B;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
         
         // LANGUAGE REVIEW SELECTION SYSTEM
         
@@ -1183,8 +1249,8 @@
             
             // Keep version indicator clean - don't overwrite it
             const versionIndicator = document.querySelector('.version-indicator');
-            if (versionIndicator && !versionIndicator.innerHTML.includes('v6.1-091623:54-FINAL')) {
-                versionIndicator.innerHTML = 'v6.1-091623:54-FINAL';
+            if (versionIndicator && !versionIndicator.innerHTML.includes('v6.6-091704:44-SINGLE-ACCESS')) {
+                versionIndicator.innerHTML = 'v6.6-091704:44-SINGLE-ACCESS';
             }
         }
         
@@ -1285,22 +1351,82 @@
             }
         }
         
-        // Force refresh function to bypass all cache
-        function forceRefresh() {
-            // Clear all storage
-            localStorage.clear();
-            sessionStorage.clear();
+        // Enhanced AI Agent opener with context passing and return navigation
+        function openAIAgent() {
+            // Create context-rich URL with dashboard information
+            const dashboardUrl = encodeURIComponent(window.location.href);
+            const currentTab = document.querySelector('.tab-content.active')?.id || 'model';
+            const dashboardVersion = 'v6.6-091704:44-SINGLE-ACCESS';
             
-            // Clear service worker cache if exists
-            if ('caches' in window) {
-                caches.keys().then(names => {
-                    names.forEach(name => caches.delete(name));
-                });
+            // Build AI Agent URL with context parameters
+            const aiAgentUrl = `https://partnersnotinvestors.com/?` +
+                `source=mmm-dashboard&` +
+                `return_url=${dashboardUrl}&` +
+                `current_tab=${currentTab}&` +
+                `version=${encodeURIComponent(dashboardVersion)}&` +
+                `context=miami-makers-model`;
+            
+            const confirmed = confirm('🤖 Launch AI Agent with Dashboard Context?\n\n' +
+                '✨ Enhanced Integration Features:\n' +
+                '• Pre-loaded with Miami Makers Model context\n' +
+                '• "Return to Dashboard" button will appear\n' +
+                '• Seamless navigation between platforms\n' +
+                '• Current tab context preserved\n\n' +
+                'Click OK to proceed with enhanced integration.');
+            
+            if (confirmed) {
+                // Store comprehensive dashboard context
+                const dashboardContext = {
+                    url: window.location.href,
+                    currentTab: currentTab,
+                    version: dashboardVersion,
+                    timestamp: new Date().toISOString(),
+                    projectContext: 'Miami Makers Model - NeVo Tower Development'
+                };
+                
+                localStorage.setItem('mmm_dashboard_context', JSON.stringify(dashboardContext));
+                
+                // Open AI Agent with context parameters
+                window.open(aiAgentUrl, '_blank');
+                
+                // Show enhanced integration confirmation
+                setTimeout(() => {
+                    const notification = document.createElement('div');
+                    notification.style.cssText = `
+                        position: fixed; top: 80px; right: 20px; z-index: 9998;
+                        background: linear-gradient(45deg, #6C5CE7, #A29BFE);
+                        color: white; padding: 20px 25px; border-radius: 15px;
+                        font-size: 13px; max-width: 320px; line-height: 1.5;
+                        box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+                        border: 2px solid rgba(255, 255, 255, 0.3);
+                        animation: slideIn 0.6s ease-out;
+                    `;
+                    notification.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <span style="font-size: 18px;">🚀</span>
+                            <strong>AI Agent Launched!</strong>
+                        </div>
+                        <div style="font-size: 12px; opacity: 0.9;">
+                            ✅ Dashboard context loaded<br>
+                            ✅ Return navigation enabled<br>
+                            💡 Look for "Return to Dashboard" button
+                        </div>
+                    `;
+                    
+                    // Add slide-in animation
+                    const style = document.createElement('style');
+                    style.textContent = '@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }';
+                    document.head.appendChild(style);
+                    
+                    document.body.appendChild(notification);
+                    
+                    // Remove notification after 5 seconds
+                    setTimeout(() => {
+                        notification.style.animation = 'slideIn 0.6s ease-out reverse';
+                        setTimeout(() => notification.remove(), 600);
+                    }, 5000);
+                }, 600);
             }
-            
-            // Force reload with timestamp
-            const timestamp = Date.now();
-            window.location.href = window.location.pathname + '?v=' + timestamp;
         }
         
         // Force refresh function to bypass all cache
