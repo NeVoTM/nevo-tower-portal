@@ -14,7 +14,7 @@
     
     <script>
         // AUTO-REFRESH SYSTEM - Forces fresh content every time
-        const VERSION = '20250917_034100'; // Update this timestamp when you make changes
+        const VERSION = '20250917_034200'; // Update this timestamp when you make changes
         
         // Check if this is the latest version
         if (localStorage.getItem('mmm_version') !== VERSION) {
@@ -375,7 +375,7 @@
 </head>
 <body>
     <!-- Version Indicator for Debugging -->
-    <div class="version-indicator" onclick="showTab('language-review')" title="Click to access Language Review Control Panel">Tue091703:41</div>
+    <div class="version-indicator" onclick="showTab('language-review')" title="Click to access Language Review Control Panel">Tue091703:42</div>
     
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
@@ -394,7 +394,7 @@
         <div id="model" class="tab-content active">
             <div class="content-section">
                 <h2 class="section-title">🏗️ Miami Makers Model (MMM)</h2>
-                <p class="section-subtitle">Revolutionary "Partners Not Paychecks, Partners Not Capital Providers" Development Approach 
+                <p class="section-subtitle">Revolutionary "Partners Not Paychecks, Partners Not Investors" Development Approach
                 <span style="background: #FFD700; color: black; padding: 5px 10px; border-radius: 15px; font-size: 10px; margin-left: 10px;">
                     <strong>[1]</strong> Keep: <input type="radio" name="line387" value="keep" checked> | Change: <input type="radio" name="line387" value="change"> | <strong style="color: red;">CONFIRMED: <input type="radio" name="line387" value="confirmed"></strong>
                 </span>
@@ -403,7 +403,7 @@
                     <div class="narrative-title">🎯 Model Introduction</div>
                     <div class="narrative-content">
                         The Miami Makers Model (MMM) revolutionizes real estate development by transforming the entire ecosystem of development partners into equity stakeholders. 
-                        The "Partners Not Paychecks, Partners Not Capital Providers" approach 
+                        The "Partners Not Paychecks, Partners Not Investors" approach
                         <span style="background: #FFD700; color: black; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin: 0 5px;">
                             <strong>[2]</strong> Keep: <input type="radio" name="line393" value="keep" checked> | Change: <input type="radio" name="line393" value="change"> | <strong style="color: red;">CONFIRMED: <input type="radio" name="line393" value="confirmed"></strong>
                         </span>
@@ -413,7 +413,7 @@
                         <br><br>
                         This comprehensive partnership structure creates a powerful alignment where every participant's success is directly tied to project success. 
                         Cash partners provide capital in exchange for equity rather than traditional debt structures, while material suppliers contribute products 
-                        and services for ownership stakes rather than just payment terms. Crucially, cash partners are not passive capital providers 
+                        and services for ownership stakes rather than just payment terms. Crucially, cash partners are not passive investors
                         <span style="background: #FFD700; color: black; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin: 0 5px;">
                             <strong>[3]</strong> Keep: <input type="radio" name="line399" value="keep" checked> | Change: <input type="radio" name="line399" value="change"> | <strong style="color: red;">CONFIRMED: <input type="radio" name="line399" value="confirmed"></strong>
                         </span>
@@ -435,7 +435,7 @@
                 </div>
                 
                 <div class="narrative-section">
-                    <div class="narrative-title">⚖️ Legal Structure: Active Partners, Not Passive Capital Providers 
+                    <div class="narrative-title">⚖️ Legal Structure: Active Partners, Not Passive Investors
                     <span style="background: #FFD700; color: black; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin-left: 10px;">
                         <strong>[4]</strong> Keep: <input type="radio" name="line417" value="keep" checked> | Change: <input type="radio" name="line417" value="change"> | <strong style="color: red;">CONFIRMED: <input type="radio" name="line417" value="confirmed"></strong>
                     </span>
@@ -446,7 +446,7 @@
                         <strong>Key Legal Advantages:</strong>
                         <ul class="feature-list" style="margin: 20px 0;">
                             <li><strong>Active Decision-Making:</strong> Cash partners participate in key project decisions through secure online voting system</li>
-                            <li><strong>Howey Test Compliance:</strong> Partners are actively involved in management decisions, not passive capital providers 
+                            <li><strong>Howey Test Compliance:</strong> Partners are actively involved in management decisions, not passive investors
                             <span style="background: #FFD700; color: black; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin-left: 5px;">
                                 <strong>[5]</strong> Keep: <input type="radio" name="line424" value="keep" checked> | Change: <input type="radio" name="line424" value="change"> | <strong style="color: red;">CONFIRMED: <input type="radio" name="line424" value="confirmed"></strong>
                             </span>
@@ -458,7 +458,7 @@
                         
                         <strong>Digital Governance System:</strong><br>
                         Cash partners vote on key issues including budget approvals, design changes, contractor selections, and major timeline adjustments. 
-                        This active participation ensures they are true business partners with management responsibilities, not passive capital contributors 
+                        This active participation ensures they are true business partners with management responsibilities, not passive investors
                         expecting returns solely from others' efforts.
                     </div>
                 </div>
@@ -1222,8 +1222,8 @@
             
             // Keep version indicator clean - don't overwrite it
             const versionIndicator = document.querySelector('.version-indicator');
-            if (versionIndicator && !versionIndicator.innerHTML.includes('Tue091703:41')) {
-                versionIndicator.innerHTML = 'Tue091703:41';
+            if (versionIndicator && !versionIndicator.innerHTML.includes('Tue091703:42')) {
+                versionIndicator.innerHTML = 'Tue091703:42';
             }
         }
         
