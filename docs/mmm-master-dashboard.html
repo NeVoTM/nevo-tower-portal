@@ -14,7 +14,7 @@
     
     <script>
         // AUTO-REFRESH SYSTEM - Forces fresh content every time
-        const VERSION = '20250917_023300'; // EST timestamp when you make changes
+        const VERSION = '20250917_064800'; // EST timestamp when you make changes - MOBILE FIXES APPLIED
         
         // Check if this is the latest version
         if (localStorage.getItem('mmm_version') !== VERSION) {
@@ -33,6 +33,16 @@
             url.searchParams.set('v', Date.now());
             if (window.location.search !== url.search) {
                 window.location.href = url.toString();
+            }
+        }
+        
+        // Additional mobile cache busting
+        if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            const mobileVersion = localStorage.getItem('mobile_mmm_version');
+            const currentMobileVersion = 'v7.0-mobile-fixes';
+            if (mobileVersion !== currentMobileVersion) {
+                localStorage.setItem('mobile_mmm_version', currentMobileVersion);
+                console.log('Mobile cache cleared - version updated to', currentMobileVersion);
             }
         }
     </script>
@@ -74,6 +84,17 @@
             transform: scale(1.05);
             border: 2px solid rgba(30, 60, 114, 0.3);
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        /* Mobile-specific version indicator */
+        @media (max-width: 768px) {
+            .version-indicator {
+                position: static;
+                display: inline-block;
+                margin: 10px auto;
+                font-size: 8px;
+                padding: 3px 6px;
+            }
         }
         
         .container {
@@ -353,29 +374,102 @@
                 top: 0;
                 left: 0;
                 transform: none;
-                margin-bottom: 30px;
+                margin: 20px auto 30px auto;
+                padding: 15px;
                 justify-content: center;
                 flex-wrap: wrap;
+                max-width: 95%;
+                gap: 8px;
+                border-radius: 25px;
             }
             
             .tab-content {
-                padding-top: 20px;
+                padding: 20px 10px;
+                margin: 0 5px;
+            }
+            
+            .content-section {
+                margin: 15px 0;
+                padding: 20px 15px;
+                border-radius: 15px;
             }
             
             .section-title {
-                font-size: 2em;
+                font-size: 1.8em;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            
+            .section-subtitle {
+                font-size: 1.1em;
+                margin-bottom: 20px;
+                text-align: center;
             }
             
             .tab-btn {
-                font-size: 11px;
-                padding: 6px 12px;
+                font-size: 10px;
+                padding: 8px 12px;
+                margin: 2px;
+                border-radius: 15px;
+                white-space: nowrap;
+                min-width: auto;
+                flex: 0 0 auto;
+                text-align: center;
+            }
+            
+            .narrative-section {
+                padding: 20px 15px;
+                margin: 20px 0;
+            }
+            
+            .narrative-title {
+                font-size: 1.4em;
+                margin-bottom: 15px;
+            }
+            
+            .narrative-content {
+                font-size: 0.95em;
+                line-height: 1.6;
+            }
+            
+            .stats-grid,
+            .renderings-grid,
+            .project-details-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .feature-list {
+                padding-left: 20px;
+            }
+            
+            .feature-list li {
+                margin-bottom: 8px;
+            }
+            
+            .highlight-box {
+                padding: 20px 15px;
+                margin: 20px 0;
+            }
+            
+            .rendering-card {
+                margin: 15px 0;
+            }
+            
+            .rendering-image {
+                border-radius: 10px;
             }
         }
     </style>
 </head>
 <body>
     <!-- Version Indicator for Debugging -->
-    <div class="version-indicator" onclick="checkPassword()" title="MMM Master Dashboard v6.9 - Click for Language Review Panel">v6.9-091702:33</div>
+    <div class="version-indicator" onclick="checkPassword()" title="MMM Master Dashboard v7.0 - Mobile Responsive + Notification Fix - Click for Language Review Panel">v7.0-091706:48-MOBILE-FIX</div>
     
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
@@ -1504,7 +1598,7 @@
             // Create context-rich URL with dashboard information
             const dashboardUrl = encodeURIComponent(window.location.href);
             const currentTab = document.querySelector('.tab-content.active')?.id || 'model';
-            const dashboardVersion = 'v6.9-091702:33';
+            const dashboardVersion = 'v7.0-091706:48-MOBILE-FIX';
             
             // Build AI Agent URL with context parameters
             const aiAgentUrl = `https://partnersnotinvestors.com/?` +
@@ -1540,14 +1634,16 @@
                 // Show enhanced integration confirmation
                 setTimeout(() => {
                     const notification = document.createElement('div');
+                    notification.id = 'dashboard-integration-notification';
                     notification.style.cssText = `
                         position: fixed; top: 80px; right: 20px; z-index: 9998;
                         background: linear-gradient(45deg, #6C5CE7, #A29BFE);
                         color: white; padding: 20px 25px; border-radius: 15px;
                         font-size: 13px; max-width: 320px; line-height: 1.5;
-                        box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+                        box-shadow: 0 10px 30px rgba(108, 92, 231, 0.5);
                         border: 2px solid rgba(255, 255, 255, 0.3);
-                        animation: slideIn 0.6s ease-out;
+                        transform: translateX(100%); opacity: 0;
+                        transition: transform 0.6s ease-out, opacity 0.6s ease-out;
                     `;
                     notification.innerHTML = `
                         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
@@ -1561,17 +1657,24 @@
                         </div>
                     `;
                     
-                    // Add slide-in animation
-                    const style = document.createElement('style');
-                    style.textContent = '@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }';
-                    document.head.appendChild(style);
-                    
                     document.body.appendChild(notification);
                     
-                    // Remove notification after 5 seconds
+                    // Trigger slide-in animation after element is in DOM
                     setTimeout(() => {
-                        notification.style.animation = 'slideIn 0.6s ease-out reverse';
-                        setTimeout(() => notification.remove(), 600);
+                        notification.style.transform = 'translateX(0)';
+                        notification.style.opacity = '1';
+                    }, 50);
+                    
+                    // Remove notification after 5 seconds with smooth animation
+                    setTimeout(() => {
+                        notification.style.transition = 'transform 0.6s ease-out, opacity 0.6s ease-out';
+                        notification.style.transform = 'translateX(100%)';
+                        notification.style.opacity = '0';
+                        setTimeout(() => {
+                            if (notification.parentNode) {
+                                notification.remove();
+                            }
+                        }, 600);
                     }, 5000);
                 }, 600);
             }
