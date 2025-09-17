@@ -1346,10 +1346,8 @@
             }
             
             // Keep version indicator clean - don't overwrite it
-            const versionIndicator = document.querySelector('.version-indicator');
-            if (versionIndicator && !versionIndicator.innerHTML.includes('v6.6-091704:44-SINGLE-ACCESS')) {
-                versionIndicator.innerHTML = 'v6.6-091704:44-SINGLE-ACCESS';
-            }
+            // VERSION UPDATE: This function should NOT modify the version indicator
+            // The version should remain as set in the HTML: v6.7-091701:29-EST-ALL-TABS-WORKING
         }
         
         // Generate selections summary for submission
