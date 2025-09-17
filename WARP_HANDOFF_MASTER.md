@@ -362,6 +362,65 @@ Current production system works for UI/voice but fails at core data access. This
 
 ---
 
+## 📊 **MMM DASHBOARD SYSTEM (PRODUCTION READY)**
+
+### **Dashboard Status:**
+- **Location:** `docs/mmm-dashboard-v2.html`
+- **Version:** v6.6-091704:44-SINGLE-ACCESS
+- **Status:** ✅ Production ready for Roy Abrams presentations
+- **File Size:** ~80KB+ (comprehensive and complete)
+- **AI Agent Integration:** ✅ Enhanced context passing implemented
+- **Security:** ✅ Password-protected development features
+
+### **Navigation Structure:**
+- **MMM Model** - Core model explanation and legal structure
+- **Overview** - "Partners Not Paychecks" comprehensive overview
+- **Financials** - Coming soon (live Google Sheets integration)
+- **Project Renderings** - NeVo Tower visualizations with modal gallery
+- **Roy Abrams Focus** - Customized section for Roy's Kennedy Causeway project
+- **Cash Partners** - Enhanced with 31.2% IRR calculation for staged investments
+- **Service Partners** - Complete professional ecosystem breakdown
+- **🤖 AI Agent** - Enhanced integration with context passing
+
+### **Hidden Development Features:**
+**Important:** The development buttons are still functional but hidden from end users:
+- **🚀 Apply Changes** button - Hidden (`display: none;`) for language review system
+- **🔄 Force Refresh** button - Hidden (`display: none;`) for cache debugging
+
+**To show development buttons when needed:**
+1. Edit `docs/mmm-dashboard-v2.html`
+2. Find lines with `style="...display: none;"`
+3. Remove `display: none;` from the style attribute
+4. Buttons will immediately become visible for debugging
+
+### **Language Review Control Panel Access:**
+**Security Method:** Password-protected keyboard shortcut access only
+- **Keyboard Shortcut:** `Ctrl+Alt+L` (opens password prompt)
+- **Password:** `Hanavi` (case-sensitive)
+- **Version Indicator Click:** Does nothing (completely secure)
+- **Access Granted:** Opens Language Review Control Panel with interactive terminology system
+
+**What Language Review Does:**
+- Interactive terminology review and editing system
+- Toggle between "Keep" → "Change" → "CONFIRMED" for each instance
+- Automatic saving of selections to prevent data loss during navigation
+- Bulk submission system for large-scale editing projects
+- Designed for reviewing terms like "Partners Not Paychecks" vs alternatives
+
+### **Integration Files Created (Ready for AI Agent):**
+- `partnersnotinvestors-dashboard-integration.js` - Complete integration module
+- `partnersnotinvestors-html-integration.html` - HTML snippet for AI Agent
+- These enable "Return to MMM Dashboard" button and seamless navigation
+
+### **Key Features Completed:**
+- ✅ Version indicator stable (no more bouncing)
+- ✅ Enhanced AI Agent integration with context parameters
+- ✅ Sophisticated IRR calculation (31.2% annual return)
+- ✅ Clean production interface (development buttons hidden)
+- ✅ Professional presentation ready for stakeholders
+
+---
+
 ## 💡 **QUICK REFERENCE**
 
 ### **If AI Seems Confused:**

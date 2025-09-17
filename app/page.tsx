@@ -29,6 +29,8 @@ const DMMAgent = () => {
   const [showCharts, setShowCharts] = useState(false);
   const [voiceTranscript, setVoiceTranscript] = useState('');
   const [isVoiceListening, setIsVoiceListening] = useState(false);
+  const [dashboardContext, setDashboardContext] = useState<any>(null);
+  const [showReturnButton, setShowReturnButton] = useState(false);
 
   // Pagination settings
   const WORDS_PER_PAGE = 200;
@@ -61,6 +63,52 @@ const DMMAgent = () => {
       }
     }
   }, [response, isLoading]);
+
+  // MMM Dashboard Integration - Check for dashboard context on load
+  useEffect(() => {
+    const initializeDashboardIntegration = () => {
+      console.log('🔗 Initializing MMM Dashboard Integration...');
+      
+      // Check if user came from MMM Dashboard
+      const urlParams = new URLSearchParams(window.location.search);
+      const fromDashboard = urlParams.get('source') === 'mmm-dashboard';
+      
+      if (fromDashboard) {
+        console.log('✅ User arrived from MMM Dashboard - enabling enhanced integration');
+        
+        // Extract dashboard context
+        const context = {
+          returnUrl: decodeURIComponent(urlParams.get('return_url') || ''),
+          currentTab: urlParams.get('current_tab') || 'model',
+          version: decodeURIComponent(urlParams.get('version') || ''),
+          context: urlParams.get('context') || '',
+          timestamp: new Date().toISOString()
+        };
+        
+        // Store context for use throughout the session
+        localStorage.setItem('dashboard_integration_context', JSON.stringify(context));
+        setDashboardContext(context);
+        setShowReturnButton(true);
+        
+        // Pre-load Miami Makers Model context
+        preloadMMMContext();
+        
+        // Show integration confirmation
+        showIntegrationConfirmation();
+      }
+      
+      // Also check if context exists in localStorage (for page refreshes)
+      const storedContext = localStorage.getItem('dashboard_integration_context');
+      if (storedContext && !fromDashboard) {
+        const context = JSON.parse(storedContext);
+        setDashboardContext(context);
+        setShowReturnButton(true);
+      }
+    };
+
+    // Initialize on mount
+    initializeDashboardIntegration();
+  }, []);
 
   const nextPage = () => {
     if (currentPage < paginatedResponse.length) {
@@ -492,6 +540,104 @@ const testBusinessVoice = () => {
     }
   };
 
+  // MMM Dashboard Integration Helper Functions
+  const preloadMMMContext = () => {
+    const mmmContext = {
+      project: "Miami Makers Model (MMM) - NeVo Tower Development",
+      model: "Partners Not Paychecks, Partners Not Investors",
+      location: "1580 79th Street Causeway, North Bay Village, Miami",
+      units: "68 luxury residential units + 40 hospitality STR suites",
+      value: "$180M project valuation",
+      approach: "Equity partnership development model",
+      benefits: [
+        "Reduced cash requirements through partner equity",
+        "2x efficiency gains from 'skin in the game' motivation",
+        "Active partner governance (Howey Test compliant)",
+        "Zero SEC regulatory requirements",
+        "Accelerated timelines (6-12 months faster)",
+        "Enhanced quality control through equity alignment"
+      ]
+    };
+    
+    localStorage.setItem('ai_preloaded_context', JSON.stringify(mmmContext));
+    console.log('✅ MMM context pre-loaded for AI system');
+  };
+
+  const showIntegrationConfirmation = () => {
+    // Create welcome message notification
+    setTimeout(() => {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed; top: 80px; right: 20px; z-index: 9998;
+        background: rgba(0, 0, 0, 0.85); color: #FFD700; padding: 15px 20px;
+        border-radius: 15px; font-size: 14px; max-width: 320px; line-height: 1.4;
+        box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        animation: slideInRight 0.6s ease-out;
+      `;
+      
+      notification.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span style="font-size: 18px;">🚀</span>
+          <strong>Dashboard Integration Active!</strong>
+        </div>
+        <div style="font-size: 12px; opacity: 0.9;">
+          ✅ MMM context loaded<br>
+          ✅ Return navigation enabled<br>
+          💡 Look for "Return to Dashboard" button
+        </div>
+      `;
+      
+      // Add slide-in animation
+      const style = document.createElement('style');
+      style.textContent = '@keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }';
+      document.head.appendChild(style);
+      
+      document.body.appendChild(notification);
+      
+      // Auto-remove after 5 seconds
+      setTimeout(() => {
+        notification.style.animation = 'slideInRight 0.6s ease-out reverse';
+        setTimeout(() => notification.remove(), 600);
+      }, 5000);
+    }, 800);
+  };
+
+  const returnToDashboard = () => {
+    if (!dashboardContext) return;
+    
+    const confirmReturn = confirm('🏗️ Return to MMM Dashboard?\n\n' +
+      `📍 You'll return to the "${dashboardContext.currentTab}" tab\n` +
+      `🕒 Dashboard version: ${dashboardContext.version}\n\n` +
+      'Your AI Agent session will remain open in this tab.\n\n' +
+      'Click OK to return to the dashboard.');
+    
+    if (confirmReturn) {
+      if (dashboardContext.returnUrl) {
+        // Open dashboard in new tab
+        window.open(dashboardContext.returnUrl, '_blank');
+        
+        // Show success message
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+          position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+          z-index: 10000; background: rgba(76, 205, 196, 0.95);
+          color: white; padding: 20px 30px; border-radius: 15px;
+          font-size: 16px; font-weight: bold;
+          box-shadow: 0 10px 30px rgba(76, 205, 196, 0.6);
+          border: 2px solid #4ECDC4;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        `;
+        notification.innerHTML = '✅ <strong>Returned to MMM Dashboard!</strong>';
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 2000);
+      } else {
+        alert('⚠️ Dashboard URL not found. Please bookmark the dashboard for easy access.');
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)'}}>
       <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -504,6 +650,54 @@ const testBusinessVoice = () => {
             <span className="text-sm" style={{color: '#87CEEB'}}>Intelligence System</span>
           </div>
         </div>
+
+        {/* Return to Dashboard Button */}
+        {showReturnButton && dashboardContext && (
+          <div className="fixed top-5 right-5 z-50">
+            <button
+              onClick={returnToDashboard}
+              className="inline-flex items-center gap-2 px-4 py-3 font-bold text-sm rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              style={{
+                background: 'linear-gradient(45deg, #1e3c72, #2a5298)',
+                color: '#FFD700',
+                border: '2px solid #FFD700',
+                backdropFilter: 'blur(10px)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.05) translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 25px rgba(30, 60, 114, 0.6)';
+                e.currentTarget.style.background = 'linear-gradient(45deg, #2a5298, #1e3c72)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                e.currentTarget.style.boxShadow = '0 5px 20px rgba(30, 60, 114, 0.4)';
+                e.currentTarget.style.background = 'linear-gradient(45deg, #1e3c72, #2a5298)';
+              }}
+            >
+              <span>🏗️</span>
+              <span>Return to MMM Dashboard</span>
+            </button>
+          </div>
+        )}
+
+        {/* Dashboard Welcome Message */}
+        {dashboardContext && (
+          <div className="mb-6 p-4 rounded-xl" style={{
+            background: 'rgba(0, 0, 0, 0.3)',
+            border: '2px solid rgba(255, 215, 0, 0.3)',
+            backdropFilter: 'blur(10px)'
+          }}>
+            <div className="flex items-center gap-3 text-white">
+              <span className="text-2xl">🤖</span>
+              <div>
+                <h3 className="font-bold" style={{color: '#FFD700'}}>Welcome from MMM Dashboard!</h3>
+                <p className="text-sm text-gray-300">
+                  Context loaded: Miami Makers Model • {dashboardContext.currentTab} tab • {dashboardContext.version}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* DMM Charts Component */}
         <div className="mb-8">
