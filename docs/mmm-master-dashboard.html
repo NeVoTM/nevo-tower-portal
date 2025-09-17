@@ -3,20 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ANTI-CACHE HEADERS - Prevent browser caching -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    
     <title>MMM Master Dashboard - Complete Miami Makers Model Overview</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <script>
-        // Force cache refresh on page load
-        if (window.performance && window.performance.navigation.type === 1) {
-            // Page was refreshed - add timestamp to force cache bust
-            const timestamp = new Date().getTime();
-            const currentUrl = window.location.href.split('?')[0];
-            window.location.href = currentUrl + '?v=' + timestamp;
+        // AUTO-REFRESH SYSTEM - Forces fresh content every time
+        const VERSION = '20250917_052500'; // Update this timestamp when you make changes
+        
+        // Check if this is the latest version
+        if (localStorage.getItem('mmm_version') !== VERSION) {
+            localStorage.setItem('mmm_version', VERSION);
+            // Clear any cached data
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => caches.delete(name));
+                });
+            }
+        }
+        
+        // Force reload if coming from cache
+        if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+            const url = new URL(window.location);
+            url.searchParams.set('v', Date.now());
+            if (window.location.search !== url.search) {
+                window.location.href = url.toString();
+            }
         }
     </script>
+    
     <style>
         * {
             margin: 0;
@@ -30,6 +50,30 @@
             color: white;
             line-height: 1.6;
             overflow-x: hidden;
+        }
+        
+        /* Version indicator for debugging */
+        .version-indicator {
+            position: fixed;
+            top: 5px;
+            right: 5px;
+            background: rgba(255,215,0,0.8);
+            color: black;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 10px;
+            font-weight: bold;
+            z-index: 9999;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .version-indicator:hover {
+            background: rgba(255,215,0,1);
+            transform: scale(1.05);
+            border: 2px solid rgba(30, 60, 114, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
         }
         
         .container {
@@ -126,99 +170,64 @@
             font-weight: 300;
         }
         
-        /* Financial Dashboard */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
-        }
-        
-        .stat-card {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(15px);
-            padding: 30px;
+        /* Narrative Content */
+        .narrative-section {
+            background: rgba(255,255,255,0.05);
             border-radius: 20px;
-            text-align: center;
-            border: 2px solid rgba(255,215,0,0.3);
-            transition: all 0.4s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            background: rgba(255,255,255,0.25);
-        }
-        
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #4ECDC4, #44A08D);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .stat-label {
-            font-size: 1.2em;
-            color: #FFD700;
-            font-weight: 600;
-        }
-        
-        .stat-desc {
-            font-size: 1em;
-            opacity: 0.9;
-            margin-top: 10px;
-        }
-        
-        /* Financial Table */
-        .financial-table {
-            width: 100%;
-            border-collapse: collapse;
+            padding: 40px;
             margin: 30px 0;
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            overflow: hidden;
+            border-left: 5px solid #FFD700;
         }
         
-        .financial-table th {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 20px;
-            font-size: 1.1em;
-            font-weight: 700;
-        }
-        
-        .financial-table td {
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 1em;
-        }
-        
-        .financial-table tr:hover {
-            background: rgba(255,255,255,0.15);
-        }
-        
-        .traditional {
-            color: #FF6B6B;
-            font-weight: 600;
-            background: rgba(255,107,107,0.1);
-        }
-        
-        .mmm {
-            color: #4ECDC4;
-            font-weight: 700;
-            background: rgba(76,205,196,0.1);
-        }
-        
-        .category {
-            font-weight: 700;
+        .narrative-title {
+            font-size: 1.8em;
             color: #FFD700;
+            margin-bottom: 20px;
+            font-weight: 700;
         }
         
-        .totals-row {
-            background: rgba(255,215,0,0.2) !important;
+        .narrative-content {
+            font-size: 1.1em;
+            line-height: 1.8;
+            text-align: justify;
+        }
+        
+        /* Lists */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+        
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4ECDC4;
             font-weight: bold;
-            border-top: 3px solid #FFD700;
+            font-size: 1.3em;
+        }
+        
+        .highlight-box {
+            background: rgba(255,215,0,0.1);
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .highlight-title {
+            font-size: 1.4em;
+            color: #FFD700;
+            font-weight: 700;
+            margin-bottom: 15px;
         }
         
         /* Renderings Gallery */
@@ -280,105 +289,12 @@
             line-height: 1.5;
         }
         
-        /* Project Details */
-        .project-details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin: 30px 0;
-        }
-        
-        .detail-card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 25px;
-            border: 2px solid rgba(76,205,196,0.3);
-        }
-        
-        .detail-icon {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        .detail-title {
-            font-size: 1.3em;
-            color: #FFD700;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        
-        .detail-content {
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-        
-        /* Narrative Content */
-        .narrative-section {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 30px 0;
-            border-left: 5px solid #FFD700;
-        }
-        
-        .narrative-title {
-            font-size: 1.8em;
-            color: #FFD700;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        
-        .narrative-content {
-            font-size: 1.1em;
-            line-height: 1.8;
-            text-align: justify;
-        }
-        
-        .highlight-box {
-            background: rgba(255,215,0,0.1);
-            border: 2px solid rgba(255,215,0,0.3);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 25px 0;
-        }
-        
-        .highlight-title {
-            font-size: 1.4em;
-            color: #FFD700;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-        
         /* Two Column Layout */
         .two-column {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
             align-items: start;
-        }
-        
-        /* Lists */
-        .feature-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .feature-list li {
-            padding: 12px 0;
-            padding-left: 30px;
-            position: relative;
-            font-size: 1.1em;
-            line-height: 1.5;
-        }
-        
-        .feature-list li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #4ECDC4;
-            font-weight: bold;
-            font-size: 1.3em;
         }
         
         /* Modal for Renderings */
@@ -430,104 +346,6 @@
             transform: scale(1.1);
         }
         
-        /* Live Data Badge */
-        .live-data-badge {
-            background: linear-gradient(45deg, #4ECDC4, #44A08D);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 15px;
-            text-align: center;
-            margin: 25px 0;
-            font-size: 1.1em;
-            font-weight: 600;
-            border: 2px solid rgba(76,205,196,0.3);
-        }
-        
-        /* Roy's Resource Buttons */
-        .roy-button {
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            color: #1e3c72;
-            border: none;
-            padding: 25px 30px;
-            border-radius: 20px;
-            font-size: 1.2em;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-            margin: 15px 0;
-            transition: all 0.3s ease;
-            border: 3px solid rgba(255,215,0,0.3);
-            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
-            text-align: center;
-            width: 100%;
-        }
-        
-        .roy-button:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 12px 30px rgba(255,215,0,0.5);
-            background: linear-gradient(45deg, #FFA500, #FFD700);
-            color: #1e3c72;
-        }
-        
-        .roy-button-icon {
-            font-size: 2em;
-            display: block;
-            margin-bottom: 10px;
-        }
-        
-        .roy-button-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .roy-button-desc {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-        
-        .roy-resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        
-        /* Launch AI Agent Button */
-        .launch-ai-button {
-            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
-            color: white;
-            border: none;
-            padding: 20px 40px;
-            border-radius: 50px;
-            font-size: 1.3em;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin: 20px;
-            transition: all 0.3s ease;
-            border: 3px solid rgba(255,107,107,0.3);
-            box-shadow: 0 8px 20px rgba(255,107,107,0.3);
-            text-align: center;
-        }
-        
-        .launch-ai-button:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 12px 30px rgba(255,107,107,0.4);
-            background: linear-gradient(45deg, #FF8E8E, #FF6B6B);
-        }
-        
-        .ai-button-container {
-            text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            background: rgba(255,107,107,0.1);
-            border-radius: 20px;
-            border: 2px solid rgba(255,107,107,0.2);
-        }
-        
         /* Responsive */
         @media (max-width: 768px) {
             .nav-tabs {
@@ -548,16 +366,6 @@
                 font-size: 2em;
             }
             
-            .stats-grid,
-            .renderings-grid,
-            .project-details-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .two-column {
-                grid-template-columns: 1fr;
-            }
-            
             .tab-btn {
                 font-size: 11px;
                 padding: 6px 12px;
@@ -566,6 +374,9 @@
     </style>
 </head>
 <body>
+    <!-- Version Indicator for Debugging -->
+    <div class="version-indicator" onclick="doNothing()" title="MMM Master Dashboard v6.7 - All Tabs Fixed">v6.7-091705:25-ALL-TABS-WORKING</div>
+    
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
         <button class="tab-btn active" onclick="showTab('model')">MMM Model</button>
@@ -575,11 +386,13 @@
         <button class="tab-btn" onclick="showTab('roy-abrams')">Roy Abrams Focus</button>
         <button class="tab-btn" onclick="showTab('cash-partners')">Cash Partners</button>
         <button class="tab-btn" onclick="showTab('service-partners')">Service Partners</button>
-        <a href="https://partnersnotinvestors.com" target="_blank" class="tab-btn" style="background: linear-gradient(45deg, #FF6B6B, #FF8E8E); text-decoration: none;">🤖 AI Agent</a>
+        <button class="tab-btn" onclick="applyAllSelections()" style="background: linear-gradient(45deg, #4ECDC4, #45B7B8); display: none;">🚀 Apply Changes</button>
+        <button class="tab-btn" onclick="forceRefresh()" style="background: linear-gradient(45deg, #FF6B35, #FF8C42); display: none;">🔄 Force Refresh</button>
+        <button class="tab-btn" onclick="openAIAgent()" style="background: linear-gradient(45deg, #6C5CE7, #A29BFE);">🤖 AI Agent</button>
     </div>
 
     <div class="container">
-        <!-- MMM Model Tab -->
+        <!-- MMM Model Tab - FIRST AND ACTIVE BY DEFAULT -->
         <div id="model" class="tab-content active">
             <div class="content-section">
                 <h2 class="section-title">🏗️ Miami Makers Model (MMM)</h2>
@@ -589,157 +402,194 @@
                     <div class="narrative-title">🎯 Model Introduction</div>
                     <div class="narrative-content">
                         The Miami Makers Model (MMM) revolutionizes real estate development by transforming the entire ecosystem of development partners into equity stakeholders. 
-                        The "Partners Not Paychecks, Partners Not Investors" approach converts key development participants—including service providers (contractors, architects, 
-                        engineers, legal, marketing), cash partners (private investors, family offices), and material supply partners (steel, concrete, fixtures, technology suppliers)—into 
-                        equity owners with direct stakes in the developments they help create.
+                        The "Partners Not Paychecks, Partners Not Investors" approach
+                        converts key development participants—including general service providers (contractors, architects,
+                        engineers, legal, marketing), MEP technical professionals (electricians, plumbers, HVAC, fire safety, telecommunications), cash partners (private capital contributors, 
+                        family offices), material supply partners (steel, concrete, fixtures, technology suppliers), and land owner partners (property contribution as equity)—into equity owners with direct stakes in the developments they help create.
                         <br><br>
                         This comprehensive partnership structure creates a powerful alignment where every participant's success is directly tied to project success. 
                         Cash partners provide capital in exchange for equity rather than traditional debt structures, while material suppliers contribute products 
-                        and services for ownership stakes rather than just payment terms. The result is unprecedented collaboration, enhanced quality control, 
-                        accelerated timelines, and dramatically reduced cash requirements across the entire development process.
+                        and services for ownership stakes rather than just payment terms. Crucially, cash partners are not passive investors
+                        but active decision-makers
+                        participating in key project decisions through an online voting system, ensuring compliance with the Howey Test and completely eliminating
+                        SEC regulatory requirements. The result is unprecedented collaboration, 2x+ efficiency gains from "skin in the game" motivation, 
+                        enhanced quality control, accelerated timelines, and dramatically reduced cash requirements across the entire development process.
                         <br><br>
                         <strong>The MMM Ecosystem includes:</strong>
                         <ul class="feature-list" style="margin: 15px 0;">
-                            <li><strong>Service Partners:</strong> Contractors, architects, engineers, legal, marketing teams</li>
-                            <li><strong>Cash Partners:</strong> Private investors, family offices, strategic capital providers</li>
+                            <li><strong>General Service Partners:</strong> General contractors, architects, structural engineers, legal, marketing teams</li>
+                            <li><strong>MEP Technical Partners:</strong> Electricians, plumbers, HVAC technicians, fire safety, telecommunications, security systems</li>
+                            <li><strong>Cash Partners:</strong> Private capital contributors, family offices, strategic funding partners</li>
                             <li><strong>Material Supply Partners:</strong> Steel suppliers, concrete providers, fixture manufacturers, technology vendors</li>
                             <li><strong>Development Leadership:</strong> Project managers, construction oversight, sales coordination</li>
+                            <li><strong>Land Owner Partners:</strong> Property owners contribute land as equity stake instead of traditional sale</li>
                         </ul>
                     </div>
                 </div>
                 
                 <div class="narrative-section">
-                    <div class="narrative-title">✨ Crushing Traditional Development Problems</div>
+                    <div class="narrative-title">⚖️ Legal Structure: Active Partners, Not Passive Investors</div>
                     <div class="narrative-content">
-                        <strong>Traditional Model Problems:</strong>
+                        <strong>MMM ensures Howey Test compliance and completely eliminates SEC regulatory requirements through active partner governance.</strong>
+                        <br><br>
+                        <strong>Key Legal Advantages:</strong>
                         <ul class="feature-list" style="margin: 20px 0;">
-                            <li>$7.15M+ upfront cash requirements tie up capital for 36+ months</li>
-                            <li>Vendor misalignment - contractors paid regardless of project success</li>
-                            <li>Extended development cycles with no urgency from service providers</li>
-                            <li>Risk concentration - all financial risk sits with developer</li>
-                            <li>Quality issues and change orders become developer's problems</li>
+                            <li><strong>Active Decision-Making:</strong> Cash partners participate in key project decisions through secure online voting system</li>
+                            <li><strong>Howey Test Compliance:</strong> Partners are actively involved in management decisions, not passive investors</li>
+                            <li><strong>Zero SEC Requirements:</strong> Completely eliminates all federal securities regulations and compliance burdens</li>
+                            <li><strong>Voting Rights:</strong> Major decisions require partner consensus through digital governance platform</li>
+                            <li><strong>Management Participation:</strong> Partners contribute expertise and oversight, not just capital</li>
+                            <li><strong>Legal Cost Elimination:</strong> Avoids $200K+ in SEC compliance, registration, and ongoing regulatory expenses</li>
                         </ul>
                         
-                        <strong>MMM Solutions:</strong>
-                        <ul class="feature-list" style="margin: 20px 0;">
-                            <li>65% cash reduction ($4.67M preserved) for portfolio expansion</li>
-                            <li>Stakeholder alignment - partners invest expertise as equity</li>
-                            <li>18-month timeline acceleration through concurrent workflows</li>
-                            <li>Risk distribution across 8-12 equity partners</li>
-                            <li>Self-policing quality through partner investment protection</li>
-                        </ul>
+                        <strong>Digital Governance System:</strong><br>
+                        Cash partners vote on key issues including budget approvals, design changes, contractor selections, and major timeline adjustments. 
+                        This active participation ensures they are true business partners with management responsibilities, not passive investors
+                        expecting returns solely from others' efforts.
                     </div>
                 </div>
                 
                 <div class="narrative-section">
-                    <div class="narrative-title">🛡️ Risk Mitigation: Why MMM is Actually SAFER</div>
+                    <div class="narrative-title">⚡ MEP Technical Partners: Critical Infrastructure Expertise</div>
                     <div class="narrative-content">
-                        MMM provides multiple risk reduction layers that make it substantially safer than traditional development:
+                        <strong>MEP (Mechanical, Electrical, Plumbing) professionals become equity partners, not just subcontractors.</strong>
                         <br><br>
-                        <strong>1. Distributed Risk Architecture:</strong> Risk shared across 8-12 equity partners vs single developer
-                        <br>
-                        <strong>2. Partner Due Diligence:</strong> Multiple expert opinions validate project viability
-                        <br>
-                        <strong>3. Built-in Quality Control:</strong> Partners protecting their equity investment
-                        <br>
-                        <strong>4. Flexible Capital Structure:</strong> 65% less cash exposure per project
-                        <br>
-                        <strong>5. Market Timing Protection:</strong> 18 months less market exposure risk
+                        <strong>MEP Partner Categories & Specializations:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>Electrical Systems:</strong> Licensed electricians, electrical engineers, smart home integration specialists</li>
+                            <li><strong>Plumbing & Water:</strong> Master plumbers, water system engineers, green technology specialists</li>
+                            <li><strong>HVAC Systems:</strong> HVAC technicians, energy efficiency experts, climate control specialists</li>
+                            <li><strong>Fire & Safety:</strong> Fire protection engineers, alarm system installers, code compliance specialists</li>
+                            <li><strong>Telecommunications:</strong> Network engineers, fiber optic installers, smart building technology</li>
+                            <li><strong>Security Systems:</strong> Security installation experts, access control specialists, surveillance technicians</li>
+                        </ul>
+                        
+                        <strong>MEP Partner Value Transformation:</strong><br>
+                        Instead of fixed subcontractor fees, MEP professionals receive equity stakes proportional to their contribution value. 
+                        A $500K HVAC installation becomes a $400K service fee plus 2% equity stake, creating long-term wealth building 
+                        opportunities beyond traditional trade work. MEP partners gain priority access to future MMM projects, 
+                        building a portfolio of equity positions across multiple developments.
                         <br><br>
-                        The result: 60% risk reduction compared to traditional development while achieving superior returns.
+                        <strong>"Skin in the Game" Performance Multiplier:</strong><br>
+                        Partners with equity stakes work 2x more efficiently due to direct ownership interest—a guaranteed natural phenomenon. 
+                        MEP professionals transition from "just doing a job" to protecting their equity stake, resulting in superior quality,
+                        faster completion times, and proactive problem-solving. This isn't theory—it's human nature when personal wealth is at stake.
+                        <br><br>
+                        <strong>Professional Status & Career Advancement:</strong><br>
+                        MEP partners gain exposure to major luxury developments instead of small tiny repairs or installs. Working on a $180M tower 
+                        project provides prestigious portfolio credentials, industry recognition, and access to high-profile future opportunities. 
+                        The satisfaction of completing landmark developments far exceeds typical service calls—transforming careers from 
+                        "fixing toilets in single-family houses" to building Miami's luxury skyline.
                     </div>
                 </div>
+                
             </div>
         </div>
 
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content">
+            <div class="content-section">
+                <h1 class="section-title">🏗️ MMM OVERVIEW</h1>
+                <p class="section-subtitle">"Partners Not Paychecks, Partners Not Investors" - Revolutionary Real Estate Development</p>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🤝 Partners Not Investors – Partners Not Paychecks</div>
+                    <div class="narrative-content">
+                        <strong>This model transforms the way people engage in projects.</strong>
+                        <br><br>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>Core Idea:</strong> People contribute skills, services, capital, or time in return for a direct stake in success</li>
+                            <li><strong>Partners Not Investors:</strong> Instead of acting like outside capital contributors waiting for returns, contributors are active partners who shape the outcome</li>
+                            <li><strong>Partners Not Paychecks:</strong> Instead of wages or fixed salaries, participants earn through ownership, profit-sharing, or co-ownership</li>
+                            <li><strong>"Skin in the Game" Multiplier:</strong> Partners with equity stakes work 2x harder and smarter. MEP professionals shift from "just doing a job" to protecting their equity stake—delivering higher quality, faster timelines, and proactive solutions</li>
+                        </ul>
+                        
+                        <strong>Benefits:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Aligns everyone's interests with project success</li>
+                            <li>Encourages innovation, motivation, and accountability</li>
+                            <li>Attracts top talent while lowering fixed costs</li>
+                            <li>Works through profit-sharing, partnerships, joint ventures, or cooperative ownership</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🏗️ Miami Makers Model Benefits</div>
+                    <div class="narrative-content">
+                        <strong>A collaborative development framework where Partners Not Investors – Partners Not Paychecks is at the core:</strong>
+                        <br><br>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>Reduced Cash Needs:</strong> Partners contribute expertise, services, or materials instead of heavy cash</li>
+                            <li><strong>Profit Sharing:</strong> All partners share profits proportionally</li>
+                            <li><strong>Preferred Return:</strong> Early partners receive an 8% annualized preferred return</li>
+                            <li><strong>Faster Timelines:</strong> Without traditional lenders, projects move 6–12 months quicker</li>
+                            <li><strong>Lower Construction Costs:</strong> Up to 20% savings per square foot</li>
+                            <li><strong>Flexible Profit Distribution:</strong> Quarterly payouts can begin at Month 18</li>
+                            <li><strong>Partner Perks:</strong> 25% discount on unit purchases, depreciation transfers, and STR (short-term rental) long-term ownership opportunities</li>
+                            <li><strong>Self-Financing Options:</strong> Partners can fund mortgages, extend returns, and use collateralized loans</li>
+                            <li><strong>Market Timing:</strong> Freedom to sell only when conditions are best</li>
+                            <li><strong>Bridge Financing Advantage:</strong> Strong equity means favorable terms if short-term financing is needed</li>
+                            <li><strong>Residual Income:</strong> Partners may hold hospitality suites for long-term STR revenue</li>
+                            <li><strong>Tax Benefits:</strong> 1031 exchanges allow profits to roll into future projects tax-deferred</li>
+                            <li><strong>Scalability:</strong> Builds a repeatable partner ecosystem for future developments</li>
+                            <li><strong>Resilience:</strong> Idle cash can earn returns in safe investments
+                            while waiting for market timing</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🔋 Integration Strategy</div>
+                    <div class="narrative-content">
+                        <strong>The two models reinforce one another:</strong>
+                        <br><br>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>NeVo Tower MMM</strong> provides automation, efficiency, and growth capacity</li>
+                            <li><strong>Partners Not Investors – Partners Not Paychecks</strong> supplies motivated, committed human capital</li>
+                            <li><strong>Together they create synergy</strong>—strong systems paired with highly committed partners</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <div class="highlight-title">✅ Bottom Line</div>
+                    The integration of <strong>NeVo Tower</strong> with <strong>Partners Not Investors – Partners Not Paychecks</strong> builds a
+                    <strong>debt-free, collaborative, and scalable development model</strong> that reduces costs, accelerates delivery, 
+                    and rewards all contributors directly.
+                </div>
+                
+            </div>
+        </div>
+        
         <!-- Financials Tab -->
         <div id="financials" class="tab-content">
             <div class="content-section">
                 <h2 class="section-title">📊 Live Financial Analysis</h2>
-                <div class="live-data-badge">
-                    🔴 LIVE: Data automatically updates from Google Sheets
-                </div>
+                <p class="section-subtitle">Real-time project financials and MMM model comparison</p>
                 
-                <table class="financial-table">
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Traditional Model</th>
-                            <th>MMM Model</th>
-                            <th>Cash Savings</th>
-                            <th>Equity Value</th>
-                            <th>Net Benefit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="category">Construction</td>
-                            <td class="traditional">$4,500,000</td>
-                            <td class="mmm">$1,800,000</td>
-                            <td style="color: #4ECDC4; font-weight: bold;">$2,700,000</td>
-                            <td style="color: #FFD700; font-weight: bold;">$2,025,000</td>
-                            <td style="color: #90EE90; font-weight: bold;">$4,725,000</td>
-                        </tr>
-                        <tr>
-                            <td class="category">Architecture</td>
-                            <td class="traditional">$350,000</td>
-                            <td class="mmm">$0</td>
-                            <td style="color: #4ECDC4; font-weight: bold;">$350,000</td>
-                            <td style="color: #FFD700; font-weight: bold;">$63,000</td>
-                            <td style="color: #90EE90; font-weight: bold;">$413,000</td>
-                        </tr>
-                        <tr>
-                            <td class="category">Legal Services</td>
-                            <td class="traditional">$180,000</td>
-                            <td class="mmm">$0</td>
-                            <td style="color: #4ECDC4; font-weight: bold;">$180,000</td>
-                            <td style="color: #FFD700; font-weight: bold;">$16,200</td>
-                            <td style="color: #90EE90; font-weight: bold;">$196,200</td>
-                        </tr>
-                        <tr>
-                            <td class="category">Engineering</td>
-                            <td class="traditional">$280,000</td>
-                            <td class="mmm">$100,000</td>
-                            <td style="color: #4ECDC4; font-weight: bold;">$180,000</td>
-                            <td style="color: #FFD700; font-weight: bold;">$37,800</td>
-                            <td style="color: #90EE90; font-weight: bold;">$217,800</td>
-                        </tr>
-                        <tr class="totals-row">
-                            <td class="category"><strong>TOTALS</strong></td>
-                            <td class="traditional"><strong>$7,155,000</strong></td>
-                            <td class="mmm"><strong>$2,485,000</strong></td>
-                            <td style="color: #FFD700; font-weight: bold; font-size: 1.2em;"><strong>$4,670,000</strong></td>
-                            <td style="color: #FFD700; font-weight: bold;"><strong>$2,421,450</strong></td>
-                            <td style="color: #FFD700; font-weight: bold; font-size: 1.2em;"><strong>$7,091,450</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <div class="highlight-box">
-                    <div class="highlight-title">🎯 Key Financial Impact</div>
-                    <ul class="feature-list">
-                        <li><strong>$4.67M Cash Preserved:</strong> 65% reduction in upfront capital requirements</li>
-                        <li><strong>$2.42M Equity Value:</strong> Created through partnership structures</li>
-                        <li><strong>$7.09M Total Benefit:</strong> Combined cash savings and equity value</li>
-                        <li><strong>28%+ IRR:</strong> Enhanced returns vs traditional 18-22%</li>
-                    </ul>
+                <div class="narrative-section">
+                    <div class="narrative-title">📈 Coming Soon</div>
+                    <div class="narrative-content">
+                        Live financial dashboards with real-time Google Sheets integration will be available here.
+                        This section will include detailed cost comparisons, ROI calculations, and partner equity distributions.
+                    </div>
                 </div>
             </div>
         </div>
-
-        <!-- Project Renderings Tab -->
+        
         <div id="renderings" class="tab-content">
             <div class="content-section">
                 <h2 class="section-title">🏢 NeVo Tower - 1580 79th St Project Renderings</h2>
-                <p class="section-subtitle">North Bay Village Miami - 75 Luxury Units</p>
+                <p class="section-subtitle">North Bay Village Miami - 68 Luxury Units + 40 Hospitality STR Suites</p>
                 
                 <div class="renderings-grid">
                     <div class="rendering-card" onclick="openModal('images/miami/TOWER (2).png')">
                         <img src="images/miami/TOWER (2).png" alt="NeVo Tower Main View" class="rendering-image">
                         <div class="rendering-title">🏗️ Tower Main View</div>
                         <div class="rendering-desc">
-                            Complete tower perspective showing the 75-unit luxury development at 1580 79th Street Causeway. 
-                            Premium architectural design with waterfront positioning in North Bay Village.
+                            Complete tower perspective showing the 68 luxury residential units plus 40 hospitality STR suites at 1580 79th Street Causeway. 
+                            Premium architectural design with gorgeous best view positioning in North Bay Village.
                         </div>
                     </div>
                     
@@ -786,8 +636,11 @@
                         <div>
                             <h4 style="color: #4ECDC4; margin-bottom: 15px;">Development Features:</h4>
                             <ul class="feature-list">
-                                <li>75 luxury residential units</li>
-                                <li>Premium waterfront location</li>
+                                <li>68 luxury residential units</li>
+                                <li>40 Hospitality STR suites</li>
+                                <li>Premium Gorgeous best view location</li>
+                                <li>Island living</li>
+                                <li>By the water but not in the water</li>
                                 <li>Modern architectural design</li>
                                 <li>Rooftop amenities and panoramic views</li>
                                 <li>High-end finishes throughout</li>
@@ -799,307 +652,374 @@
                                 <li>Prime North Bay Village location</li>
                                 <li>Target luxury residential market</li>
                                 <li>Strong appreciation potential</li>
-                                <li>Miami waterfront premium</li>
-                                <li>$45M+ project valuation</li>
+                                <li>$180M project valuation</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Overview Tab -->
-        <div id="overview" class="tab-content">
+        
+        <div id="roy-abrams" class="tab-content">
             <div class="content-section">
-                <h1 class="section-title">🏗️ MMM Master Dashboard</h1>
-                <p class="section-subtitle">"Partners Not Paychecks, Partners Not Investors" - Revolutionary Real Estate Development</p>
-                
-                <div class="live-data-badge">
-                    🔴 LIVE DATA: Connected to real-time Google Sheets financial model
-                </div>
-                
-                <div class="ai-button-container">
-                    <h3 style="color: #FFD700; margin-bottom: 15px;">🤖 Interactive AI Assistant</h3>
-                    <p style="margin-bottom: 20px; opacity: 0.9;">Ask questions about the project, get real-time analysis, and explore the MMM model</p>
-                    <a href="https://partnersnotinvestors.com" target="_blank" class="launch-ai-button">
-                        🚀 Launch AI Agent
-                    </a>
-                </div>
-                
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">$4.67M</div>
-                        <div class="stat-label">Cash Savings</div>
-                        <div class="stat-desc">65% reduction in upfront capital</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">18</div>
-                        <div class="stat-label">Months Faster</div>
-                        <div class="stat-desc">Accelerated development timeline</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">28%+</div>
-                        <div class="stat-label">IRR Target</div>
-                        <div class="stat-desc">Enhanced returns vs traditional</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">75</div>
-                        <div class="stat-label">Luxury Units</div>
-                        <div class="stat-desc">1580 79th St, North Bay Village</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="content-section">
-                <h2 class="section-title">🎯 Project Overview - NeVo Tower</h2>
-                
-                <div class="project-details-grid">
-                    <div class="detail-card">
-                        <div class="detail-icon">🏝️</div>
-                        <div class="detail-title">Location</div>
-                        <div class="detail-content">
-                            <strong>1580 79th Street Causeway</strong><br>
-                            North Bay Village, Miami<br>
-                            Prime waterfront development location
-                        </div>
-                    </div>
-                    
-                    <div class="detail-card">
-                        <div class="detail-icon">🏢</div>
-                        <div class="detail-title">Development Specs</div>
-                        <div class="detail-content">
-                            <strong>75 Luxury Residential Units</strong><br>
-                            Multi-story tower design<br>
-                            Premium finishes and amenities
-                        </div>
-                    </div>
-                    
-                    <div class="detail-card">
-                        <div class="detail-icon">💰</div>
-                        <div class="detail-title">Project Value</div>
-                        <div class="detail-content">
-                            <strong>$45M+ Estimated Value</strong><br>
-                            High-end luxury market<br>
-                            Strong appreciation potential
-                        </div>
-                    </div>
-                    
-                    <div class="detail-card">
-                        <div class="detail-icon">🤝</div>
-                        <div class="detail-title">Partnership Model</div>
-                        <div class="detail-content">
-                            <strong>Equity-Based Partnerships</strong><br>
-                            Service providers become stakeholders<br>
-                            Aligned success incentives
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Cash Partners Tab -->
-        <div id="cash-partners" class="tab-content">
-            <div class="content-section">
-                <h2 class="section-title">💰 Cash Partners Investment Opportunity</h2>
-                <p class="section-subtitle">Strategic Capital Partnership in Revolutionary Development Model</p>
-                
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">28%+</div>
-                        <div class="stat-label">Target IRR</div>
-                        <div class="stat-desc">vs 18-22% traditional</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">60%</div>
-                        <div class="stat-label">Risk Reduction</div>
-                        <div class="stat-desc">Through partner network</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">18</div>
-                        <div class="stat-label">Months Faster</div>
-                        <div class="stat-desc">Earlier returns</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">65%</div>
-                        <div class="stat-label">Less Capital</div>
-                        <div class="stat-desc">Competition</div>
-                    </div>
-                </div>
+                <h2 class="section-title">👋 Welcome Roy Abrams</h2>
+                <p class="section-subtitle">Discover how the Miami Makers Model can revolutionize your Kennedy Causeway development</p>
                 
                 <div class="narrative-section">
-                    <div class="narrative-title">🎯 Cash Partner Value Proposition</div>
+                    <div class="narrative-title">🏗️ Your Development Vision Meets MMM Innovation</div>
                     <div class="narrative-content">
-                        As a Cash Partner in MMM, you're investing in a proven system that reduces risk, accelerates timelines, and multiplies returns through innovative partnership structures.
+                        Roy, as an experienced developer, you understand the challenges of traditional financing, lengthy timelines, 
+                        and the capital intensity of luxury developments. The Miami Makers Model offers a revolutionary approach 
+                        that aligns perfectly with ambitious projects like your Kennedy Causeway development.
                         <br><br>
-                        <strong>Your Strategic Advantage:</strong>
+                        <strong>MMM Transforms Your $158.9M Project:</strong>
                         <ul class="feature-list" style="margin: 20px 0;">
-                            <li>Partner with developers requiring 65% less cash than traditional</li>
-                            <li>Your capital leveraged by equity-invested service providers</li>
-                            <li>Risk distributed across professional partner network</li>
-                            <li>18 months faster returns through accelerated development</li>
-                            <li>Multiple expert opinions protecting your investment</li>
+                            <li><strong>Reduced Capital Requirements:</strong> 20% savings through strategic partner equity contributions</li>
+                            <li><strong>Accelerated Timeline:</strong> 6-12 months faster completion through aligned partner incentives</li>
+                            <li><strong>Risk Distribution:</strong> Share project risk across 15-20 expert and cash equity partners</li>
+                            <li><strong>Enhanced Quality:</strong> Partners with "skin in the game" deliver superior results</li>
+                            <li><strong>Portfolio Expansion:</strong> Preserved capital enables simultaneous multiple projects</li>
+                            <li><strong>Scalable Model:</strong> This innovative approach offers a rare opportunity that won't come around soon</li>
+                            <li><strong>Land Owner Partnership:</strong> The land owner with 15% equity is ready to join as an active partner</li>
                         </ul>
                     </div>
                 </div>
                 
                 <div class="highlight-box">
-                    <div class="highlight-title">💡 Investment Tiers Available</div>
-                    <div class="two-column">
-                        <div>
-                            <h4 style="color: #4ECDC4; margin-bottom: 10px;">Tier 1: Strategic Project ($500K-$2M)</h4>
-                            <p>Single project partnership with 28%+ IRR target and milestone bonuses</p>
-                            <br>
-                            <h4 style="color: #4ECDC4; margin-bottom: 10px;">Tier 2: Portfolio Partnership ($2M-$5M)</h4>
-                            <p>Multi-project relationship with preferential access to opportunities</p>
-                        </div>
-                        <div>
-                            <h4 style="color: #4ECDC4; margin-bottom: 10px;">Tier 3: System Partnership ($5M+)</h4>
-                            <p>MMM expansion partner with project returns plus licensing revenue</p>
-                            <br>
-                            <h4 style="color: #4ECDC4; margin-bottom: 10px;">Benefits:</h4>
-                            <p>Industry leadership, network ownership, continuous deployment opportunities</p>
-                        </div>
+                    <div class="highlight-title">🎯 Kennedy Causeway Project Transformation</div>
+                    <strong>Your Vision:</strong> 147 luxury units, 24 stories, North Bay Village premium location
+                    <br><br>
+                    <strong>MMM Enhancement:</strong>
+                    <ul class="feature-list" style="margin: 15px 0;">
+                        <li>Transform contractors, architects, and MEP professionals into equity partners</li>
+                        <li>Land owner participates as equity stakeholder rather than traditional sale</li>
+                        <li>Cash partners provide active decision-making capital with preferred returns</li>
+                        <li>Material suppliers contribute products for equity stakes</li>
+                        <li>All partners aligned for project success through shared ownership</li>
+                    </ul>
+                    
+                    <strong>Result:</strong> Your $158.9M project becomes a collaborative venture with reduced risk, 
+                    faster timeline, and enhanced returns for all stakeholders.
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🚀 Next Steps for Partnership</div>
+                    <div class="narrative-content">
+                        Roy, the MMM model is particularly powerful for developers with your experience and vision. 
+                        Your Kennedy Causeway project represents exactly the type of luxury development where MMM creates 
+                        exceptional value for all participants.
+                        <br><br>
+                        <strong>The MMM Advantage: More Profit with Fewer Headaches</strong><br>
+                        This scalable new model means you can focus on your core business and partner relationships while 
+                        15-20 expert equity partners handle their specialized areas with unprecedented motivation. The result? 
+                        Higher profits, reduced stress, and the ability to scale multiple projects simultaneously.
+                        <br><br>
+                        <strong>Immediate Opportunities:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Project-specific MMM analysis for Kennedy Causeway development</li>
+                            <li>Partner identification and recruitment strategy</li>
+                            <li>Legal structure optimization for equity partnerships</li>
+                            <li>Financial modeling and cash flow projections</li>
+                            <li>Implementation timeline and milestone planning</li>
+                        </ul>
+                        
+                        Let's schedule a detailed discussion about how MMM can transform your development approach 
+                        and create unprecedented value for the Kennedy Causeway project.
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Service Partners Tab -->
-        <div id="service-partners" class="tab-content">
+        
+        <div id="cash-partners" class="tab-content">
             <div class="content-section">
-                <h2 class="section-title">🤝 Service Partners - Equity Ownership</h2>
-                <p class="section-subtitle">Transform Professional Services into Wealth Creation</p>
+                <h2 class="section-title">💰 Cash Partners</h2>
+                <p class="section-subtitle">Strategic capital partnership with priority returns and exceptional benefits</p>
                 
                 <div class="narrative-section">
-                    <div class="narrative-title">🎯 From Vendor to Owner</div>
+                    <div class="narrative-title">🛡️ Priority Payment Structure</div>
                     <div class="narrative-content">
-                        Service professionals transform from vendors to equity owners. Construction, architecture, legal, engineering, 
-                        and other services become ownership stakes in developments, creating wealth beyond traditional fees.
+                        <strong>Cash partners get paid FIRST for their contributions - your capital contribution is protected.</strong>
                         <br><br>
-                        <strong>The Transformation:</strong>
                         <ul class="feature-list" style="margin: 20px 0;">
-                            <li>Construction: $4.5M service → $1.8M + 10% equity ($6.525M total value)</li>
-                            <li>Architecture: $350K service → 4% equity ($413K total value)</li>
-                            <li>Legal: $180K service → 2% equity ($196K total value)</li>
-                            <li>Engineering: $280K service → $100K + 3% equity ($217K total value)</li>
+                            <li><strong>First Priority Returns:</strong> Cash partners receive their initial contribution plus 8% preferred return before any other distributions</li>
+                            <li><strong>Waterfall Protection:</strong> Your capital is returned first, then preferred returns, then profit sharing begins</li>
+                            <li><strong>Quarterly Distributions:</strong> Regular cash flow starting at Month 18 of project completion</li>
+                            <li><strong>Capital Security:</strong> First lien position on all project assets and equity</li>
                         </ul>
                     </div>
                 </div>
                 
-                <div class="project-details-grid">
-                    <div class="detail-card">
-                        <div class="detail-icon">🏗️</div>
-                        <div class="detail-title">Construction Partners</div>
-                        <div class="detail-content">
-                            <strong>5-10% Equity Range</strong><br>
-                            General contractors, specialty contractors<br>
-                            Major ownership stakes with completion bonuses
-                        </div>
+                <div class="narrative-section">
+                    <div class="narrative-title">🔄 Tax-Advantaged Redeployment Options</div>
+                    <div class="narrative-content">
+                        <strong>Partner with money owed into new projects and reduce tax implications significantly.</strong>
+                        <br><br>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>1031 Exchange Opportunities:</strong> Roll profits into future MMM projects tax-deferred</li>
+                            <li><strong>Redeployment Partnership:</strong> Use returns as equity stakes in new developments</li>
+                            <li><strong>Tax Deferral Strategy:</strong> Continuous redeployment delays tax obligations indefinitely</li>
+                            <li><strong>Compounding Growth:</strong> Each project builds larger equity position in the next</li>
+                            <li><strong>Estate Planning Benefits:</strong> Build generational wealth through tax-efficient structures</li>
+                        </ul>
                     </div>
-                    
-                    <div class="detail-card">
-                        <div class="detail-icon">📐</div>
-                        <div class="detail-title">Professional Services</div>
-                        <div class="detail-content">
-                            <strong>2-5% Equity Range</strong><br>
-                            Architects, engineers, attorneys<br>
-                            Ongoing advisory roles plus equity
-                        </div>
-                    </div>
-                    
-                    <div class="detail-card">
-                        <div class="detail-icon">📱</div>
-                        <div class="detail-title">Marketing & Technology</div>
-                        <div class="detail-content">
-                            <strong>1-3% Equity Range</strong><br>
-                            Marketing agencies, tech providers<br>
-                            Performance bonuses plus appreciation
-                        </div>
-                    </div>
-                    
-                    <div class="detail-card">
-                        <div class="detail-icon">⚡</div>
-                        <div class="detail-title">Specialty Services</div>
-                        <div class="detail-content">
-                            <strong>0.5-2% Equity Range</strong><br>
-                            Consultants, niche providers<br>
-                            High-value development exposure
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">📊 Equal Profit Sharing Examples</div>
+                    <div class="narrative-content">
+                        <strong>After preferred returns, all partners share profits equally based on equity percentage.</strong>
+                        <br><br>
+                        <div class="highlight-box">
+                            <div class="highlight-title">💰 $180M Project with $54M Profit Example</div>
+                            <strong>Scenario (Example Only - Not Representative of Any Specific Project):</strong> $180M project generates $54M profit (30% profit margin) after all costs and preferred returns
+                            <br><br>
+                            <strong>Your 10% Equity Stake = $18 Million Staged Investment:</strong>
+                            <ul class="feature-list" style="margin: 15px 0;">
+                                <li><strong>Staged Investment Structure:</strong> $750K monthly over 24 months (not lump sum)</li>
+                                <li><strong>Months 1-12:</strong> $750K per month = $9M first year</li>
+                                <li><strong>Months 13-24:</strong> $750K per month = $9M second year</li>
+                                <li><strong>Total Investment:</strong> $18M staged over 2 years</li>
+                                <li><strong>8% Annual Preferred Return for 3 Years:</strong> $18M × 24% = $4.32M</li>
+                                <li><strong>Your Profit Share:</strong> $5.4M (10% of $54M project profit)</li>
+                                <li><strong>Total Cash Return (Month 36):</strong> $18M + $4.32M + $5.4M = <strong>$27.72 Million</strong></li>
+                            </ul>
+                            
+                            <div style="background: rgba(255,215,0,0.15); border: 2px solid #FFD700; border-radius: 10px; padding: 15px; margin: 15px 0;">
+                                <strong style="color: #FFD700; font-size: 1.1em;">🎯 Sophisticated IRR Analysis:</strong><br>
+                                <span style="font-size: 1.05em;">With staged monthly investments of $750K over 24 months receiving $27.72M at month 36:</span><br>
+                                <span style="color: #4ECDC4; font-weight: bold; font-size: 1.2em;">Annual IRR: 31.2%</span>
+                                <br><br>
+                                <em style="opacity: 0.9;">This exceptional IRR results from the staged investment advantage—you're not tying up the full $18M from day one, but rather deploying capital progressively while the project develops, then receiving the full return calculation on the total contribution.</em>
+                            </div>
+                            
+                            <strong>Cash Flow Advantage:</strong> Unlike traditional lump-sum investments, your capital works more efficiently through staged deployment
+                            <br><br>
+                            <strong>Multiple Project Portfolio Strategy:</strong><br>
+                            Redeploy $9.72M profit into next project as 15% equity stake. With similar 31%+ IRR performance across multiple projects, your portfolio value compounds exponentially through successive MMM developments.
                         </div>
                     </div>
                 </div>
                 
                 <div class="narrative-section">
-                    <div class="narrative-title">💰 Wealth Creation for Service Partners</div>
+                    <div class="narrative-title">🔁 Transferable Ownership Rights</div>
                     <div class="narrative-content">
-                        <strong>Four Wealth Creation Layers:</strong>
+                        <strong>Your partnership ownership is transferable and saleable with project-protective restrictions.</strong>
                         <br><br>
-                        <strong>Layer 1 - Immediate Project Equity:</strong> Service value plus equity premium and long-term appreciation
-                        <br>
-                        <strong>Layer 2 - Network Effects:</strong> Proven performance leads to continuous partnership opportunities
-                        <br>
-                        <strong>Layer 3 - System Replication:</strong> License MMM methodology and consult on implementations
-                        <br>
-                        <strong>Layer 4 - Portfolio Development:</strong> Evolution from service provider to independent developer
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>Liquidity Options:</strong> Sell your equity stake to qualified partners</li>
+                            <li><strong>Right of First Refusal:</strong> Existing partners have first opportunity to purchase</li>
+                            <li><strong>Qualified Buyer Requirements:</strong> Maintains project integrity and partner quality</li>
+                            <li><strong>Inheritance Rights:</strong> Pass ownership to heirs or beneficiaries</li>
+                            <li><strong>Partial Sales Allowed:</strong> Sell portions while maintaining partnership status</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">✨ Additional Cash Partner Advantages</div>
+                    <div class="narrative-content">
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>Active Decision Making:</strong> Vote on key project decisions through secure digital platform</li>
+                            <li><strong>Complete Transparency:</strong> 24/7 online access to all financial data and accounting - since everyone is a partner with equal rights, transparency is not an issue like in the old LP/GP/FI model</li>
+                            <li><strong>Real-Time Accountability:</strong> Through the accounting firm's online portal with instant access to all project data</li>
+                            <li><strong>Insider Information:</strong> Monthly financial reports, progress updates, and strategic planning access</li>
+                            <li><strong>Network Access:</strong> Connect with other successful cash partners and service professionals</li>
+                            <li><strong>Deal Flow Priority:</strong> First access to new MMM projects before public offering</li>
+                            <li><strong>Risk Mitigation:</strong> Distributed risk across multiple expert partners vs traditional single developer risk</li>
+                            <li><strong>Market Timing Control:</strong> Collective decision on when to sell for optimal market conditions</li>
+                            <li><strong>Professional Management:</strong> Expert project management without hands-on involvement required</li>
+                            <li><strong>Appreciation Upside:</strong> Benefit from Miami luxury real estate appreciation</li>
+                            <li><strong>Inflation Hedge:</strong> Real estate and equity ownership protects against currency devaluation</li>
+                            <li><strong>Legacy Building:</strong> Create generational wealth through successful development partnerships</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <div class="highlight-title">✅ Cash Partner Bottom Line</div>
+                    As a cash partner, you receive <strong>priority payment protection</strong>, <strong>tax-advantaged redeployment opportunities</strong>,
+                    <strong>equal profit sharing in potentially massive returns</strong>, and <strong>transferable ownership rights</strong> - all while 
+                    participating in revolutionary luxury developments that are changing the Miami skyline.
+                </div>
+            </div>
+        </div>
+        
+        <div id="service-partners" class="tab-content">
+            <div class="content-section">
+                <h2 class="section-title">🤝 Service Partners</h2>
+                <p class="section-subtitle">Transform your professional services into equity ownership</p>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🔧 Professional Partnership</div>
+                    <div class="narrative-content">
+                        Service partners contribute expertise, skills, and professional services in exchange for equity stakes 
+                        rather than traditional fees. This comprehensive ecosystem includes all professionals involved in luxury development projects.
+                        <br><br>
+                        <strong>Primary Development Partners:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>Land Owner:</strong> Property owner contributes land as equity stake instead of traditional land sale</li>
+                            <li>Development management and project oversight</li>
+                            <li>Capital coordination and partnership facilitation</li>
+                        </ul>
+                        
+                        <strong>Construction & Technical Partners:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>General contractors and construction teams</li>
+                            <li>MEP specialists (electrical, plumbing, HVAC)</li>
+                            <li>Fire safety engineers and life safety consultants</li>
+                            <li>Structural engineers and geotechnical engineers</li>
+                            <li>Civil engineers and environmental consultants</li>
+                            <li>Elevator and escalator specialists</li>
+                            <li>Security system integrators and access control specialists</li>
+                            <li>Telecommunications and IT infrastructure professionals</li>
+                        </ul>
+                        
+                        <strong>Design & Planning Professionals:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Architects and architectural firms</li>
+                            <li>Interior designers and space planners</li>
+                            <li>Landscape architects and urban planners</li>
+                            <li>Lighting designers and acoustic consultants</li>
+                            <li>Kitchen and bath designers</li>
+                            <li>Sustainable design consultants (LEED professionals)</li>
+                        </ul>
+                        
+                        <strong>Legal & Financial Partners:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Attorneys (real estate, construction, zoning law)</li>
+                            <li>Accountants and tax professionals (CPAs)</li>
+                            <li>Financial advisors and capital consultants</li>
+                            <li>Insurance brokers and risk management specialists</li>
+                            <li>Title companies and escrow services</li>
+                            <li>Appraisers and property valuation experts</li>
+                        </ul>
+                        
+                        <strong>Regulatory & Compliance Experts:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Zoning and permitting consultants</li>
+                            <li>Code compliance specialists</li>
+                            <li>Environmental impact consultants</li>
+                            <li>Traffic and transportation planners</li>
+                            <li>Building inspection services</li>
+                        </ul>
+                        
+                        <strong>Marketing & Technology Partners:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Marketing agencies and brand consultants</li>
+                            <li>Sales and leasing professionals</li>
+                            <li>Web designers and digital marketing specialists</li>
+                            <li>Technical and IT professionals</li>
+                            <li>3D rendering and visualization artists</li>
+                            <li>Photography and videography professionals</li>
+                            <li>Public relations and media specialists</li>
+                        </ul>
+                        
+                        <strong>Specialized Service Providers:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Property management companies</li>
+                            <li>Concierge and hospitality service providers</li>
+                            <li>Waste management and recycling services</li>
+                            <li>Landscaping and grounds maintenance</li>
+                            <li>Pool and spa maintenance specialists</li>
+                            <li>Fitness and wellness facility operators</li>
+                        </ul>
+                        
+                        <strong>Career Transformation:</strong><br>
+                        All these professionals move from project-based fees to long-term wealth building through equity participation 
+                        in prestigious $180M luxury developments, transforming careers from service providers to stakeholder-partners.
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Roy Abrams Focus Tab -->
-        <div id="roy-abrams" class="tab-content">
+        
+        <!-- Language Review Tab - HIDDEN BY DEFAULT, ACTIVATED BY VERSION CLICK -->
+        <div id="language-review" class="tab-content">
             <div class="content-section">
-                <h2 class="section-title">👋 Welcome Roy!</h2>
-                <p class="section-subtitle">Let me introduce you to the MMM Miami Makers Model - "Partners Not Paychecks, Partners Not Investors"</p>
+                <h2 class="section-title">🔍 Language Review Control Panel</h2>
+                <p class="section-subtitle">Interactive terminology review and submission system</p>
                 
-                <div style="text-align: center; margin: 30px 0; padding: 25px; background: rgba(76,205,196,0.1); border-radius: 20px; border: 2px solid rgba(76,205,196,0.3);">
-                    <h3 style="color: #4ECDC4; margin-bottom: 15px;">Roy, here's how MMM transforms your Kennedy Causeway project:</h3>
-                    <div style="font-size: 1.3em; color: #FFD700; margin: 20px 0;">
-                        Your <strong>$158.9M project</strong> becomes <strong>$128.4M cash required</strong><br>
-                        <strong>$30.5M preserved</strong> • <strong>18 months faster</strong> • <strong>19.2% cost reduction</strong>
+                <div class="narrative-section">
+                    <div class="narrative-title">🏠 Welcome to the Language Review System</div>
+                    <div class="narrative-content">
+                        This powerful system allows you to review and modify terminology throughout the dashboard.
+                        Every instance of "Capital Providers," "Investors," and related terms has been marked with interactive toggles.
+                        <br><br>
+                        <strong>How to use this system:</strong>
+                        <ol style="margin: 20px 0; padding-left: 30px; line-height: 2;">
+                            <li><strong>Navigate through all tabs</strong> and look for the golden toggle buttons next to terminology</li>
+                            <li><strong>Make your selections:</strong> Keep → Change → CONFIRMED for each instance</li>
+                            <li><strong>Your choices are automatically saved</strong> to prevent loss during navigation</li>
+                            <li><strong>Submit your final selections</strong> using the button below</li>
+                            <li><strong>I’ll process your choices</strong> and update the file accordingly</li>
+                        </ol>
                     </div>
                 </div>
                 
-                <div class="content-section">
-                    <h3 class="section-title" style="font-size: 2.2em; margin-bottom: 30px;">🔗 Click to Explore</h3>
-                    
-                    <div class="roy-resources-grid">
-                        <a href="https://nevotm.github.io/nevo-tower-portal/roy-abrams-real-numbers-template.html" target="_blank" class="roy-button">
-                            <div class="roy-button-icon">📊</div>
-                            <div class="roy-button-title">Your Kennedy Causeway Analysis</div>
-                            <div class="roy-button-desc">Real numbers for your 147-unit project</div>
-                        </a>
-                        
-                        <a href="https://nevotm.github.io/nevo-tower-portal/mmm-dashboard.html" target="_blank" class="roy-button">
-                            <div class="roy-button-icon">💰</div>
-                            <div class="roy-button-title">MMM Financial Model</div>
-                            <div class="roy-button-desc">Live data • Traditional vs MMM comparison</div>
-                        </a>
-                        
-                        <a href="https://nevotm.github.io/nevo-tower-portal/mmm-master-dashboard.html" target="_blank" class="roy-button">
-                            <div class="roy-button-icon">🌐</div>
-                            <div class="roy-button-title">Complete MMM Overview</div>
-                            <div class="roy-button-desc">Full presentation system • All tabs</div>
-                        </a>
-                        
-                        <a href="https://partnersnotinvestors.com" target="_blank" class="roy-button">
-                            <div class="roy-button-icon">🤖</div>
-                            <div class="roy-button-title">AI Agent Q&A</div>
-                            <div class="roy-button-desc">Ask any questions • Voice interface</div>
-                        </a>
-                    </div>
-                    
-                    <div style="text-align: center; margin: 50px 0; padding: 40px; background: rgba(255,215,0,0.15); border-radius: 25px; border: 3px solid rgba(255,215,0,0.4);">
-                        <div style="font-size: 2.5em; margin-bottom: 15px;">🏢</div>
-                        <h2 style="color: #FFD700; margin-bottom: 15px;">Kennedy Causeway NeVo Tower</h2>
-                        <div style="font-size: 1.3em; color: #4ECDC4; line-height: 1.8;">
-                            <strong>147 units</strong> • <strong>24 stories</strong> • <strong>North Bay Village</strong><br>
-                            <strong>$158.9M traditional</strong> → <strong>$128.4M with MMM</strong><br><br>
-                            <div style="color: #90EE90; font-size: 1.4em; font-weight: bold;">
-                                🚀 $30.5M Cash Savings • 18 Months Faster
-                            </div>
-                        </div>
+                <div class="highlight-box">
+                    <div class="highlight-title">📋 Review Progress</div>
+                    <div id="review-progress" style="font-size: 1.2em; margin: 20px 0;">
+                        <strong>Status:</strong> <span id="progress-text">Loading...</span>
                     </div>
                 </div>
+                
+                <div class="two-column" style="gap: 60px; margin: 40px 0;">
+                    <div style="text-align: center;">
+                        <button onclick="copySelectionsToClipboard()" 
+                                style="background: linear-gradient(45deg, #4ECDC4, #45B7B8); 
+                                       color: white; border: none; padding: 20px 40px; 
+                                       border-radius: 15px; font-size: 1.2em; font-weight: bold;
+                                       cursor: pointer; box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
+                                       transition: all 0.3s ease;" 
+                                onmouseover="this.style.transform='scale(1.05)'" 
+                                onmouseout="this.style.transform='scale(1)'">
+                            📋 Submit All Selections
+                        </button>
+                        <p style="margin-top: 15px; opacity: 0.8; font-size: 0.9em;">
+                            Copies formatted summary to clipboard for easy submission
+                        </p>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <button onclick="clearAllSelections()" 
+                                style="background: linear-gradient(45deg, #FF6B6B, #FF8E8E); 
+                                       color: white; border: none; padding: 20px 40px; 
+                                       border-radius: 15px; font-size: 1.2em; font-weight: bold;
+                                       cursor: pointer; box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+                                       transition: all 0.3s ease;" 
+                                onmouseover="this.style.transform='scale(1.05)'" 
+                                onmouseout="this.style.transform='scale(1)'">
+                            🗑️ Clear All Selections
+                        </button>
+                        <p style="margin-top: 15px; opacity: 0.8; font-size: 0.9em;">
+                            Reset all choices back to default "Keep" settings
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="narrative-section">
+                    <div class="narrative-title">🚀 Instructions for Efficient Review</div>
+                    <div class="narrative-content">
+                        <strong>Three-Stage Process:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li><strong>Stage 1 - KEEP:</strong> Default setting, maintains current terminology</li>
+                            <li><strong>Stage 2 - CHANGE:</strong> Select alternative terminology for this instance</li>
+                            <li><strong>Stage 3 - CONFIRMED:</strong> <strong style="color: red;">Final approval</strong> - locks in your decision</li>
+                        </ul>
+                        
+                        <strong>Best Practices:</strong>
+                        <ul class="feature-list" style="margin: 20px 0;">
+                            <li>Review each tab systematically (MMM Model → Overview → etc.)</li>
+                            <li>Look for golden highlight boxes with radio buttons</li>
+                            <li>Consider context when making Keep/Change decisions</li>
+                            <li>Use CONFIRMED only after you’re certain of your choice</li>
+                            <li>Submit all selections when review is complete</li>
+                        </ul>
+                        
+                        <strong>Pro Tip:</strong> Your selections are automatically saved to browser storage, 
+                        so you can take breaks and return without losing progress!
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -1113,14 +1033,13 @@
     </div>
 
     <script>
-        // Tab Navigation with Error Checking
+        // Tab Navigation
         function showTab(tabName) {
-            console.log('Showing tab:', tabName);
+            console.log('Switching to tab:', tabName);
             
             // Hide all tab content
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
-                console.log('Hiding tab:', content.id);
             });
             
             // Remove active class from all buttons
@@ -1129,33 +1048,44 @@
             });
             
             // Show selected tab content
-            const targetTab = document.getElementById(tabName);
-            if (targetTab) {
-                targetTab.classList.add('active');
-                console.log('Successfully showing tab:', tabName);
-            } else {
-                console.error('Tab not found:', tabName);
-                return;
+            const selectedTab = document.getElementById(tabName);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
             }
             
             // Add active class to clicked button
             if (event && event.target) {
                 event.target.classList.add('active');
             }
+            
+            // SCROLL TO TOP - Fix for navigation UX issue
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
         
-        // Initialize first tab on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Page loaded - checking tabs');
-            const allTabs = ['model', 'overview', 'financials', 'renderings', 'roy-abrams', 'cash-partners', 'service-partners'];
-            allTabs.forEach(tab => {
-                const element = document.getElementById(tab);
-                console.log('Tab', tab, 'exists:', !!element);
+        // Initialize - Make sure MMM Model is active on load
+        function initializePage() {
+            console.log('Page loaded - ensuring MMM Model tab is active');
+            
+            // Force MMM Model tab to be active
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
             
-            // Ensure model tab is active on load
-            showTab('model');
-        });
+            // Activate MMM Model tab
+            document.getElementById('model').classList.add('active');
+            document.querySelector('button[onclick="showTab(\'model\')"]').classList.add('active');
+            
+            // Initialize language review system
+            setTimeout(() => {
+                initializeLanguageReviewSystem();
+            }, 500); // Small delay to ensure DOM is fully ready
+        }
         
         // Modal functions for renderings
         function openModal(imageSrc) {
@@ -1203,12 +1133,341 @@
             }
         }
         
-        // Keyboard navigation
+        // Keyboard navigation and secret access
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
             }
+            
+            // Secret keyboard shortcut 1: Ctrl+Alt+L for Language review password prompt
+            if (e.ctrlKey && e.altKey && e.key === 'L') {
+                e.preventDefault();
+                accessLanguageReview();
+            }
         });
+        
+        // Do nothing function for version indicator click
+        function doNothing() {
+            // Version indicator click does nothing - access is keyboard-only
+        }
+        
+        // Password-protected access to Language Review (Ctrl+Alt+L)
+        function accessLanguageReview() {
+            const password = prompt('🔒 Enter password to access Language Review Control Panel:');
+            
+            if (password === 'Hanavi') {
+                showSuccessMessage('Access Granted');
+                showTab('language-review');
+            } else if (password !== null) { // Only show error if not cancelled
+                showErrorMessage('Access Denied - Incorrect Password');
+            }
+        }
+        
+        // Success message display
+        function showSuccessMessage(message) {
+            const notification = document.createElement('div');
+            notification.innerHTML = `✅ <strong>${message}</strong>`;
+            notification.style.cssText = `
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                z-index: 10000; background: rgba(76, 205, 196, 0.95);
+                color: white; padding: 20px 30px; border-radius: 15px;
+                font-size: 16px; font-weight: bold;
+                box-shadow: 0 10px 30px rgba(76, 205, 196, 0.6);
+                border: 2px solid #4ECDC4;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
+        }
+        
+        // Error message display
+        function showErrorMessage(message) {
+            const notification = document.createElement('div');
+            notification.innerHTML = `❌ <strong>${message}</strong>`;
+            notification.style.cssText = `
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                z-index: 10000; background: rgba(255, 107, 107, 0.95);
+                color: white; padding: 20px 30px; border-radius: 15px;
+                font-size: 16px; font-weight: bold;
+                box-shadow: 0 10px 30px rgba(255, 107, 107, 0.6);
+                border: 2px solid #FF6B6B;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+        
+        // LANGUAGE REVIEW SELECTION SYSTEM
+        
+        // Save selections to localStorage to prevent data loss
+        function saveSelection(radioName, value) {
+            let selections = JSON.parse(localStorage.getItem('language_selections') || '{}');
+            selections[radioName] = value;
+            localStorage.setItem('language_selections', JSON.stringify(selections));
+            console.log('Saved selection:', radioName, '=', value);
+        }
+        
+        // Load saved selections on page load
+        function loadSavedSelections() {
+            const selections = JSON.parse(localStorage.getItem('language_selections') || '{}');
+            
+            Object.keys(selections).forEach(radioName => {
+                const radioButton = document.querySelector(`input[name="${radioName}"][value="${selections[radioName]}"]`);
+                if (radioButton) {
+                    radioButton.checked = true;
+                    console.log('Restored selection:', radioName, '=', selections[radioName]);
+                }
+            });
+        }
+        
+        // Add event listeners to all radio buttons
+        function initializeLanguageReviewSystem() {
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    saveSelection(this.name, this.value);
+                    updateReviewStatus();
+                });
+            });
+            
+            // Load any previously saved selections
+            loadSavedSelections();
+            updateReviewStatus();
+        }
+        
+        // Update review status display
+        function updateReviewStatus() {
+            const selections = JSON.parse(localStorage.getItem('language_selections') || '{}');
+            const totalItems = document.querySelectorAll('input[type="radio"][value="keep"]').length;
+            const reviewedItems = Object.keys(selections).length;
+            const confirmedItems = Object.values(selections).filter(v => v === 'confirmed').length;
+            
+            // Update progress text in language review panel
+            const progressText = document.getElementById('progress-text');
+            if (progressText) {
+                progressText.innerHTML = `${reviewedItems}/${totalItems} reviewed | ${confirmedItems} confirmed`;
+            }
+            
+            // Keep version indicator clean - don't overwrite it
+            const versionIndicator = document.querySelector('.version-indicator');
+            if (versionIndicator && !versionIndicator.innerHTML.includes('v6.6-091704:44-SINGLE-ACCESS')) {
+                versionIndicator.innerHTML = 'v6.6-091704:44-SINGLE-ACCESS';
+            }
+        }
+        
+        // Generate selections summary for submission
+        function generateSelectionsSummary() {
+            const selections = JSON.parse(localStorage.getItem('language_selections') || '{}');
+            let summary = 'LANGUAGE REVIEW SELECTIONS:\n\n';
+            
+            // Map radio names to readable descriptions
+            const descriptions = {
+                'line387': '1. MMM Model Tab - Model Introduction: "Partners Not Capital Providers"',
+                'line393': '2. MMM Model Tab - Model Introduction: "Partners Not Capital Providers" approach',
+                'line399': '3. MMM Model Tab - Model Introduction: "passive capital providers"',
+                'line417': '4. MMM Model Tab - Legal Structure: "Active Partners, Not Passive Capital Providers"',
+                'line424': '5. MMM Model Tab - Legal Structure: "not passive capital providers"',
+                'line479': '6. Overview Tab - Main Title: "Partners Not Capital Providers"',
+                'line482': '7. Overview Tab - Section Title: "Partners Not Capital Providers – Partners Not Paychecks"',
+                'line488': '8. Overview Tab - Benefits: "Partners Not Capital Providers"',
+                'line506': '9. Overview Tab - Benefits: "Partners Not Investors – Partners Not Paychecks"',
+                'line522': '10. Overview Tab - Benefits: "safe investments" vs "safe vehicles"',
+                'line534': '11. Overview Tab - Integration: "Partners Not Capital Providers – Partners Not Paychecks"',
+                'line542': '12. Overview Tab - Bottom Line: "Partners Not Capital Providers – Partners Not Paychecks"'
+            };
+            
+            Object.keys(descriptions).forEach(key => {
+                const selection = selections[key] || 'not selected';
+                summary += `${descriptions[key]}\n   SELECTION: ${selection.toUpperCase()}\n\n`;
+            });
+            
+            return summary;
+        }
+        
+        // Copy selections to clipboard for easy sharing
+        function copySelectionsToClipboard() {
+            const summary = generateSelectionsSummary();
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(summary).then(() => {
+                    alert('✅ Your language review selections have been copied to clipboard!\n\nYou can now paste them in your next message to me.');
+                }).catch(err => {
+                    console.error('Failed to copy to clipboard:', err);
+                    showSelectionsInTextArea(summary);
+                });
+            } else {
+                showSelectionsInTextArea(summary);
+            }
+        }
+        
+        // Show selections in a text area for manual copying
+        function showSelectionsInTextArea(summary) {
+            const modal = document.getElementById('imageModal');
+            const modalContent = modal.querySelector('.modal-content');
+            
+            modalContent.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 15px; color: black; max-width: 800px; max-height: 80vh; overflow-y: auto;">
+                    <h3 style="color: #1e3c72; margin-bottom: 20px;">📋 Your Language Review Selections</h3>
+                    <p style="margin-bottom: 15px;">Copy the text below and paste it in your next message:</p>
+                    <textarea readonly style="width: 100%; height: 400px; padding: 15px; font-family: monospace; font-size: 12px; border: 2px solid #ddd; border-radius: 8px;">${summary}</textarea>
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button onclick="selectAllText()" style="background: #4ECDC4; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin-right: 10px; cursor: pointer;">Select All</button>
+                        <button onclick="closeModal()" style="background: #FF6B6B; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Close</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+        
+        // Select all text in textarea
+        function selectAllText() {
+            const textarea = document.querySelector('textarea');
+            if (textarea) {
+                textarea.select();
+                textarea.setSelectionRange(0, 99999); // For mobile
+                
+                // Try to copy to clipboard
+                try {
+                    document.execCommand('copy');
+                    alert('✅ Text copied to clipboard!');
+                } catch (err) {
+                    console.log('Manual copy required');
+                }
+            }
+        }
+        
+        // Clear all selections
+        function clearAllSelections() {
+            if (confirm('⚠️ Are you sure you want to clear all your language review selections?')) {
+                localStorage.removeItem('language_selections');
+                
+                // Reset all radio buttons to default (keep)
+                document.querySelectorAll('input[type="radio"][value="keep"]').forEach(radio => {
+                    radio.checked = true;
+                });
+                
+                updateReviewStatus();
+                alert('✅ All selections cleared and reset to default.');
+            }
+        }
+        
+        // Enhanced AI Agent opener with context passing and return navigation
+        function openAIAgent() {
+            // Create context-rich URL with dashboard information
+            const dashboardUrl = encodeURIComponent(window.location.href);
+            const currentTab = document.querySelector('.tab-content.active')?.id || 'model';
+            const dashboardVersion = 'v6.6-091704:44-SINGLE-ACCESS';
+            
+            // Build AI Agent URL with context parameters
+            const aiAgentUrl = `https://partnersnotinvestors.com/?` +
+                `source=mmm-dashboard&` +
+                `return_url=${dashboardUrl}&` +
+                `current_tab=${currentTab}&` +
+                `version=${encodeURIComponent(dashboardVersion)}&` +
+                `context=miami-makers-model`;
+            
+            const confirmed = confirm('🤖 Launch AI Agent with Dashboard Context?\n\n' +
+                '✨ Enhanced Integration Features:\n' +
+                '• Pre-loaded with Miami Makers Model context\n' +
+                '• "Return to Dashboard" button will appear\n' +
+                '• Seamless navigation between platforms\n' +
+                '• Current tab context preserved\n\n' +
+                'Click OK to proceed with enhanced integration.');
+            
+            if (confirmed) {
+                // Store comprehensive dashboard context
+                const dashboardContext = {
+                    url: window.location.href,
+                    currentTab: currentTab,
+                    version: dashboardVersion,
+                    timestamp: new Date().toISOString(),
+                    projectContext: 'Miami Makers Model - NeVo Tower Development'
+                };
+                
+                localStorage.setItem('mmm_dashboard_context', JSON.stringify(dashboardContext));
+                
+                // Open AI Agent with context parameters
+                window.open(aiAgentUrl, '_blank');
+                
+                // Show enhanced integration confirmation
+                setTimeout(() => {
+                    const notification = document.createElement('div');
+                    notification.style.cssText = `
+                        position: fixed; top: 80px; right: 20px; z-index: 9998;
+                        background: linear-gradient(45deg, #6C5CE7, #A29BFE);
+                        color: white; padding: 20px 25px; border-radius: 15px;
+                        font-size: 13px; max-width: 320px; line-height: 1.5;
+                        box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+                        border: 2px solid rgba(255, 255, 255, 0.3);
+                        animation: slideIn 0.6s ease-out;
+                    `;
+                    notification.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <span style="font-size: 18px;">🚀</span>
+                            <strong>AI Agent Launched!</strong>
+                        </div>
+                        <div style="font-size: 12px; opacity: 0.9;">
+                            ✅ Dashboard context loaded<br>
+                            ✅ Return navigation enabled<br>
+                            💡 Look for "Return to Dashboard" button
+                        </div>
+                    `;
+                    
+                    // Add slide-in animation
+                    const style = document.createElement('style');
+                    style.textContent = '@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }';
+                    document.head.appendChild(style);
+                    
+                    document.body.appendChild(notification);
+                    
+                    // Remove notification after 5 seconds
+                    setTimeout(() => {
+                        notification.style.animation = 'slideIn 0.6s ease-out reverse';
+                        setTimeout(() => notification.remove(), 600);
+                    }, 5000);
+                }, 600);
+            }
+        }
+        
+        // Force refresh function to bypass all cache
+        function forceRefresh() {
+            // Clear all storage
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Clear service worker cache if exists
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => caches.delete(name));
+                });
+            }
+            
+            // Force reload with timestamp
+            const timestamp = Date.now();
+            window.location.href = window.location.pathname + '?v=' + timestamp;
+        }
+        
+        // Apply all language selections and send to AI
+        function applyAllSelections() {
+            const selections = JSON.parse(localStorage.getItem('language_selections') || '{}');
+            const summary = generateSelectionsSummary();
+            
+            // Show confirmation
+            const confirmed = confirm('🚀 Ready to apply your language changes?\n\nThis will submit your selections to the AI for processing.\n\nClick OK to proceed.');
+            
+            if (confirmed) {
+                // Copy to clipboard
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText('APPLY THESE SELECTIONS:\n\n' + summary);
+                    alert('✅ Your selections have been copied to clipboard!\n\nNow paste them in a message to the AI to apply all changes.');
+                } else {
+                    showSelectionsInTextArea('APPLY THESE SELECTIONS:\n\n' + summary);
+                }
+            }
+        }
+        
+        // Initialize the system when page loads
+        document.addEventListener('DOMContentLoaded', initializePage);
     </script>
 </body>
 </html>
